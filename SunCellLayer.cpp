@@ -15,32 +15,75 @@ bool SunCellLayer::init()
 	{
 		return false;
 	}
-	log("\n\nnnnnn\n");
-	schedule(schedule_selector(SunCellLayer::initSunCell), 7.0f);//调度器
+	//log("\n\nnnnnn\n");
+	schedule(schedule_selector(SunCellLayer::initSunCell), 3.0f);//调度器
+
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = CC_CALLBACK_2(SunCellLayer::onTouchBegan, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
+	
 	return true;
 }
 
 void SunCellLayer::initSunCell(float dlt)
 {
-	log("\nherehrehrehrheh\n");
 	this->_sunCellSprite = SunCellSprite::create();//创建一个太阳精灵
 	auto visibelSize = Director::getInstance()->getWinSize();//获得窗口大小
-	this->_sunCellSprite->_sunSprite->setPosition(rand()%720+ 250,
+	this->_sunCellSprite->setPosition(rand()%720+ 250,
 		visibelSize.height + this->_sunCellSprite->getContentSize().height);
-	this->addChild(this->_sunCellSprite->_sunSprite);
+	this->addChild(this->_sunCellSprite);
 	this->sunCellMoveWay();
 }
 void SunCellLayer::sunCellMoveWay()
 {
 	auto visibelSize = Director::getInstance()->getWinSize();
-	FiniteTimeAction* sunCellMove1 = MoveTo::create(8.0f, Vec2((this->_sunCellSprite->_sunSprite->getPositionX()),(1 * visibelSize.height / 4)));
-	FiniteTimeAction* sunCellMove2 = MoveTo::create(0.5f, Vec2(2 * visibelSize.width / 7, 8 * visibelSize.height / 9));
-	this->_sunCellSprite->_sunSprite->runAction(Sequence::create(sunCellMove1, sunCellMove2, CallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
-
+	FiniteTimeAction* sunCellMove1 = MoveTo::create(4.0f, Vec2((this->_sunCellSprite->getPositionX()), (30 + rand() % 250)));
+	FiniteTimeAction* sunCellMove2 = MoveBy::create(5.0f, Vec2(0,0));
+	//FiniteTimeAction* fade = FadeOut::create(0.01f);
+	//this->_sunCellSprite->runAction(CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL));
+	Sequence* seq = CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL);
+	
+	this->_sunCellSprite->runAction(seq);
+	seq->setTag(1);
+	//sunCellMove1->setTag(1);//阳光向下运动的tag为1
+	
 }
 void SunCellLayer::removeSunCell(Node* pSend)
 {
+
 	Sprite* sprite = (Sprite*)pSend;
 	this->removeChild(sprite, true);
 	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar = ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar + 25;
+}
+
+void SunCellLayer::removeSunCell2(Node* pSend)
+{
+
+	Sprite* sprite = (Sprite*)pSend;
+	this->removeChild(sprite, true);
+}
+
+
+bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
+{
+	if (this->_sunCellSprite != NULL)
+			{
+				Vec2 point = touch->getLocation();
+				auto visibelSize = Director::getInstance()->getWinSize();
+				log("allChildren%d", this->getChildrenCount());
+				for (auto node : this->getChildren())
+				{
+					
+					if (SunCellSprite::getRect(node).containsPoint(point))
+					{
+						node->stopActionByTag(1);
+						
+						FiniteTimeAction* sunCellMove2 = MoveTo::create(0.5f, Vec2(2 * visibelSize.width / 7, 8 * visibelSize.height / 9));
+						node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
+
+					}
+						
+				}
+			}	
+	return true;
 }

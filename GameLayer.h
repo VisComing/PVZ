@@ -3,6 +3,7 @@
 #include "MapLayer.h"
 #include "DollarDisplayLayer.h"
 #include "SunCellLayer.h"
+#include "ZombieLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -21,4 +22,6 @@ public:
 	SpriteFrameCache* _cache;
 	MapLayer* _mapLayer;
 	DollarDisplayLayer* _dollarDisplayLayer;
+	ZombieLayer* _zombieLayer;
+	void initZombieLayer();
 };

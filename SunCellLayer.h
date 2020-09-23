@@ -14,4 +14,6 @@ public:
 	void initSunCell(float);
 	void sunCellMoveWay();
 	void removeSunCell(Node*);
+	void removeSunCell2(Node*);
+	bool onTouchBegan(Touch* touch, Event* event);
 };

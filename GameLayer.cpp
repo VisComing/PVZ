@@ -12,12 +12,14 @@ bool GameLayer::init()
 
 	scheduleUpdate();//监听一切活动/变化
 	this->initSunCellLayer();
+	this->initZombieLayer();
 	return true;
 }
 
 GameLayer::GameLayer()
 {
 	this->_sunCellLayer = NULL;
+	this->_zombieLayer = NULL;
 }
 
 GameLayer::~GameLayer()
@@ -51,4 +53,10 @@ void GameLayer::initSunCellLayer()
 {
 	this->_sunCellLayer = SunCellLayer::create();
 	this->addChild(this->_sunCellLayer);
+}
+
+void GameLayer::initZombieLayer()
+{
+	this->_zombieLayer = ZombieLayer::create();
+	this->addChild(this->_zombieLayer);
 }
