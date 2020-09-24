@@ -4,6 +4,9 @@
 #include "DollarDisplayLayer.h"
 #include "SunCellLayer.h"
 #include "ZombieLayer.h"
+#include "CardLayer.h"
+#include "TouchLayer.h"
+#include "PeaShooterLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -24,4 +27,11 @@ public:
 	DollarDisplayLayer* _dollarDisplayLayer;
 	ZombieLayer* _zombieLayer;
 	void initZombieLayer();
+	CardLayer* _cardLayer;
+	void initCardLayer();
+	TouchLayer* _touchLayer;
+	void initTouchLayer();
+	//PeaShooterLayer* _peaShooterLayer;
+	void initPeaShooterLayer();
+	PeaShooterLayer* _peaShooterLayer;
 };

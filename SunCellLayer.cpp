@@ -15,7 +15,6 @@ bool SunCellLayer::init()
 	{
 		return false;
 	}
-	//log("\n\nnnnnn\n");
 	schedule(schedule_selector(SunCellLayer::initSunCell), 3.0f);//调度器
 
 	auto listener = EventListenerTouchOneByOne::create();
@@ -28,7 +27,7 @@ bool SunCellLayer::init()
 void SunCellLayer::initSunCell(float dlt)
 {
 	this->_sunCellSprite = SunCellSprite::create();//创建一个太阳精灵
-	auto visibelSize = Director::getInstance()->getWinSize();//获得窗口大小
+	auto visibelSize = Director::getInstance()->getVisibleSize();//获得窗口大小
 	this->_sunCellSprite->setPosition(rand()%720+ 250,
 		visibelSize.height + this->_sunCellSprite->getContentSize().height);
 	this->addChild(this->_sunCellSprite);
@@ -36,7 +35,7 @@ void SunCellLayer::initSunCell(float dlt)
 }
 void SunCellLayer::sunCellMoveWay()
 {
-	auto visibelSize = Director::getInstance()->getWinSize();
+	auto visibelSize = Director::getInstance()->getVisibleSize();
 	FiniteTimeAction* sunCellMove1 = MoveTo::create(4.0f, Vec2((this->_sunCellSprite->getPositionX()), (30 + rand() % 250)));
 	FiniteTimeAction* sunCellMove2 = MoveBy::create(5.0f, Vec2(0,0));
 	//FiniteTimeAction* fade = FadeOut::create(0.01f);
@@ -78,7 +77,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 					{
 						node->stopActionByTag(1);
 						
-						FiniteTimeAction* sunCellMove2 = MoveTo::create(0.5f, Vec2(2 * visibelSize.width / 7, 8 * visibelSize.height / 9));
+						FiniteTimeAction* sunCellMove2 = MoveTo::create(0.5f, Vec2(261,513));
 						node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
 
 					}

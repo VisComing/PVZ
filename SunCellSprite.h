@@ -9,6 +9,5 @@ public:
 	SunCellSprite(void);
 	~SunCellSprite(void);
 	virtual bool init();
-	//Sprite* _sunSprite;
 	static Rect getRect(Node*);
 };
