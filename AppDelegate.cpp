@@ -99,7 +99,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = GameScene::createScene();
     // run
     director->runWithScene(scene);
-
     return true;
 }
 

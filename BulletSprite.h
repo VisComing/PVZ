@@ -9,5 +9,4 @@ public:
 	BulletSprite();
 	~BulletSprite();
 	virtual bool init();
-
 };

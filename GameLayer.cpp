@@ -16,21 +16,23 @@ bool GameLayer::init()
 	this->initCardLayer();
 	this->initZombieCardLayer();
 	this->initTouchLayer();
-	this->initZombieLayer();
+	this->initNormalZombieLayer();
 	this->initDollarDisplayerLayer();//初始化金币展示板
 	this->initPeaShooterLayer();
 	this->initSunCellLayer();//阳光下落
 	this->initBulletLayer();//子弹层
+	this->initBoundingLayer();
 	return true;
 }
 
 GameLayer::GameLayer()
 {
 	this->_sunCellLayer = NULL;
-	this->_zombieLayer = NULL;
+	this->_normalZombieLayer = NULL;
 	this->_cardLayer = NULL;
 	this->_touchLayer = NULL;
 	this->_peaShooterLayer = NULL;
+	this->_boundingLayer = NULL;
 }
 
 GameLayer::~GameLayer()
@@ -57,6 +59,8 @@ void GameLayer::update(float dlt)
 	this->_dollarDisplayLayer->_dollarStr = StringUtils::format("%d", this->_dollarDisplayLayer->_dollar);
 	this->_dollarDisplayLayer->_dollarLabel->setString(this->_dollarDisplayLayer->_dollarStr);
 
+	this->_boundingLayer->bulletBoundingZombie();
+
 }
 
 //初始化太阳因子层
@@ -66,10 +70,10 @@ void GameLayer::initSunCellLayer()
 	this->addChild(this->_sunCellLayer);
 }
 
-void GameLayer::initZombieLayer()
+void GameLayer::initNormalZombieLayer()
 {
-	this->_zombieLayer = NormalZombieLayer::create();
-	this->addChild(this->_zombieLayer);
+	this->_normalZombieLayer = NormalZombieLayer::create();
+	this->addChild(this->_normalZombieLayer);
 }
 
 void GameLayer::initCardLayer()
@@ -96,7 +100,7 @@ void GameLayer::initPeaShooterLayer()
 
 int GameLayer::getDistanceFromPlantToZombie(int row)//row为植物在第几行
 {
-	int yPos = this->_zombieLayer->_normalZombieSprite->getPosition().y;
+	int yPos = this->_normalZombieLayer->_normalZombieSprite->getPosition().y;
 	if (yPos / 100 == row)//植物前面有僵尸
 	{
 		//this->_zombieLayer->_normalZombieSprite->getBoundingBox().getMaxX;
@@ -108,4 +112,10 @@ void GameLayer::initBulletLayer()
 {
 	this->_bulletLayer = BulletLayer::create();
 	this->addChild(this->_bulletLayer);
+}
+
+void GameLayer::initBoundingLayer()
+{
+	this->_boundingLayer = BoundingLayer::create();
+	this->addChild(this->_boundingLayer);
 }

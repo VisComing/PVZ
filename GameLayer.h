@@ -9,6 +9,7 @@
 #include "TouchLayer.h"
 #include "PeaShooterLayer.h"
 #include "BulletLayer.h"
+#include "BoundingLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -27,8 +28,8 @@ public:
 	SpriteFrameCache* _cache;
 	MapLayer* _mapLayer;
 	DollarDisplayLayer* _dollarDisplayLayer;
-	NormalZombieLayer* _zombieLayer;
-	void initZombieLayer();
+	NormalZombieLayer* _normalZombieLayer;
+	void initNormalZombieLayer();
 	CardLayer* _cardLayer;
 	void initCardLayer();
 	ZombieCardLayer* _zombieCardLayer;
@@ -43,4 +44,7 @@ public:
 
 	BulletLayer* _bulletLayer;
 	void initBulletLayer();
+
+	BoundingLayer* _boundingLayer;
+	void initBoundingLayer();
 };

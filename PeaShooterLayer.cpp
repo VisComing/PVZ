@@ -82,6 +82,9 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 				this->_peaShooterSprite->setPosition(touch->getLocation());
 				this->addChild(_peaShooterSprite);
 
+				this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
+				this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
+
 				((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_peaShooterSprite->setPosition(x, y);
@@ -89,7 +92,7 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 				this->_peaShooterSprite->_position[1] = y / 100;
 				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
 					= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
-				((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 2.5f);
+				((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 			}
 		}
 		else//位置错误

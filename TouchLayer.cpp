@@ -32,7 +32,7 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 	}
 	if (((GameLayer*)this->getParent())->_zombieCardLayer->_zombieCardSprte->getBoundingBox().containsPoint(touch->getLocation()))
 	{
-		((GameLayer*)this->getParent())->_zombieLayer->initNormalZombieSprite(touch);
+		((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
 	}
 	return true;
 }

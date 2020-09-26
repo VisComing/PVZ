@@ -15,4 +15,6 @@ public:
 	bool _isCreatePeaShooter;
 
 	SpriteFrameCache* _bulletCache;
+
+	Vector<Sprite*> _bulletVector;
 };

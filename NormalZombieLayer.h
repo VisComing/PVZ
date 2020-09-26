@@ -12,4 +12,6 @@ public:
 	NormalZombieSprite* _normalZombieSprite;
 	void initNormalZombieSprite(Touch* touch);//初始化僵尸
 	void normalZombieMoveWay();//僵尸移动路线
+	FiniteTimeAction* noHeadNormalZombieMoveWay();
+	Vector<NormalZombieSprite*> _normalZombieVector;
 };
