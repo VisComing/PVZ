@@ -3,10 +3,12 @@
 #include "MapLayer.h"
 #include "DollarDisplayLayer.h"
 #include "SunCellLayer.h"
-#include "ZombieLayer.h"
+#include "NormalZombieLayer.h"
 #include "CardLayer.h"
+#include "ZombieCardLayer.h"
 #include "TouchLayer.h"
 #include "PeaShooterLayer.h"
+#include "BulletLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -25,13 +27,20 @@ public:
 	SpriteFrameCache* _cache;
 	MapLayer* _mapLayer;
 	DollarDisplayLayer* _dollarDisplayLayer;
-	ZombieLayer* _zombieLayer;
+	NormalZombieLayer* _zombieLayer;
 	void initZombieLayer();
 	CardLayer* _cardLayer;
 	void initCardLayer();
+	ZombieCardLayer* _zombieCardLayer;
+	void initZombieCardLayer();
 	TouchLayer* _touchLayer;
 	void initTouchLayer();
 	//PeaShooterLayer* _peaShooterLayer;
 	void initPeaShooterLayer();
 	PeaShooterLayer* _peaShooterLayer;
+
+	int getDistanceFromPlantToZombie(int row);//获得这一排，植物和僵尸的距离，若前面没有僵尸，则距离为无限大
+
+	BulletLayer* _bulletLayer;
+	void initBulletLayer();
 };

@@ -11,6 +11,8 @@ public:
 	virtual bool init();
 
 	bool onTouchBegan(Touch*, Event*);
-	bool onMouseMove(Event*);
-	bool _isPeaShooter;
+	//void onTouchEnded(Touch*, Event*);
+	bool _isCreatePeaShooter;
+
+	SpriteFrameCache* _bulletCache;
 };

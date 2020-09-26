@@ -12,14 +12,14 @@ NormalZombieSprite::~NormalZombieSprite()
 
 bool NormalZombieSprite::init()
 {
-	if (!Sprite::init())	return false;
-	auto cache = SpriteFrameCache::getInstance();
-	cache->addSpriteFramesWithFile("res/zombie.plist");
-	Sprite::createWithSpriteFrameName("Zombie_1.png");
+	if (!ZombieBaseClass::initWithSpriteFrameName("Zombie_1.png"))
+	{
+		return false;
+	}
 	Vector<SpriteFrame*> images;
 	for (int i = 1; i <= 22; i++)
 	{
-		images.pushBack(cache->getSpriteFrameByName(StringUtils::format("Zombie_%d.png", i)));
+		images.pushBack(_normalZombieCache->getSpriteFrameByName(StringUtils::format("Zombie_%d.png", i)));
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 22);
 	this->runAction(RepeatForever::create(Animate::create(_animation)));

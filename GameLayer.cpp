@@ -12,13 +12,15 @@ bool GameLayer::init()
 
 	scheduleUpdate();//监听一切活动/变化
 	
-	this->initZombieLayer();
-	this->initCardLayer();
-	this->initTouchLayer();
 	
+	this->initCardLayer();
+	this->initZombieCardLayer();
+	this->initTouchLayer();
+	this->initZombieLayer();
 	this->initDollarDisplayerLayer();//初始化金币展示板
-	this->initSunCellLayer();//阳光下落
 	this->initPeaShooterLayer();
+	this->initSunCellLayer();//阳光下落
+	this->initBulletLayer();//子弹层
 	return true;
 }
 
@@ -66,7 +68,7 @@ void GameLayer::initSunCellLayer()
 
 void GameLayer::initZombieLayer()
 {
-	this->_zombieLayer = ZombieLayer::create();
+	this->_zombieLayer = NormalZombieLayer::create();
 	this->addChild(this->_zombieLayer);
 }
 
@@ -74,6 +76,11 @@ void GameLayer::initCardLayer()
 {
 	this->_cardLayer = CardLayer::create();
 	this->addChild(this->_cardLayer);
+}
+void GameLayer::initZombieCardLayer()
+{
+	this->_zombieCardLayer = ZombieCardLayer::create();
+	this->addChild(this->_zombieCardLayer);
 }
 void GameLayer::initTouchLayer()
 {
@@ -85,4 +92,20 @@ void GameLayer::initPeaShooterLayer()
 {
 	this->_peaShooterLayer = PeaShooterLayer::create();
 	this->addChild(this->_peaShooterLayer);
+}
+
+int GameLayer::getDistanceFromPlantToZombie(int row)//row为植物在第几行
+{
+	int yPos = this->_zombieLayer->_normalZombieSprite->getPosition().y;
+	if (yPos / 100 == row)//植物前面有僵尸
+	{
+		//this->_zombieLayer->_normalZombieSprite->getBoundingBox().getMaxX;
+	}
+	return 0;
+}
+
+void GameLayer::initBulletLayer()
+{
+	this->_bulletLayer = BulletLayer::create();
+	this->addChild(this->_bulletLayer);
 }
