@@ -15,7 +15,7 @@ public:
 	PeaShooterSprite* _peaShooterSprite;
 	void initPeaShooterSprite(Touch*);//初始化豌豆射手，，出一个触摸点给它
 
-	Vector<Sprite*> _peaShooterVector;
+	Vector<PeaShooterSprite*> _peaShooterVector;
 
 	vector<int> _peaShooterTime;//该射手已经被种下的时间，每隔0.1秒加一
 };

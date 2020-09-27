@@ -53,13 +53,13 @@ void GameLayer::initDollarDisplayerLayer()
 	this->addChild(this->_dollarDisplayLayer);
 }
 
-void GameLayer::update(float dlt)
+void GameLayer::update(float dlt)//每一帧都会执行一次
 {
 	//监听金币变化
 	this->_dollarDisplayLayer->_dollarStr = StringUtils::format("%d", this->_dollarDisplayLayer->_dollar);
 	this->_dollarDisplayLayer->_dollarLabel->setString(this->_dollarDisplayLayer->_dollarStr);
 
-	this->_boundingLayer->bulletBoundingZombie();
+	this->_boundingLayer->bulletBoundingZombie();//子弹碰撞僵尸，对僵尸造成伤害
 
 }
 

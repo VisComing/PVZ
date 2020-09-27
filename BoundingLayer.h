@@ -9,5 +9,6 @@ public:
 	BoundingLayer();
 	~BoundingLayer();
 	virtual bool init();
-	void bulletBoundingZombie();
+	void bulletBoundingZombie();//×Óµ¯Åö×²½©Ê¬
+	void zombieEatPlant();//½©Ê¬¹¥»÷Ö²Îï
 };

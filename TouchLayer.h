@@ -14,7 +14,7 @@ public:
 	//void onTouchEnded(Touch*, Event*);
 	bool _isCreatePeaShooter;
 
-	SpriteFrameCache* _bulletCache;
+	//SpriteFrameCache* _bulletCache;
 
-	Vector<Sprite*> _bulletVector;
+	//Vector<Sprite*> _bulletVector;
 };

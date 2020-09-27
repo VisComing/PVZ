@@ -35,8 +35,8 @@ void BulletLayer::initBulletSprite(float dlt)
 				if (((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterTime[i] == 25)
 				{
 					this->_bulletSprite = BulletSprite::create();
-					((GameLayer*)this->getParent())->_touchLayer->addChild(this->_bulletSprite);
-					((GameLayer*)this->getParent())->_touchLayer->_bulletVector.pushBack(this->_bulletSprite);//将子弹添加到子弹数组中
+					this->addChild(this->_bulletSprite);
+					this->_bulletVector.pushBack(this->_bulletSprite);//将子弹添加到子弹数组中
 					this->_bulletSprite->setPosition(peaShooter->getPositionX(), peaShooter->getPositionY() + 10);
 					this->bulletMoveWay();
 
@@ -62,9 +62,9 @@ void BulletLayer::bulletMoveWay()
 void BulletLayer::removeBullet(Node* pSend)
 {
 	Sprite* sprite = (Sprite*)pSend;
-	if (((GameLayer*)this->getParent())->_touchLayer->_bulletVector.contains(sprite))
+	if (this->_bulletVector.contains(sprite))
 	{
-		((GameLayer*)this->getParent())->_touchLayer->_bulletVector.eraseObject(sprite);
-		((GameLayer*)this->getParent())->_touchLayer->removeChild(sprite);
+		this->_bulletVector.eraseObject(sprite);
+		this->removeChild(sprite);
 	}
 }

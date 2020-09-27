@@ -25,11 +25,11 @@ void BoundingLayer::bulletBoundingZombie()
 {
 	Vector<Sprite*> bulletRemove;
 	Vector<NormalZombieSprite*> zombieRemove;
-	for (auto peaBullet : ((GameLayer*)this->getParent())->_touchLayer->_bulletVector)//遍历所有子弹
+	for (auto peaBullet : ((GameLayer*)this->getParent())->_bulletLayer->_bulletVector)//遍历所有子弹
 	{		
 		for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
 		{
-			if (peaBullet->boundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果子弹和僵尸碰撞
+			if (peaBullet->getBoundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果子弹和僵尸碰撞
 			{
 				bulletRemove.pushBack(peaBullet);//待删除该子弹
 				peaBullet->removeFromParent();//将子弹删除
@@ -75,12 +75,19 @@ void BoundingLayer::bulletBoundingZombie()
 	{
 		//bullet->stopAllActions();//停止所有动作
 		//bullet->runAction(Sequence::create(((GameLayer*)this->getParent())->_bulletLayer->_bulletSprite->_bulletBroken, CallFuncN::create(((GameLayer*)this->getParent())->_bulletLayer, callfuncN_selector(BulletLayer::removeBullet)), NULL));
-		((GameLayer*)this->getParent())->_touchLayer->_bulletVector.eraseObject(bullet);
+		((GameLayer*)this->getParent())->_bulletLayer->_bulletVector.eraseObject(bullet);
 		
 	}
 	for (auto zombie : zombieRemove)
 	{
 		((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector.eraseObject(zombie);
-
 	}
+}
+
+void BoundingLayer::zombieEatPlant()
+{
+	//Vector<PeaShooterSprite*> peaShooterRemove;
+	//for (auto peaBullet : ((GameLayer*)this->getParent())->_bulletLayer->_bulletVector)//遍历所有
+	//{
+	//	for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
 }
