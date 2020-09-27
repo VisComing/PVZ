@@ -85,6 +85,6 @@ void NormalZombieLayer::normalZombieMoveWay()
 FiniteTimeAction* NormalZombieLayer::noHeadNormalZombieMoveWay()
 {
 	FiniteTimeAction* normalZombieMove = MoveTo::create(15, Vec2(0, this->_normalZombieSprite->getPositionY()));
-	this->_normalZombieSprite->runAction(normalZombieMove);
+	//this->_normalZombieSprite->runAction(normalZombieMove);
 	return normalZombieMove;
 }

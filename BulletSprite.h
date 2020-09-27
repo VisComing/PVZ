@@ -9,4 +9,5 @@ public:
 	BulletSprite();
 	~BulletSprite();
 	virtual bool init();
+	FiniteTimeAction* _bulletBroken;
 };
