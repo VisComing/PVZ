@@ -25,7 +25,7 @@ bool TouchLayer::init()
 
 bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 {
-	if (((GameLayer*)this->getParent())->_cardLayer->_cardSprte->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+	if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("peaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 	{
 		//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
 			((GameLayer*)this->getParent())->_peaShooterLayer->initPeaShooterSprite(touch);
@@ -33,6 +33,11 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 	if (((GameLayer*)this->getParent())->_zombieCardLayer->_zombieCardSprte->getBoundingBox().containsPoint(touch->getLocation()))
 	{
 		((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
+	}
+	if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("potatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+	{
+		//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
+		((GameLayer*)this->getParent())->_potatoMineLayer->initPeaShooterSprite(touch);
 	}
 	return true;
 }

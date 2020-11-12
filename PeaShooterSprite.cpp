@@ -11,7 +11,7 @@ PeaShooterSprite::~PeaShooterSprite()
 
 bool PeaShooterSprite::init()
 {
-	if (!PlantBaseClass::initWithSpriteFrameName("Peashooter_1.png"))
+	if (!PlantBaseClass::init())
 	{
 		return false;
 	}

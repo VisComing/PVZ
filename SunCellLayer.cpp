@@ -69,7 +69,6 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 			{
 				Vec2 point = touch->getLocation();
 				auto visibelSize = Director::getInstance()->getWinSize();
-				log("allChildren%d", this->getChildrenCount());
 				for (auto node : this->getChildren())
 				{
 					

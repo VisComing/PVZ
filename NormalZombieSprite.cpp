@@ -3,7 +3,7 @@
 NormalZombieSprite::NormalZombieSprite()
 {
 	this->_hp = 100;
-
+	attacting = false;
 }
 NormalZombieSprite::~NormalZombieSprite()
 {
@@ -28,11 +28,11 @@ bool NormalZombieSprite::init()
 
 Rect NormalZombieSprite::NormalZombieBounding()
 {
-	Rect originRect = this->boundingBox();
+	Rect originRect = this->getBoundingBox();
 	this->_normalZombieRect.origin.x = originRect.origin.x + 90;
 	this->_normalZombieRect.origin.y = originRect.origin.y;
 	this->_normalZombieRect.size.width = originRect.size.width - 90;
-	this->_normalZombieRect.size.height = originRect.size.height;
+	this->_normalZombieRect.size.height = originRect.size.height - 90;
 	return this->_normalZombieRect;
 }
 
@@ -72,4 +72,30 @@ FiniteTimeAction* NormalZombieSprite::downTheGround()//½©Ê¬µ¹µØ
 	this->_downAction = Animate::create(downAnimation);
 
 	return this->_downAction;
+}
+
+FiniteTimeAction * NormalZombieSprite::explodAction()
+{
+	Vector<SpriteFrame*> images;
+	for (int i = 1; i <= 20; i++)
+	{
+		images.pushBack(_boomDie1->getSpriteFrameByName(StringUtils::format("BoomDie1_%d.png", i)));
+	}
+	Animation* downAnimation = Animation::createWithSpriteFrames(images, 0.1f);
+	this->_explodAction = Animate::create(downAnimation);
+
+	return this->_explodAction;
+}
+
+RepeatForever * NormalZombieSprite::attackAnimation()
+{
+	Vector<SpriteFrame*> images;
+	for (int i = 1; i <= 21; i++)
+	{
+		images.pushBack(_boomDie1->getSpriteFrameByName(StringUtils::format("ZombieAttack_%d.png", i)));
+	}
+	Animation* _animation = Animation::createWithSpriteFrames(images, 0.1f);
+	this->_attackAction = RepeatForever::create(Animate::create(_animation));
+	_attackAction->setTag(2368);
+	return this->_attackAction;
 }

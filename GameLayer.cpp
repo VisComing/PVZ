@@ -19,6 +19,7 @@ bool GameLayer::init()
 	this->initNormalZombieLayer();
 	this->initDollarDisplayerLayer();//初始化金币展示板
 	this->initPeaShooterLayer();
+	this->initPotatoMineLayer();//土豆地雷层
 	this->initSunCellLayer();//阳光下落
 	this->initBulletLayer();//子弹层
 	this->initBoundingLayer();
@@ -60,7 +61,7 @@ void GameLayer::update(float dlt)//每一帧都会执行一次
 	this->_dollarDisplayLayer->_dollarLabel->setString(this->_dollarDisplayLayer->_dollarStr);
 
 	this->_boundingLayer->bulletBoundingZombie();//子弹碰撞僵尸，对僵尸造成伤害
-
+	this->_boundingLayer->zombieEatPlant();//僵尸吃植物
 }
 
 //初始化太阳因子层
@@ -118,4 +119,10 @@ void GameLayer::initBoundingLayer()
 {
 	this->_boundingLayer = BoundingLayer::create();
 	this->addChild(this->_boundingLayer);
+}
+
+void GameLayer::initPotatoMineLayer()
+{
+	this->_potatoMineLayer = PotatoMineLayer::create();
+	this->addChild(this->_potatoMineLayer);
 }

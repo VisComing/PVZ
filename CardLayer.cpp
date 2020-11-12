@@ -26,10 +26,15 @@ bool CardLayer::init()
 
 void CardLayer::initCardSprite()
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	this->_cardSprte = CardSprite::create();
-	this->_cardSprte->setPosition(Vec2(325, 557));
-	this->addChild(_cardSprte);
+	auto peaShooterCard = Sprite::create("res/Peashooter.png");
+	peaShooterCard->setPosition(Vec2(325, 557));
+	peaShooterCard->setName("peaShooterCard");
+	this->addChild(peaShooterCard);
+	
+	auto potatoMineCard = Sprite::create("res/PotatoMineCard.png");
+	potatoMineCard->setPosition(Vec2(325 + 50, 557));
+	potatoMineCard->setName("potatoMineCard");
+	this->addChild(potatoMineCard);
 	
 	
 
