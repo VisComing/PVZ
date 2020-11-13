@@ -44,19 +44,19 @@ void BoundingLayer::bulletBoundingZombie()
 				
 				//normalZombie->runAction(Blink::create(0.07f, 1));
 
-				if (normalZombie->_hp == 25)//此时僵尸头掉了
-				{
-					normalZombie->stopAllActions();
-					
-					/*normalZombie->runAction(Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
-						->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
-						->_normalZombieSprite->headAnimation(),((GameLayer*)this->getParent())->_normalZombieLayer
-							->noHeadNormalZombieMoveWay(), NULL));*/
-					normalZombie->runAction(Sequence::create(((GameLayer*)this->getParent())->
-						_normalZombieLayer->_normalZombieSprite->headAnimation(), Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
-						->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
-						->noHeadNormalZombieMoveWay(), NULL),NULL));
-				}
+				//if (normalZombie->_hp == 25)//此时僵尸头掉了
+				//{
+				//	normalZombie->stopAllActions();
+				//	
+				//	/*normalZombie->runAction(Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
+				//		->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
+				//		->_normalZombieSprite->headAnimation(),((GameLayer*)this->getParent())->_normalZombieLayer
+				//			->noHeadNormalZombieMoveWay(), NULL));*/
+				//	normalZombie->runAction(Sequence::create(((GameLayer*)this->getParent())->
+				//		_normalZombieLayer->_normalZombieSprite->headAnimation(), Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
+				//		->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
+				//		->noHeadNormalZombieMoveWay(), NULL),NULL));
+				//}
 
 				if (normalZombie->_hp <= 0)
 				{
@@ -75,7 +75,7 @@ void BoundingLayer::bulletBoundingZombie()
 	set<NormalZombieSprite*> normalZombieBoomDied;//被炸死的僵尸
 	for (auto potatoMine : ((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector)//遍历所有的土豆地雷
 	{
-		if (potatoMine->_potatoMineTime == 6)
+		if (potatoMine->_potatoMineTime == potatoMine->_potatoMineGrowTime + 1)
 		{
 			for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
 			{
@@ -143,23 +143,44 @@ void BoundingLayer::bulletBoundingZombie()
 //Map<NormalZombieSprite*, PeaShooterSprite*> zombieAttackPeaShooter;
 void BoundingLayer::zombieEatPlant()
 {
-	//for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
-	//{
-	//	for (auto potatoMine : ((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector)
-	//	{
-	//		if (potatoMine->_potatoMineTime != 6)
-	//		{
-	//			if (potatoMine->getBoundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果土豆地雷和僵尸碰撞
-	//			{
-	//				if (!normalZombie->getActionByTag(2368))
-	//				{
-	//					normalZombie->stopAllActions();
-	//					normalZombie->runAction(RepeatForever::create(normalZombie->attackAnimation()));
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+	for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
+	{
+		for (auto potatoMine : ((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector)
+		{
+			if (potatoMine->_potatoMineTime != potatoMine->_potatoMineGrowTime + 1)
+			{
+				if (potatoMine->getBoundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果土豆地雷和僵尸碰撞
+				{
+					if (normalZombie->numberOfRunningActions() != 1)
+					{
+						zombieAttackPotatoMine.insert(normalZombie, potatoMine);
+						normalZombie->stopAllActions();
+						normalZombie->runAction(RepeatForever::create(normalZombie->attackAnimation()));
+					}
+				}
+			}
+		}
+	}
+	for (auto iter = zombieAttackPotatoMine.begin(); iter != zombieAttackPotatoMine.end();)
+	{
+		auto x = *iter;
+		auto zombie = x.first;
+		auto potatoMine = x.second;
+		potatoMine->_plantHP -= 1;
+		if (potatoMine->_plantHP <= 0)
+		{
+			zombie->stopAllActions();
+			zombie->runAction(RepeatForever::create(zombie->walkAnimation()));
+			zombie->runAction(zombie->normalZombieMoveWay());
+			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[potatoMine->_position[0]][potatoMine->_position[1]] = false;
+			potatoMine->removeFromParent();
+			((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector.eraseObject(potatoMine);
+			zombieAttackPotatoMine.erase(iter++);
+		}
+		else iter++;
+	}
+
+
 	set<NormalZombieSprite*> zombieAttackPeaShooterRemove;
 	for (auto x : this->zombieAttackPeaShooter)
 	{
@@ -240,32 +261,46 @@ void BoundingLayer::zombieEatPlant()
 	
 	for (auto peaShooter : peaShooterRemove)
 	{
-		
 		//log("peaShooter has been erased!");
 		((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector.eraseObject(peaShooter);
 	}
 }
 
-void BoundingLayer::zombieEatPlant(ZombieBaseClass * zombieBase, PlantBaseClass * plantBase)
+void BoundingLayer::zombieEatPlantT()
 {
-	set<PeaShooterSprite*> peaShooterRemove;//待移除的豌豆射手
-
-	for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
+	for (auto zombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
 	{
-		if (this->zombieAttackPeaShooter.find(normalZombie) == this->zombieAttackPeaShooter.end())
-		{
-			for (auto peaShooter : ((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector)//遍历所有豌豆射手
+			for (auto plant : ((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector)//遍历所有豌豆射手
 			{
-				if (peaShooter->getBoundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果相交
+				if (plant->getBoundingBox().intersectsRect(zombie->NormalZombieBounding()))//如果相交
 				{
+					
 					//僵尸攻击植物
-					if (!normalZombie->getActionByTag(2368))
+					if (zombie->numberOfRunningActions() != 1)
 					{
-						normalZombie->stopAllActions();
-						normalZombie->runAction(RepeatForever::create(normalZombie->attackAnimation()));
+						zombieAttackPlant.insert(zombie, plant);
+						zombie->stopAllActions();
+						zombie->runAction(RepeatForever::create(zombie->attackAnimation()));
 					}
 				}
 			}
+	}
+	for (auto iter = zombieAttackPlant.begin(); iter != zombieAttackPlant.end();)
+	{
+		auto x = *iter;
+		auto zombie = x.first;
+		auto plant = x.second;
+		plant->_plantHP -= 1;
+		if (plant->_plantHP <= 0)
+		{
+			zombie->stopAllActions();
+			zombie->runAction(RepeatForever::create(zombie->walkAnimation()));
+			zombie->runAction(zombie->normalZombieMoveWay());
+			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[plant->_position[0]][plant->_position[1]] = false;
+			plant->removeFromParent();
+			//((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector.eraseObject(plant);
+			zombieAttackPlant.erase(iter++);
 		}
+		else iter++;
 	}
 }

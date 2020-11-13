@@ -13,4 +13,5 @@ public:
 	Action* _potatoMineGrow;
 	Vector<SpriteFrame*> images;
 	int _potatoMineTime;
+	const int _potatoMineGrowTime = 10;
 };

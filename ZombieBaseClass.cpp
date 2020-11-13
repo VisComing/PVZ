@@ -16,3 +16,13 @@ bool ZombieBaseClass::init()
 
 	return true;
 }
+
+Action * ZombieBaseClass::normalZombieMoveWay()
+{
+	return nullptr;
+}
+
+RepeatForever * ZombieBaseClass::walkAnimation()
+{
+	return nullptr;
+}

@@ -38,7 +38,7 @@ void PotatoMineLayer::initPeaShooterSprite(Touch *touch)
 	lis->onMouseUp = [=](EventMouse* e) {
 		this->removeChild(_potatoMineStatic);
 
-		//判断种豌豆射手位置是否合法
+		//判断种下位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
 		if (((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y))
@@ -54,7 +54,7 @@ void PotatoMineLayer::initPeaShooterSprite(Touch *touch)
 				this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
 				this->_potatoMineSprite->_position[1] = y / 100;
 				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-					= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 80;//每产生一个土豆地雷消耗80金币
+					= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗80金币
 				//((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 				this->schedule(schedule_selector(PotatoMineLayer::grow),1.0f);
 		}
@@ -68,14 +68,14 @@ void PotatoMineLayer::grow(float dlt)
 {
 	for (auto potatoMine : _potatoMineVector)
 	{
-		if(potatoMine->_potatoMineTime < 5)
+		if(potatoMine->_potatoMineTime < potatoMine->_potatoMineGrowTime)
 			potatoMine->_potatoMineTime += 1;
 		
-		if (potatoMine->_potatoMineTime == 5)
+		if (potatoMine->_potatoMineTime == potatoMine->_potatoMineGrowTime)
 		{
 			//potatoMine->runAction(potatoMine->_potatoMineGrow);
 			potatoMine->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(potatoMine->images, 1.f / 8))));
-			potatoMine->_potatoMineTime += 1;//以后时间将不会改变，一直保持6秒
+			potatoMine->_potatoMineTime += 1;//以后时间将不会改变，一直保持potatoMine->_potatoMineGrowTime + 1秒
 		}
 	}
 }

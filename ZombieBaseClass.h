@@ -9,6 +9,8 @@ public:
 	ZombieBaseClass();
 	~ZombieBaseClass();
 	virtual bool init();
+	virtual Action* normalZombieMoveWay();//僵尸向前移动
+	virtual RepeatForever* walkAnimation();//僵尸行走动画
 	SpriteFrameCache* _normalZombieCache;
 	SpriteFrameCache* _boomDie1;
 	int _hp;
