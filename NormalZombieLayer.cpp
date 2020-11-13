@@ -76,9 +76,9 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
 }
 
-void NormalZombieLayer::normalZombieMoveWay()
+void NormalZombieLayer::normalZombieMoveWay()//在此修改僵尸移速
 {
-	Action* normalZombieMove = MoveTo::create(30, Vec2(0, this->_normalZombieSprite->getPositionY()));
+	Action* normalZombieMove = MoveTo::create(this->_normalZombieSprite->getPositionX() / 40, Vec2(0, this->_normalZombieSprite->getPositionY()));
 	this->_normalZombieSprite->runAction(normalZombieMove);
 }
 

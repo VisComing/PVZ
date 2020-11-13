@@ -13,7 +13,8 @@ public:
 	Rect NormalZombieBounding();//重置僵尸的boundingBox
 	Rect _normalZombieRect;//重置后的
 	bool attacting;
-	FiniteTimeAction* _walkAction;
+	RepeatForever* _walkAction;
+	RepeatForever* walkAnimation();//僵尸行走动画
 	FiniteTimeAction* _headAction;//头落地的动画
 	FiniteTimeAction* _noHeadAction;
 	FiniteTimeAction* headAnimation();
@@ -24,4 +25,6 @@ public:
 	FiniteTimeAction* _explodAction;
 	RepeatForever* attackAnimation();//吃植物动画
 	RepeatForever* _attackAction;
+	Action* normalZombieMoveWay();//僵尸向前移动
+	Action* _moveWayAction;
 };

@@ -31,9 +31,22 @@ Rect NormalZombieSprite::NormalZombieBounding()
 	Rect originRect = this->getBoundingBox();
 	this->_normalZombieRect.origin.x = originRect.origin.x + 90;
 	this->_normalZombieRect.origin.y = originRect.origin.y;
-	this->_normalZombieRect.size.width = originRect.size.width - 90;
-	this->_normalZombieRect.size.height = originRect.size.height - 90;
+	this->_normalZombieRect.size.width = originRect.size.width - 180;
+	this->_normalZombieRect.size.height = originRect.size.height - 45;
 	return this->_normalZombieRect;
+}
+
+RepeatForever * NormalZombieSprite::walkAnimation()
+{
+
+	Vector<SpriteFrame*> images;
+	for (int i = 1; i <= 22; i++)
+	{
+		images.pushBack(_normalZombieCache->getSpriteFrameByName(StringUtils::format("Zombie_%d.png", i)));
+	}
+	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 22);
+	this->_walkAction = RepeatForever::create(Animate::create(_animation));
+	return this->_walkAction;
 }
 
 FiniteTimeAction* NormalZombieSprite::headAnimation()
@@ -98,4 +111,10 @@ RepeatForever * NormalZombieSprite::attackAnimation()
 	this->_attackAction = RepeatForever::create(Animate::create(_animation));
 	_attackAction->setTag(2368);
 	return this->_attackAction;
+}
+
+Action * NormalZombieSprite::normalZombieMoveWay()//在此修改僵尸移速
+{
+	_moveWayAction = MoveTo::create(this->getPositionX() / 40,  Vec2(0, this->getPositionY()));
+	return _moveWayAction;
 }

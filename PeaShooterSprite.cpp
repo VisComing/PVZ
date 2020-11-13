@@ -2,7 +2,7 @@
 
 PeaShooterSprite::PeaShooterSprite()
 {
-	this->_plantHP = 100;
+	this->_plantHP = 300;
 }
 
 PeaShooterSprite::~PeaShooterSprite()
