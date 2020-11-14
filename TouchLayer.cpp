@@ -27,7 +27,7 @@ bool TouchLayer::init()
 bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	//我是植物方
-	if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_plantOrZombie == "Plant")
+	if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_iAmPlantSide == true)
 	{
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("peaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{

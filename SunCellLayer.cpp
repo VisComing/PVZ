@@ -1,6 +1,6 @@
 #include "SunCellLayer.h"
 #include "GameLayer.h"
-
+#include "GameScene.h"
 SunCellLayer::SunCellLayer()
 {
 	this->_sunCellSprite = NULL;
@@ -28,8 +28,17 @@ void SunCellLayer::initSunCell(float dlt)
 {
 	this->_sunCellSprite = SunCellSprite::create();//创建一个太阳精灵
 	auto visibelSize = Director::getInstance()->getVisibleSize();//获得窗口大小
-	this->_sunCellSprite->setPosition(rand()%720+ 250,
-		visibelSize.height + this->_sunCellSprite->getContentSize().height);
+
+	if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_iAmPlantSide == true)
+	{
+		this->_sunCellSprite->setPosition(rand() % 720 + 250,
+			visibelSize.height + this->_sunCellSprite->getContentSize().height);
+	}
+	else
+	{
+		this->_sunCellSprite->setPosition(rand() % 720 + 500,
+			visibelSize.height + this->_sunCellSprite->getContentSize().height);
+	}
 	this->addChild(this->_sunCellSprite);
 	this->sunCellMoveWay();
 }
@@ -75,8 +84,17 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 					if (SunCellSprite::getRect(node).containsPoint(point))
 					{
 						node->stopActionByTag(1);
-						
-						FiniteTimeAction* sunCellMove2 = MoveTo::create(0.5f, Vec2(261,513));
+						FiniteTimeAction* sunCellMove2;
+						if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_iAmPlantSide == true)
+						{
+							//植物卡阳光处
+							sunCellMove2 = MoveTo::create(0.5f, Vec2(261, 513));
+						}
+						else
+						{
+							//僵尸卡阳关处
+							sunCellMove2 = MoveTo::create(0.5f, Vec2(1359, 525));
+						}
 						node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
 
 					}
