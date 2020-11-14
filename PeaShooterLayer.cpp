@@ -1,6 +1,7 @@
 #include "PeaShooterLayer.h"
 #include "GameLayer.h"
 #include "MapLayer.h"
+extern Vector<PlantBaseClass*> _plantVector;
 PeaShooterLayer::PeaShooterLayer()
 {
 	this->_peaShooterSprite = NULL;
@@ -47,6 +48,8 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 				this->addChild(_peaShooterSprite);
 
 				this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
+				_plantVector.pushBack(this->_peaShooterSprite);
+				
 				this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
 				//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;

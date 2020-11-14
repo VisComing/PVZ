@@ -16,7 +16,7 @@ bool NormalZombieLayer::init()
 	{
 		return false;
 	}
-
+	scheduleUpdate();
 	return true;
 }
 
@@ -89,4 +89,42 @@ FiniteTimeAction* NormalZombieLayer::noHeadNormalZombieMoveWay()
 	FiniteTimeAction* normalZombieMove = MoveTo::create(15, Vec2(0, this->_normalZombieSprite->getPositionY()));
 	//this->_normalZombieSprite->runAction(normalZombieMove);
 	return normalZombieMove;
+}
+
+void NormalZombieLayer::diedNormalZombie()
+{
+	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end();)
+	{
+		if ((*i)->_hp <= 0)
+		{
+			//从全部僵尸数组中将其删除
+			for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
+			{
+				if ((*i) == (*j))
+				{
+					_zombieVector.erase(j);
+					break;
+				}
+			}
+			(*i)->stopAllActions();
+			auto tmp = *i;
+			//原来是序列的问题，先执行动作，然后执行lamida表达式，执行到lamida时里面的i已经被删除了
+			//2020/11/15凌晨
+			(*i)->runAction(Sequence::createWithTwoActions(this->_normalZombieSprite
+				->downTheGround(), CallFunc::create([tmp]() {
+					(tmp)->removeFromParent();//将僵尸删除
+				})));
+			//注意，下一行要放在该循环的所有操作后，如果在之前删除了，那么接下来还要使用它的怎么办呢
+			i = _normalZombieVector.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+void NormalZombieLayer::update(float dt)
+{
+	this->diedNormalZombie();
 }

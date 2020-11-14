@@ -14,6 +14,8 @@ public:
 	void initBulletSprite(float dlt);
 	void bulletMoveWay();
 	void removeBullet(Node*);
-
+	
 	Vector<Sprite*> _bulletVector;
+	void bulletAttackZombie();
+	virtual void update(float dt);
 };

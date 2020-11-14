@@ -1,6 +1,6 @@
 #include "PotatoMineLayer.h"
 #include "GameLayer.h"
-
+extern Vector<PlantBaseClass*> _plantVector;
 PotatoMineLayer::PotatoMineLayer()
 {
 	this->_potatoMineSprite = NULL;
@@ -48,6 +48,7 @@ void PotatoMineLayer::initPeaShooterSprite(Touch *touch)
 				this->addChild(_potatoMineSprite);
 
 				this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
+				_plantVector.pushBack(this->_potatoMineSprite);
 
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_potatoMineSprite->setPosition(x, y);//设置位置

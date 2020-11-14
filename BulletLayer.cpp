@@ -1,7 +1,7 @@
 #include "BulletLayer.h"
 #include "GameLayer.h"
 #include "TouchLayer.h"
-
+extern Vector<ZombieBaseClass*> _zombieVector;
 BulletLayer::BulletLayer()
 {
 	this->_bulletSprite = NULL;
@@ -17,7 +17,7 @@ bool BulletLayer::init()
 	{
 		return false;
 	}
-
+	scheduleUpdate();
 	return true;
 }
 void BulletLayer::initBulletSprite(float dlt)
@@ -67,4 +67,32 @@ void BulletLayer::removeBullet(Node* pSend)
 		this->_bulletVector.eraseObject(sprite);
 		this->removeChild(sprite);
 	}
+}
+
+void BulletLayer::bulletAttackZombie()
+{
+	for (auto i = this->_bulletVector.begin(); i != this->_bulletVector.end();)
+	{
+		bool _iFlag = false;
+		for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
+		{
+			if ((*i)->getBoundingBox().intersectsRect((*j)->getBoundingBox()))
+			{
+				_iFlag = true;
+				(*i)->removeFromParent();//½«×Óµ¯É¾³ý
+				i = _bulletVector.erase(i);//É¾³ý×Óµ¯
+				
+				(*j)->_hp -= 15;//½©Ê¬¿ÛÑª
+			}
+			j++;
+			break;
+		}
+		if (_iFlag == false)
+			i++;
+	}
+}
+
+void BulletLayer::update(float dt)
+{
+	this->bulletAttackZombie();
 }

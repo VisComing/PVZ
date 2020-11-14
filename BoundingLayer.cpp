@@ -2,6 +2,7 @@
 #include "GameLayer.h"
 #include <utility>
 extern Vector<ZombieBaseClass*>_zombieVector;
+extern Vector<PlantBaseClass*> _plantVector;
 BoundingLayer::BoundingLayer()
 {
 
@@ -27,52 +28,52 @@ void BoundingLayer::bulletBoundingZombie()
 	Vector<Sprite*> bulletRemove;
 	Vector<NormalZombieSprite*> zombieRemove;
 	Vector<PotatoMineSprite*> potatoMineRemove;//将要删除的土豆地雷精灵
-	for (auto peaBullet : ((GameLayer*)this->getParent())->_bulletLayer->_bulletVector)//遍历所有子弹
-	{		
-		for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
-		{
-			if (peaBullet->getBoundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果子弹和僵尸碰撞
-			{
-				bulletRemove.pushBack(peaBullet);//待删除该子弹
-				peaBullet->removeFromParent();//将子弹删除
-				//peaBullet->runAction(Sequence::createWithTwoActions(((GameLayer*)this->getParent())->_bulletLayer->_bulletSprite->_bulletBroken,
-				//	CallFunc::create([peaBullet]() {
-				//		peaBullet->removeFromParent();//将子弹删除
-				//		})
-				//));
+	//for (auto peaBullet : ((GameLayer*)this->getParent())->_bulletLayer->_bulletVector)//遍历所有子弹
+	//{		
+	//	for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)//遍历所有僵尸
+	//	{
+	//		if (peaBullet->getBoundingBox().intersectsRect(normalZombie->NormalZombieBounding()))//如果子弹和僵尸碰撞
+	//		{
+	//			bulletRemove.pushBack(peaBullet);//待删除该子弹
+	//			peaBullet->removeFromParent();//将子弹删除
+	//			//peaBullet->runAction(Sequence::createWithTwoActions(((GameLayer*)this->getParent())->_bulletLayer->_bulletSprite->_bulletBroken,
+	//			//	CallFunc::create([peaBullet]() {
+	//			//		peaBullet->removeFromParent();//将子弹删除
+	//			//		})
+	//			//));
 
-				normalZombie->_hp -= 15;//僵尸扣血
-				
-				//normalZombie->runAction(Blink::create(0.07f, 1));
+	//			normalZombie->_hp -= 15;//僵尸扣血
+	//			
+	//			//normalZombie->runAction(Blink::create(0.07f, 1));
 
-				//if (normalZombie->_hp == 25)//此时僵尸头掉了
-				//{
-				//	normalZombie->stopAllActions();
-				//	
-				//	/*normalZombie->runAction(Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
-				//		->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
-				//		->_normalZombieSprite->headAnimation(),((GameLayer*)this->getParent())->_normalZombieLayer
-				//			->noHeadNormalZombieMoveWay(), NULL));*/
-				//	normalZombie->runAction(Sequence::create(((GameLayer*)this->getParent())->
-				//		_normalZombieLayer->_normalZombieSprite->headAnimation(), Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
-				//		->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
-				//		->noHeadNormalZombieMoveWay(), NULL),NULL));
-				//}
+	//			//if (normalZombie->_hp == 25)//此时僵尸头掉了
+	//			//{
+	//			//	normalZombie->stopAllActions();
+	//			//	
+	//			//	/*normalZombie->runAction(Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
+	//			//		->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
+	//			//		->_normalZombieSprite->headAnimation(),((GameLayer*)this->getParent())->_normalZombieLayer
+	//			//			->noHeadNormalZombieMoveWay(), NULL));*/
+	//			//	normalZombie->runAction(Sequence::create(((GameLayer*)this->getParent())->
+	//			//		_normalZombieLayer->_normalZombieSprite->headAnimation(), Spawn::create(((GameLayer*)this->getParent())->_normalZombieLayer
+	//			//		->_normalZombieSprite->noHeadAnimation(), ((GameLayer*)this->getParent())->_normalZombieLayer
+	//			//		->noHeadNormalZombieMoveWay(), NULL),NULL));
+	//			//}
 
-				if (normalZombie->_hp <= 0)
-				{
+	//			if (normalZombie->_hp <= 0)
+	//			{
 
-					normalZombie->stopAllActions();
-					zombieRemove.pushBack(normalZombie);//将死亡僵尸添加到待删除数组
-					normalZombie->runAction(Sequence::createWithTwoActions(((GameLayer*)this->getParent())->_normalZombieLayer
-						->_normalZombieSprite->downTheGround(), CallFunc::create([normalZombie]() {
-							normalZombie->removeFromParent();//将僵尸删除
-							})));
-				}
-				break;//一个子弹只能碰撞一个僵尸
-			}
-		}
-	}
+	//				normalZombie->stopAllActions();
+	//				zombieRemove.pushBack(normalZombie);//将死亡僵尸添加到待删除数组
+	//				normalZombie->runAction(Sequence::createWithTwoActions(((GameLayer*)this->getParent())->_normalZombieLayer
+	//					->_normalZombieSprite->downTheGround(), CallFunc::create([normalZombie]() {
+	//						normalZombie->removeFromParent();//将僵尸删除
+	//						})));
+	//			}
+	//			break;//一个子弹只能碰撞一个僵尸
+	//		}
+	//	}
+	//}
 	set<NormalZombieSprite*> normalZombieBoomDied;//被炸死的僵尸
 	for (auto potatoMine : ((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector)//遍历所有的土豆地雷
 	{
@@ -138,6 +139,7 @@ void BoundingLayer::bulletBoundingZombie()
 		//log("%d   %d", potatoMine->_position[0], potatoMine->_position[0]);
 		
 		((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector.eraseObject(potatoMine);
+		_plantVector.eraseObject(potatoMine);
 		//potatoMine->removeFromParent();
 	}
 
@@ -177,6 +179,7 @@ void BoundingLayer::zombieEatPlant()
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[potatoMine->_position[0]][potatoMine->_position[1]] = false;
 			potatoMine->removeFromParent();
 			((GameLayer*)this->getParent())->_potatoMineLayer->_potatoMineVector.eraseObject(potatoMine);
+			_plantVector.eraseObject(potatoMine);
 			zombieAttackPotatoMine.erase(iter++);
 		}
 		else iter++;
@@ -265,6 +268,7 @@ void BoundingLayer::zombieEatPlant()
 	{
 		//log("peaShooter has been erased!");
 		((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector.eraseObject(peaShooter);
+		_plantVector.eraseObject(peaShooter);
 	}
 }
 

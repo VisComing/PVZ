@@ -14,4 +14,6 @@ public:
 	void normalZombieMoveWay();//½©Ê¬ÒÆ¶¯Â·Ïß
 	FiniteTimeAction* noHeadNormalZombieMoveWay();
 	Vector<NormalZombieSprite*> _normalZombieVector;
+	void diedNormalZombie();
+	virtual void update(float dt);
 };
