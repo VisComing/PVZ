@@ -1,6 +1,6 @@
 #include "GameScene.h"
 #include "GameLayer.h"
-bool _iAmPlantSideGolbalVariable = false;
+
 Scene* GameScene::createScene()
 {
 	return GameScene::create();

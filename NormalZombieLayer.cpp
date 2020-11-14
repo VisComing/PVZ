@@ -1,5 +1,6 @@
 #include "NormalZombieLayer.h"
 #include "GameLayer.h"
+extern Vector<ZombieBaseClass*>_zombieVector;
 NormalZombieLayer::NormalZombieLayer()
 {
 	_normalZombieSprite = NULL;
@@ -60,6 +61,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
 			this->addChild(_normalZombieSprite);
 
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
+			_zombieVector.pushBack(this->_normalZombieSprite);
 
 			this->_normalZombieSprite->setPosition(x, y + 20);
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar

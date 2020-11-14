@@ -1,6 +1,7 @@
 #include "BoundingLayer.h"
 #include "GameLayer.h"
 #include <utility>
+extern Vector<ZombieBaseClass*>_zombieVector;
 BoundingLayer::BoundingLayer()
 {
 
@@ -128,6 +129,7 @@ void BoundingLayer::bulletBoundingZombie()
 	for (auto zombie : zombieRemove)
 	{
 		((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector.eraseObject(zombie);
+		_zombieVector.eraseObject(zombie);
 		//zombie->removeFromParent();
 	}
 	for (auto potatoMine : potatoMineRemove)
