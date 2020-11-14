@@ -1,5 +1,6 @@
 #include "TouchLayer.h"
 #include "GameLayer.h"
+#include "GameScene.h"
 TouchLayer::TouchLayer()
 {
 	this->_isCreatePeaShooter = false;
@@ -25,19 +26,27 @@ bool TouchLayer::init()
 
 bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 {
-	if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("peaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+	//我是植物方
+	if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_plantOrZombie == "Plant")
 	{
-		//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("peaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		{
+			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
 			((GameLayer*)this->getParent())->_peaShooterLayer->initPeaShooterSprite(touch);
+		}
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("potatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		{
+			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
+			((GameLayer*)this->getParent())->_potatoMineLayer->initPeaShooterSprite(touch);
+		}
 	}
-	if (((GameLayer*)this->getParent())->_zombieCardLayer->_zombieCardSprte->getBoundingBox().containsPoint(touch->getLocation()))
+	//我是僵尸方
+	else
 	{
-		((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
-	}
-	if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("potatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
-	{
-		//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
-		((GameLayer*)this->getParent())->_potatoMineLayer->initPeaShooterSprite(touch);
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->_zombieCardSprte->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
+		}
 	}
 	return true;
 }
