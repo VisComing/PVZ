@@ -1,6 +1,7 @@
 #include "SunCellLayer.h"
 #include "GameLayer.h"
 #include "GameScene.h"
+extern bool _iAmPlantSideGolbalVariable;
 SunCellLayer::SunCellLayer()
 {
 	this->_sunCellSprite = NULL;
@@ -29,7 +30,7 @@ void SunCellLayer::initSunCell(float dlt)
 	this->_sunCellSprite = SunCellSprite::create();//创建一个太阳精灵
 	auto visibelSize = Director::getInstance()->getVisibleSize();//获得窗口大小
 
-	if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_iAmPlantSide == true)
+	if (_iAmPlantSideGolbalVariable == true)
 	{
 		this->_sunCellSprite->setPosition(rand() % 720 + 250,
 			visibelSize.height + this->_sunCellSprite->getContentSize().height);
@@ -85,7 +86,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 					{
 						node->stopActionByTag(1);
 						FiniteTimeAction* sunCellMove2;
-						if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_iAmPlantSide == true)
+						if (_iAmPlantSideGolbalVariable == true)
 						{
 							//植物卡阳光处
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(261, 513));

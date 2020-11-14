@@ -17,7 +17,7 @@ bool BoundingLayer::init()
 	{
 		return false;
 	}
-
+	scheduleUpdate();
 	return true;
 }
 
@@ -303,4 +303,10 @@ void BoundingLayer::zombieEatPlantT()
 		}
 		else iter++;
 	}
+}
+
+void BoundingLayer::update(float dlt)
+{
+	this->bulletBoundingZombie();//×Óµ¯Åö×²½©Ê¬£¬¶Ô½©Ê¬Ôì³ÉÉËº¦
+	this->zombieEatPlant();//½©Ê¬³ÔÖ²Îï
 }

@@ -1,6 +1,7 @@
 #include "TouchLayer.h"
 #include "GameLayer.h"
 #include "GameScene.h"
+extern bool _iAmPlantSideGolbalVariable;
 TouchLayer::TouchLayer()
 {
 	this->_isCreatePeaShooter = false;
@@ -27,8 +28,8 @@ bool TouchLayer::init()
 bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	//我是植物方
-	if (((GameScene*)((GameLayer*)this->getParent())->getParent())->_iAmPlantSide == true)
-	{
+	//if (_iAmPlantSideGolbalVariable == true)
+	//{
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("peaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
@@ -39,15 +40,15 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
 			((GameLayer*)this->getParent())->_potatoMineLayer->initPeaShooterSprite(touch);
 		}
-	}
+	//}
 	//我是僵尸方
-	else
-	{
+	//else
+	//{
 		if (((GameLayer*)this->getParent())->_zombieCardLayer->_zombieCardSprte->getBoundingBox().containsPoint(touch->getLocation()))
 		{
 			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
 		}
-	}
+	//}
 	return true;
 }
 

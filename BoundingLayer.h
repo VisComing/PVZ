@@ -12,6 +12,8 @@ public:
 	CREATE_FUNC(BoundingLayer);
 	BoundingLayer();
 	~BoundingLayer();
+
+	virtual void update(float dt);//监听所有变化的事物,每一帧都会执行该函数
 	virtual bool init();
 	void bulletBoundingZombie();//子弹碰撞僵尸
 	void zombieEatPlant();//僵尸攻击植物	

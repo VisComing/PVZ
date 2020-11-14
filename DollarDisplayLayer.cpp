@@ -1,4 +1,7 @@
 #include "DollarDisplayLayer.h"
+#include "GameScene.h"
+#include "GameLayer.h"
+extern bool _iAmPlantSideGolbalVariable;
 DollarDisplayLayer::DollarDisplayLayer()
 {
 	_dollar = 200;
@@ -29,6 +32,15 @@ void DollarDisplayLayer::displayDollarLable()
 	this->addChild(this->_dollarLabel);
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	//this->_dollarLabel->setPosition(Vec2(2 * visibleSize.width / 7, 8 * visibleSize.height / 9));
-	this->_dollarLabel->setPosition(Vec2(263, 527));
+
+	if (_iAmPlantSideGolbalVariable == true)
+	{
+		this->_dollarLabel->setPosition(Vec2(263, 527));
+	}
+	else
+	{
+		this->_dollarLabel->setPosition(Vec2(1360, 527));
+	}
+		
 	this->_dollarLabel->setColor(Color3B(0, 0, 0));
 }

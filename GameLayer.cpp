@@ -53,15 +53,15 @@ void GameLayer::initDollarDisplayerLayer()
 	this->_dollarDisplayLayer = DollarDisplayLayer::create();
 	this->addChild(this->_dollarDisplayLayer);
 }
-
+//在每一个层中执行update？
 void GameLayer::update(float dlt)//每一帧都会执行一次
 {
 	//监听金币变化
 	this->_dollarDisplayLayer->_dollarStr = StringUtils::format("%d", this->_dollarDisplayLayer->_dollar);
 	this->_dollarDisplayLayer->_dollarLabel->setString(this->_dollarDisplayLayer->_dollarStr);
 
-	this->_boundingLayer->bulletBoundingZombie();//子弹碰撞僵尸，对僵尸造成伤害
-	this->_boundingLayer->zombieEatPlant();//僵尸吃植物
+	//this->_boundingLayer->bulletBoundingZombie();//子弹碰撞僵尸，对僵尸造成伤害
+	//this->_boundingLayer->zombieEatPlant();//僵尸吃植物
 }
 
 //初始化太阳因子层
