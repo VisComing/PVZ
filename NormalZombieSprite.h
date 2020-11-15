@@ -10,7 +10,7 @@ public:
 	NormalZombieSprite();
 	~NormalZombieSprite();
 	virtual bool init();
-	Rect NormalZombieBounding();//重置僵尸的boundingBox
+	Rect zombieBounding();//重置僵尸的boundingBox
 	Rect _normalZombieRect;//重置后的
 	bool attacting;
 	RepeatForever* _walkAction;

@@ -26,7 +26,7 @@ bool NormalZombieSprite::init()
 	return true;
 }
 
-Rect NormalZombieSprite::NormalZombieBounding()
+Rect NormalZombieSprite::zombieBounding()
 {
 	Rect originRect = this->getBoundingBox();
 	this->_normalZombieRect.origin.x = originRect.origin.x + 90;

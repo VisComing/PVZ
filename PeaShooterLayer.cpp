@@ -2,6 +2,7 @@
 #include "GameLayer.h"
 #include "MapLayer.h"
 extern Vector<PlantBaseClass*> _plantVector;
+extern Vector<ZombieBaseClass*> _zombieVector;
 PeaShooterLayer::PeaShooterLayer()
 {
 	this->_peaShooterSprite = NULL;
@@ -17,7 +18,7 @@ bool PeaShooterLayer::init()
 	{
 		return false;
 	}
-
+	scheduleUpdate();
 	return true;
 }
 
@@ -71,4 +72,34 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
 
+}
+
+void PeaShooterLayer::diedPeaShooter()
+{
+	for (auto i = _peaShooterVector.begin(); i != _peaShooterVector.end();)
+	{
+		if ((*i)->_plantHP <= 0)
+		{
+			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			{
+				if ((*i) == (*j))
+				{
+					_plantVector.erase(j);
+					break;
+				}
+			}
+			(*i)->removeFromParent();
+			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			i = _peaShooterVector.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+void PeaShooterLayer::update(float dt)
+{
+	this->diedPeaShooter();
 }

@@ -14,7 +14,8 @@ public:
 	virtual bool init();
 	PeaShooterSprite* _peaShooterSprite;
 	void initPeaShooterSprite(Touch*);//初始化豌豆射手，传一个触摸点给它
-
+	void diedPeaShooter();
+	virtual void update(float dt);
 	Vector<PeaShooterSprite*> _peaShooterVector;
 
 	vector<int> _peaShooterTime;//该射手已经被种下的时间，每隔0.1秒加一

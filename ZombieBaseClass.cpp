@@ -17,6 +17,11 @@ bool ZombieBaseClass::init()
 	return true;
 }
 
+Rect ZombieBaseClass::zombieBounding()
+{
+	return Rect();
+}
+
 Action * ZombieBaseClass::normalZombieMoveWay()
 {
 	return nullptr;

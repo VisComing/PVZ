@@ -1,6 +1,7 @@
 #include "NormalZombieLayer.h"
 #include "GameLayer.h"
 extern Vector<ZombieBaseClass*>_zombieVector;
+extern Vector<PlantBaseClass*> _plantVector;
 NormalZombieLayer::NormalZombieLayer()
 {
 	_normalZombieSprite = NULL;
@@ -98,7 +99,7 @@ void NormalZombieLayer::diedNormalZombie()
 		if ((*i)->_hp <= 0)
 		{
 			//从全部僵尸数组中将其删除
-			for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
+			for (auto j = _zombieVector.begin(); j != _zombieVector.end(); j++)
 			{
 				if ((*i) == (*j))
 				{
@@ -110,10 +111,20 @@ void NormalZombieLayer::diedNormalZombie()
 			auto tmp = *i;
 			//原来是序列的问题，先执行动作，然后执行lamida表达式，执行到lamida时里面的i已经被删除了
 			//2020/11/15凌晨
-			(*i)->runAction(Sequence::createWithTwoActions(this->_normalZombieSprite
-				->downTheGround(), CallFunc::create([tmp]() {
-					(tmp)->removeFromParent();//将僵尸删除
-				})));
+			if ((*i)->typeOfDeath == 0)//僵尸被子弹打死
+			{
+				(*i)->runAction(Sequence::createWithTwoActions(this->_normalZombieSprite
+					->downTheGround(), CallFunc::create([tmp]() {
+						(tmp)->removeFromParent();//将僵尸删除
+						})));
+			}
+			else if ((*i)->typeOfDeath == 1)//僵尸被炸死
+			{
+				(*i)->runAction(Sequence::createWithTwoActions(this->_normalZombieSprite
+					-> explodAction(), CallFunc::create([tmp]() {
+						(tmp)->removeFromParent();//将僵尸删除
+						})));
+			}
 			//注意，下一行要放在该循环的所有操作后，如果在之前删除了，那么接下来还要使用它的怎么办呢
 			i = _normalZombieVector.erase(i);
 		}
@@ -124,7 +135,46 @@ void NormalZombieLayer::diedNormalZombie()
 	}
 }
 
+void NormalZombieLayer::normalZombieAttackPlant()
+{
+	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end(); i++)
+	{
+		if ((*i)->_hp > 0)
+		{
+			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			{
+				if ((*j)->getBoundingBox().intersectsRect((*i)->zombieBounding()))//如果碰撞
+				{
+					(*j)->_plantHP -= 1;
+					if ((*i)->numberOfRunningActions() != 1)
+					{
+						(*i)->stopAllActions();
+						(*i)->runAction(RepeatForever::create((*i)->attackAnimation()));
+					}
+				}
+			}
+			bool flag = false;
+			for (auto x : _plantVector)
+			{
+				if (x->getBoundingBox().intersectsRect((*i)->zombieBounding()))
+				{
+					flag = true;
+					break;
+				}
+			}
+			if ((*i)->numberOfRunningActions() == 1 && flag == false)
+			{
+				(*i)->stopAllActions();
+				(*i)->runAction(RepeatForever::create((*i)->walkAnimation()));
+				(*i)->runAction((*i)->normalZombieMoveWay());
+			}
+		}
+	}
+
+}
+
 void NormalZombieLayer::update(float dt)
 {
 	this->diedNormalZombie();
+	this->normalZombieAttackPlant();
 }

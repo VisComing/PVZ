@@ -37,7 +37,7 @@ void BulletLayer::initBulletSprite(float dlt)
 					this->_bulletSprite = BulletSprite::create();
 					this->addChild(this->_bulletSprite);
 					this->_bulletVector.pushBack(this->_bulletSprite);//将子弹添加到子弹数组中
-					this->_bulletSprite->setPosition(peaShooter->getPositionX(), peaShooter->getPositionY() + 10);
+					this->_bulletSprite->setPosition(peaShooter->getPositionX() + 20, peaShooter->getPositionY() + 13);
 					this->bulletMoveWay();
 
 					((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterTime[i] = 0;
@@ -76,16 +76,18 @@ void BulletLayer::bulletAttackZombie()
 		bool _iFlag = false;
 		for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
 		{
-			if ((*i)->getBoundingBox().intersectsRect((*j)->getBoundingBox()))
+			if ((*i)->getBoundingBox().intersectsRect((*j)->zombieBounding()))
 			{
 				_iFlag = true;
 				(*i)->removeFromParent();//将子弹删除
 				i = _bulletVector.erase(i);//删除子弹
 				
 				(*j)->_hp -= 15;//僵尸扣血
+				(*j)->typeOfDeath = 0;
+				break;
 			}
 			j++;
-			break;
+			
 		}
 		if (_iFlag == false)
 			i++;
