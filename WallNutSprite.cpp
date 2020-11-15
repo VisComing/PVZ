@@ -2,7 +2,7 @@
 
 WallNutSprite::WallNutSprite()
 {
-	this->_plantHP = 2000;
+	this->_plantHP = 1000;
 }
 
 WallNutSprite::~WallNutSprite()

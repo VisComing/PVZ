@@ -74,8 +74,41 @@ void WallNutLayer::initWallNutSprite(Touch * touch)
 
 void WallNutLayer::diedWallNut()
 {
+	for (auto i = _wallNutVector.begin(); i != _wallNutVector.end();)
+	{
+		if ((*i)->_plantHP == 600)
+		{
+			(*i)->stopAllActions();
+			(*i)->runAction(RepeatForever::create((*i)->wallNutCracked1()));
+		}
+		if ((*i)->_plantHP == 300)
+		{
+			(*i)->stopAllActions();
+			(*i)->runAction(RepeatForever::create((*i)->wallNutCracked2()));
+		}
+		if ((*i)->_plantHP <= 0)
+		{
+			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			{
+				if ((*i) == (*j))
+				{
+					_plantVector.erase(j);
+					break;
+				}
+			}
+
+			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			(*i)->removeFromParent();
+			i = _wallNutVector.erase(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
 }
 
 void WallNutLayer::update(float dt)
 {
+	this->diedWallNut();
 }
