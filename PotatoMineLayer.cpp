@@ -96,7 +96,7 @@ void PotatoMineLayer::potatoMineAttackZombie()
 			{
 				for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
 				{
-					if ((*i)->getBoundingBox().intersectsRect((*j)->zombieBounding()))
+					if ((*i)->plantBounding().intersectsRect((*j)->zombieBounding()))
 					{
 						_iFlag = true;
 						(*i)->removeFromParent();//╫╚ма╤╧╣ьюви╬ЁЩ

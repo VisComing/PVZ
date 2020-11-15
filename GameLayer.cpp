@@ -20,10 +20,12 @@ bool GameLayer::init()
 	this->initDollarDisplayerLayer();//初始化金币展示板
 	this->initPeaShooterLayer();
 	this->initPotatoMineLayer();//土豆地雷层
-	this->initSunCellLayer();//阳光下落
-	this->initBulletLayer();//子弹层
+	
 	this->initBoundingLayer();
 	this->initWallNutLayer();//坚果墙
+	this->initChomperLayer();
+	this->initSunCellLayer();//阳光下落
+	this->initBulletLayer();//子弹层  在最上面一层
 	return true;
 }
 
@@ -132,4 +134,10 @@ void GameLayer::initWallNutLayer()
 {
 	this->_wallNutLayer = WallNutLayer::create();
 	this->addChild(this->_wallNutLayer);
+}
+
+void GameLayer::initChomperLayer()
+{
+	this->_chomperLayer = ChomperLayer::create();
+	this->addChild(this->_chomperLayer);
 }

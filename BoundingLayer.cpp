@@ -153,7 +153,7 @@ void BoundingLayer::zombieEatPlant()
 		{
 			if (potatoMine->_potatoMineTime != potatoMine->_potatoMineGrowTime + 1)
 			{
-				if (potatoMine->getBoundingBox().intersectsRect(normalZombie->zombieBounding()))//如果土豆地雷和僵尸碰撞
+				if (potatoMine->plantBounding().intersectsRect(normalZombie->zombieBounding()))//如果土豆地雷和僵尸碰撞
 				{
 					if (normalZombie->numberOfRunningActions() != 1)
 					{
@@ -218,7 +218,7 @@ void BoundingLayer::zombieEatPlant()
 		{
 			for (auto peaShooter : ((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector)//遍历所有豌豆射手
 			{
-				if (peaShooter->getBoundingBox().intersectsRect(normalZombie->zombieBounding()))//如果相交
+				if (peaShooter->plantBounding().intersectsRect(normalZombie->zombieBounding()))//如果相交
 				{
 					//僵尸攻击植物
 					this->zombieAttackPeaShooter.insert(normalZombie, peaShooter);
@@ -278,7 +278,7 @@ void BoundingLayer::zombieEatPlantT()
 	{
 			for (auto plant : ((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector)//遍历所有豌豆射手
 			{
-				if (plant->getBoundingBox().intersectsRect(zombie->zombieBounding()))//如果相交
+				if (plant->plantBounding().intersectsRect(zombie->zombieBounding()))//如果相交
 				{
 					
 					//僵尸攻击植物

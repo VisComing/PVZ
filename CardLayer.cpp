@@ -42,5 +42,8 @@ void CardLayer::initCardSprite()
 	WallNutCard->setName("WallNutCard");
 	this->addChild(WallNutCard);
 	
-
+	auto ChomperCard = Sprite::create("res/ChomperCard.png");
+	ChomperCard->setPosition(Vec2(325 + 150, 557));
+	ChomperCard->setName("ChomperCard");
+	this->addChild(ChomperCard);
 }

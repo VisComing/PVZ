@@ -143,7 +143,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 		{
 			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
 			{
-				if ((*j)->getBoundingBox().intersectsRect((*i)->zombieBounding()))//如果碰撞
+				if ((*j)->plantBounding().intersectsRect((*i)->zombieBounding()))//如果碰撞
 				{
 					(*j)->_plantHP -= 1;
 					if ((*i)->numberOfRunningActions() != 1)
@@ -156,7 +156,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 			bool flag = false;
 			for (auto x : _plantVector)
 			{
-				if (x->getBoundingBox().intersectsRect((*i)->zombieBounding()))
+				if (x->plantBounding().intersectsRect((*i)->zombieBounding()))
 				{
 					flag = true;
 					break;

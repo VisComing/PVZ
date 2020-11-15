@@ -8,6 +8,8 @@ PlantBaseClass::PlantBaseClass()
 	_potatoMineCache->addSpriteFramesWithFile("res/potatomine.plist");
 	_wallNutCache = SpriteFrameCache::getInstance();
 	_wallNutCache->addSpriteFramesWithFile("res/wallnut.plist");
+	_chomperCache = SpriteFrameCache::getInstance();
+	_chomperCache->addSpriteFramesWithFile("res/chomper.plist");
 	under_attack = false;
 }
 
@@ -23,6 +25,11 @@ bool PlantBaseClass::init()
 	}
 
 	return true;
+}
+
+Rect PlantBaseClass::plantBounding()
+{
+	return this->getBoundingBox();
 }
 
 //void PlantBaseClass::plantPlants()

@@ -45,6 +45,11 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
 			((GameLayer*)this->getParent())->_wallNutLayer->initWallNutSprite(touch);
 		}
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("ChomperCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		{
+			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
+			((GameLayer*)this->getParent())->_chomperLayer->initChomperSprite(touch);
+		}
 	//}
 	//我是僵尸方
 	//else

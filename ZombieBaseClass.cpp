@@ -19,7 +19,7 @@ bool ZombieBaseClass::init()
 
 Rect ZombieBaseClass::zombieBounding()
 {
-	return Rect();
+	return this->getBoundingBox();
 }
 
 Action * ZombieBaseClass::normalZombieMoveWay()

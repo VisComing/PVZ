@@ -30,9 +30,9 @@ Rect NormalZombieSprite::zombieBounding()
 {
 	Rect originRect = this->getBoundingBox();
 	this->_normalZombieRect.origin.x = originRect.origin.x + 90;
-	this->_normalZombieRect.origin.y = originRect.origin.y;
-	this->_normalZombieRect.size.width = originRect.size.width - 180;
-	this->_normalZombieRect.size.height = originRect.size.height - 45;
+	this->_normalZombieRect.origin.y = originRect.origin.y + 20;
+	this->_normalZombieRect.size.width = originRect.size.width - 90;
+	this->_normalZombieRect.size.height = originRect.size.height - 50;
 	return this->_normalZombieRect;
 }
 

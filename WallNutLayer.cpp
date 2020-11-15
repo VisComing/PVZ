@@ -76,12 +76,12 @@ void WallNutLayer::diedWallNut()
 {
 	for (auto i = _wallNutVector.begin(); i != _wallNutVector.end();)
 	{
-		if ((*i)->_plantHP == 600)
+		if ((*i)->_plantHP <= 600 && (*i)->_plantHP >= 594)
 		{
 			(*i)->stopAllActions();
 			(*i)->runAction(RepeatForever::create((*i)->wallNutCracked1()));
 		}
-		if ((*i)->_plantHP == 300)
+		if ((*i)->_plantHP <= 300 && (*i)->_plantHP >= 294)
 		{
 			(*i)->stopAllActions();
 			(*i)->runAction(RepeatForever::create((*i)->wallNutCracked2()));

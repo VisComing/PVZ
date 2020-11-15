@@ -12,6 +12,7 @@
 #include "BoundingLayer.h"
 #include "PotatoMineLayer.h"
 #include "WallNutLayer.h"
+#include "ChomperLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -55,4 +56,7 @@ public:
 
 	WallNutLayer* _wallNutLayer;
 	void initWallNutLayer();
+
+	ChomperLayer* _chomperLayer;
+	void initChomperLayer();
 };
