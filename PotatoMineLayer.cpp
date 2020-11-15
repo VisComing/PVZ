@@ -21,7 +21,7 @@ bool PotatoMineLayer::init()
 	return true;
 }
 
-void PotatoMineLayer::initPeaShooterSprite(Touch *touch)
+void PotatoMineLayer::initPotatoMineSprite(Touch *touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _potatoMineStatic = Sprite::create("res/PotatoMineStatic.png");

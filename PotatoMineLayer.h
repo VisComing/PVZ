@@ -12,7 +12,7 @@ public:
 	~PotatoMineLayer();
 	virtual bool init();
 	PotatoMineSprite* _potatoMineSprite;
-	void initPeaShooterSprite(Touch*);//初始化土豆地雷，传一个触摸点给它
+	void initPotatoMineSprite(Touch*);//初始化土豆地雷，传一个触摸点给它
 	void grow(float);
 	Vector<PotatoMineSprite*> _potatoMineVector;
 	void potatoMineAttackZombie();

@@ -4,8 +4,10 @@ PlantBaseClass::PlantBaseClass()
 {
 	_peaShooterCache = SpriteFrameCache::getInstance();
 	_peaShooterCache->addSpriteFramesWithFile("res/peashooter.plist");
-	_potatoMineCache = SpriteFrameCache::getInstance();;
+	_potatoMineCache = SpriteFrameCache::getInstance();
 	_potatoMineCache->addSpriteFramesWithFile("res/potatomine.plist");
+	_wallNutCache = SpriteFrameCache::getInstance();
+	_wallNutCache->addSpriteFramesWithFile("res/wallnut.plist");
 	under_attack = false;
 }
 

@@ -38,7 +38,12 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("potatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
-			((GameLayer*)this->getParent())->_potatoMineLayer->initPeaShooterSprite(touch);
+			((GameLayer*)this->getParent())->_potatoMineLayer->initPotatoMineSprite(touch);
+		}
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("WallNutCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		{
+			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
+			((GameLayer*)this->getParent())->_wallNutLayer->initWallNutSprite(touch);
 		}
 	//}
 	//我是僵尸方

@@ -23,6 +23,7 @@ bool GameLayer::init()
 	this->initSunCellLayer();//阳光下落
 	this->initBulletLayer();//子弹层
 	this->initBoundingLayer();
+	this->initWallNutLayer();//坚果墙
 	return true;
 }
 
@@ -125,4 +126,10 @@ void GameLayer::initPotatoMineLayer()
 {
 	this->_potatoMineLayer = PotatoMineLayer::create();
 	this->addChild(this->_potatoMineLayer);
+}
+
+void GameLayer::initWallNutLayer()
+{
+	this->_wallNutLayer = WallNutLayer::create();
+	this->addChild(this->_wallNutLayer);
 }

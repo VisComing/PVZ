@@ -11,6 +11,7 @@
 #include "BulletLayer.h"
 #include "BoundingLayer.h"
 #include "PotatoMineLayer.h"
+#include "WallNutLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -51,4 +52,7 @@ public:
 
 	PotatoMineLayer* _potatoMineLayer;
 	void initPotatoMineLayer();
+
+	WallNutLayer* _wallNutLayer;
+	void initWallNutLayer();
 };

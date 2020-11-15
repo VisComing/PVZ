@@ -35,7 +35,12 @@ void CardLayer::initCardSprite()
 	potatoMineCard->setPosition(Vec2(325 + 50, 557));
 	potatoMineCard->setName("potatoMineCard");
 	this->addChild(potatoMineCard);
+
 	
+	auto WallNutCard = Sprite::create("res/WallNutCard.png");
+	WallNutCard->setPosition(Vec2(325 + 100, 557));
+	WallNutCard->setName("WallNutCard");
+	this->addChild(WallNutCard);
 	
 
 }
