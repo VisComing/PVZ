@@ -100,20 +100,24 @@ void ChomperLayer::chomperAttackZombie()
 					(*i)->stopAllActions();
 					(*i)->runAction((*i)->chomperDigest());
 					auto tmp = *j;
-					(*j)->_hp -= 200;
+					auto a = j;
+					//(*j)->_hp -= 200;
 					/*(*i)->runAction(Sequence::create((*i)
 						->chomperAttack(), CallFunc::create(CC_CALLBACK_0(Sprite::removeFromParent, tmp)),
 						(*i)->chomperDigest(),
 						NULL));*/
 					(*i)->runAction(Sequence::create((*i)
 						->chomperAttack(), CallFunc::create([tmp]() {
+							tmp->_hp -= 200;
 							tmp->removeFromParent();
+							
+							//_zombieVector.erase(a);
 							}),
 						(*i)->chomperDigest(),
 						NULL));
 					//°Ñ½©Ê¬³ÔÁË£¬½©Ê¬ÏûÊ§
 					//(*j)->removeFromParent();
-					_zombieVector.erase(j);
+					//_zombieVector.erase(j);
 					(*i)->_eatingZombie = true;
 
 					break;
