@@ -67,7 +67,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
 			this->_normalZombieSprite->setPosition(x, y + 20);
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
 				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个僵尸消耗100金币
-			this->_normalZombieSprite->normalZombieMoveWay();
+			this->_normalZombieSprite->zombieMoveWay();
 		}
 		else
 		{
@@ -100,7 +100,7 @@ void NormalZombieLayer::diedNormalZombie()
 		{
 			(*i)->stopAllActions();
 			(*i)->runAction((*i)->noHeadWalkAnimation());
-			(*i)->runAction((*i)->normalZombieMoveWay());
+			(*i)->runAction((*i)->zombieMoveWay());
 			//(*i)->runAction(Spawn::create((*i)->noHeadAnimation(),(*i)->normalZombieMoveWay(), NULL));
 			tmpSprite = Sprite::create();
 			this->addChild(tmpSprite);
@@ -199,7 +199,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 				{
 					(*i)->runAction((*i)->noHeadWalkAnimation());
 				}
-				(*i)->runAction((*i)->normalZombieMoveWay());
+				(*i)->runAction((*i)->zombieMoveWay());
 			}
 		}
 	}
