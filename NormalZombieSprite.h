@@ -16,15 +16,17 @@ public:
 	RepeatForever* _walkAction;
 	RepeatForever* walkAnimation();//僵尸行走动画
 	FiniteTimeAction* _headAction;//头落地的动画
-	FiniteTimeAction* _noHeadAction;
+	FiniteTimeAction* _noHeadWalkAction;
 	FiniteTimeAction* headAnimation();
-	FiniteTimeAction* noHeadAnimation();
+	FiniteTimeAction* noHeadWalkAnimation();
 	FiniteTimeAction* downTheGround();
 	FiniteTimeAction* _downAction;
-	FiniteTimeAction* explodAction();
+	//FiniteTimeAction* explodAction();
 	FiniteTimeAction* _explodAction;
 	RepeatForever* attackAnimation();//吃植物动画
 	RepeatForever* _attackAction;
 	Action* normalZombieMoveWay();//僵尸向前移动
 	Action* _moveWayAction;
+	RepeatForever* zombieLostHeadAttackAnimation();//吃植物动画
+	RepeatForever* _zombieLostHeadAttackAction;
 };

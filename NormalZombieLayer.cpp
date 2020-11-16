@@ -67,7 +67,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
 			this->_normalZombieSprite->setPosition(x, y + 20);
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
 				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个僵尸消耗100金币
-			this->normalZombieMoveWay();
+			this->_normalZombieSprite->normalZombieMoveWay();
 		}
 		else
 		{
@@ -79,23 +79,40 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
 }
 
-void NormalZombieLayer::normalZombieMoveWay()//在此修改僵尸移速
-{
-	Action* normalZombieMove = MoveTo::create(this->_normalZombieSprite->getPositionX() / 40, Vec2(0, this->_normalZombieSprite->getPositionY()));
-	this->_normalZombieSprite->runAction(normalZombieMove);
-}
-
-FiniteTimeAction* NormalZombieLayer::noHeadNormalZombieMoveWay()
-{
-	FiniteTimeAction* normalZombieMove = MoveTo::create(15, Vec2(0, this->_normalZombieSprite->getPositionY()));
-	//this->_normalZombieSprite->runAction(normalZombieMove);
-	return normalZombieMove;
-}
+//void NormalZombieLayer::normalZombieMoveWay()//在此修改僵尸移速
+//{
+//	Action* normalZombieMove = MoveTo::create(this->_normalZombieSprite->getPositionX() / 40, Vec2(0, this->_normalZombieSprite->getPositionY()));
+//	this->_normalZombieSprite->runAction(normalZombieMove);
+//}
+//
+//FiniteTimeAction* NormalZombieLayer::noHeadNormalZombieMoveWay()
+//{
+//	FiniteTimeAction* normalZombieMove = MoveTo::create(15, Vec2(0, this->_normalZombieSprite->getPositionY()));
+//	//this->_normalZombieSprite->runAction(normalZombieMove);
+//	return normalZombieMove;
+//}
 
 void NormalZombieLayer::diedNormalZombie()
 {
 	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end();)
 	{
+		if ((*i)->_hp == (*i)->noHeadHp)//此时僵尸头掉了
+		{
+			(*i)->stopAllActions();
+			(*i)->runAction((*i)->noHeadWalkAnimation());
+			(*i)->runAction((*i)->normalZombieMoveWay());
+			//(*i)->runAction(Spawn::create((*i)->noHeadAnimation(),(*i)->normalZombieMoveWay(), NULL));
+			tmpSprite = Sprite::create();
+			this->addChild(tmpSprite);
+			tmpSprite->setPosition((*i)->getPosition());
+			(*i)->_hp -= 1;
+			//tmpSprite->runAction((*i)->headAnimation());
+			tmpSprite->runAction(Sequence::createWithTwoActions((*i)
+				->headAnimation(), CallFunc::create([this]() {
+						tmpSprite->removeFromParent(); 
+					})));
+		}
+
 		if ((*i)->_hp <= 0)
 		{
 			//从全部僵尸数组中将其删除
@@ -109,19 +126,19 @@ void NormalZombieLayer::diedNormalZombie()
 			}
 			(*i)->stopAllActions();
 			auto tmp = *i;
-			//原来是序列的问题，先执行动作，然后执行lamida表达式，执行到lamida时里面的i已经被删除了
+			//原来是序列的问题，先执行动作，然后执行lambda表达式，执行到lamida时里面的i已经被删除了
 			//2020/11/15凌晨
 			if ((*i)->typeOfDeath == 0)//僵尸被子弹打死
 			{
-				(*i)->runAction(Sequence::createWithTwoActions(this->_normalZombieSprite
+				(*i)->runAction(Sequence::createWithTwoActions((*i)
 					->downTheGround(), CallFunc::create([tmp]() {
 						(tmp)->removeFromParent();//将僵尸删除
 						})));
 			}
 			else if ((*i)->typeOfDeath == 1)//僵尸被炸死
 			{
-				(*i)->runAction(Sequence::createWithTwoActions(this->_normalZombieSprite
-					-> explodAction(), CallFunc::create([tmp]() {
+				(*i)->runAction(Sequence::createWithTwoActions((*i)
+					-> explodAnimation(), CallFunc::create([tmp]() {
 						(tmp)->removeFromParent();//将僵尸删除
 						})));
 			}
@@ -139,8 +156,10 @@ void NormalZombieLayer::normalZombieAttackPlant()
 {
 	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end(); i++)
 	{
+		
 		if ((*i)->_hp > 0)
 		{
+			
 			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
 			{
 				if ((*j)->plantBounding().intersectsRect((*i)->zombieBounding()))//如果碰撞
@@ -149,7 +168,14 @@ void NormalZombieLayer::normalZombieAttackPlant()
 					if ((*i)->numberOfRunningActions() != 1)
 					{
 						(*i)->stopAllActions();
-						(*i)->runAction(RepeatForever::create((*i)->attackAnimation()));
+						if ((*i)->_hp > (*i)->noHeadHp)
+						{
+							(*i)->runAction((*i)->attackAnimation());
+						}
+						else
+						{
+							(*i)->runAction((*i)->zombieLostHeadAttackAnimation());
+						}
 					}
 				}
 			}
@@ -165,7 +191,14 @@ void NormalZombieLayer::normalZombieAttackPlant()
 			if ((*i)->numberOfRunningActions() == 1 && flag == false)
 			{
 				(*i)->stopAllActions();
-				(*i)->runAction(RepeatForever::create((*i)->walkAnimation()));
+				if ((*i)->_hp > (*i)->noHeadHp)
+				{
+					(*i)->runAction((*i)->walkAnimation());//11/16修改了此处，没必要用repeatforever create
+				}
+				else
+				{
+					(*i)->runAction((*i)->noHeadWalkAnimation());
+				}
 				(*i)->runAction((*i)->normalZombieMoveWay());
 			}
 		}

@@ -62,7 +62,7 @@ FiniteTimeAction* NormalZombieSprite::headAnimation()
 	return this->_headAction;
 }
 
-FiniteTimeAction* NormalZombieSprite::noHeadAnimation()
+FiniteTimeAction* NormalZombieSprite::noHeadWalkAnimation()
 {
 	Vector<SpriteFrame*> images;
 	for (int i = 1; i <= 18; i++)
@@ -70,9 +70,9 @@ FiniteTimeAction* NormalZombieSprite::noHeadAnimation()
 		images.pushBack(_normalZombieCache->getSpriteFrameByName(StringUtils::format("ZombieLostHead_%d.png", i)));
 	}
 	Animation* noHeadAnimation = Animation::createWithSpriteFrames(images, 0.2f);
-	this->_noHeadAction = Repeat::create(Animate::create(noHeadAnimation), 50);
+	this->_noHeadWalkAction = Repeat::create(Animate::create(noHeadAnimation), 50);
 
-	return this->_noHeadAction;
+	return this->_noHeadWalkAction;
 }
 FiniteTimeAction* NormalZombieSprite::downTheGround()//½©Ê¬µ¹µØ
 {
@@ -87,18 +87,18 @@ FiniteTimeAction* NormalZombieSprite::downTheGround()//½©Ê¬µ¹µØ
 	return this->_downAction;
 }
 
-FiniteTimeAction * NormalZombieSprite::explodAction()
-{
-	Vector<SpriteFrame*> images;
-	for (int i = 1; i <= 20; i++)
-	{
-		images.pushBack(_boomDie1->getSpriteFrameByName(StringUtils::format("BoomDie1_%d.png", i)));
-	}
-	Animation* downAnimation = Animation::createWithSpriteFrames(images, 0.1f);
-	this->_explodAction = Animate::create(downAnimation);
-
-	return this->_explodAction;
-}
+//FiniteTimeAction * NormalZombieSprite::explodAction()
+//{
+//	Vector<SpriteFrame*> images;
+//	for (int i = 1; i <= 20; i++)
+//	{
+//		images.pushBack(_boomDie1->getSpriteFrameByName(StringUtils::format("BoomDie1_%d.png", i)));
+//	}
+//	Animation* downAnimation = Animation::createWithSpriteFrames(images, 0.1f);
+//	this->_explodAction = Animate::create(downAnimation);
+//
+//	return this->_explodAction;
+//}
 
 RepeatForever * NormalZombieSprite::attackAnimation()
 {
@@ -117,4 +117,16 @@ Action * NormalZombieSprite::normalZombieMoveWay()//ÔÚ´ËÐÞ¸Ä½©Ê¬ÒÆËÙ
 {
 	_moveWayAction = MoveTo::create(this->getPositionX() / 40,  Vec2(0, this->getPositionY()));
 	return _moveWayAction;
+}
+
+RepeatForever * NormalZombieSprite::zombieLostHeadAttackAnimation()
+{
+	Vector<SpriteFrame*> images;
+	for (int i = 1; i <= 9; i++)
+	{
+		images.pushBack(_normalZombieCache->getSpriteFrameByName(StringUtils::format("ZombieLostHeadAttack_%d.png", i)));
+	}
+	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 9);
+	this->_zombieLostHeadAttackAction = RepeatForever::create(Animate::create(_animation));
+	return this->_zombieLostHeadAttackAction;
 }

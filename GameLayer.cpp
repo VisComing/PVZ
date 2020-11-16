@@ -16,7 +16,7 @@ bool GameLayer::init()
 	this->initCardLayer();
 	this->initZombieCardLayer();
 	this->initTouchLayer();
-	this->initNormalZombieLayer();
+	
 	this->initDollarDisplayerLayer();//初始化金币展示板
 	this->initPeaShooterLayer();
 	this->initPotatoMineLayer();//土豆地雷层
@@ -24,8 +24,10 @@ bool GameLayer::init()
 	this->initBoundingLayer();
 	this->initWallNutLayer();//坚果墙
 	this->initChomperLayer();
-	this->initSunCellLayer();//阳光下落
+	
 	this->initBulletLayer();//子弹层  在最上面一层
+	this->initNormalZombieLayer();
+	this->initSunCellLayer();//阳光下落
 	return true;
 }
 
