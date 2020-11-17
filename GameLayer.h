@@ -9,7 +9,7 @@
 #include "TouchLayer.h"
 #include "PeaShooterLayer.h"
 #include "BulletLayer.h"
-#include "BoundingLayer.h"
+//#include "BoundingLayer.h"
 #include "PotatoMineLayer.h"
 #include "WallNutLayer.h"
 #include "ChomperLayer.h"
@@ -48,8 +48,8 @@ public:
 	BulletLayer* _bulletLayer;
 	void initBulletLayer();
 
-	BoundingLayer* _boundingLayer;
-	void initBoundingLayer();
+	//BoundingLayer* _boundingLayer;
+	//void initBoundingLayer();
 
 	PotatoMineLayer* _potatoMineLayer;
 	void initPotatoMineLayer();

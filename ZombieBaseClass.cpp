@@ -29,15 +29,7 @@ Rect ZombieBaseClass::zombieBounding()
 	return this->_zombieRect;
 }
 
-Action * ZombieBaseClass::normalZombieMoveWay()
-{
-	return nullptr;
-}
 
-RepeatForever * ZombieBaseClass::walkAnimation()
-{
-	return nullptr;
-}
 
 FiniteTimeAction * ZombieBaseClass::explodAnimation()
 {

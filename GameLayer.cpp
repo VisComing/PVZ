@@ -21,7 +21,7 @@ bool GameLayer::init()
 	this->initPeaShooterLayer();
 	this->initPotatoMineLayer();//土豆地雷层
 	
-	this->initBoundingLayer();
+	//this->initBoundingLayer();
 	this->initWallNutLayer();//坚果墙
 	this->initChomperLayer();
 	
@@ -38,7 +38,7 @@ GameLayer::GameLayer()
 	this->_cardLayer = NULL;
 	this->_touchLayer = NULL;
 	this->_peaShooterLayer = NULL;
-	this->_boundingLayer = NULL;
+	//this->_boundingLayer = NULL;
 }
 
 GameLayer::~GameLayer()
@@ -120,11 +120,11 @@ void GameLayer::initBulletLayer()
 	this->addChild(this->_bulletLayer);
 }
 
-void GameLayer::initBoundingLayer()
-{
-	this->_boundingLayer = BoundingLayer::create();
-	this->addChild(this->_boundingLayer);
-}
+//void GameLayer::initBoundingLayer()
+//{
+//	this->_boundingLayer = BoundingLayer::create();
+//	this->addChild(this->_boundingLayer);
+//}
 
 void GameLayer::initPotatoMineLayer()
 {

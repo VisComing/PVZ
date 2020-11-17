@@ -22,7 +22,7 @@ bool NormalZombieLayer::init()
 }
 
 
-void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
+void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 {
 	//创建一个静态僵尸，为被种下时
 	Sprite* _normalZombieStatic = Sprite::create("res/ZombieStatic.png");
@@ -78,19 +78,6 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch)
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
 }
-
-//void NormalZombieLayer::normalZombieMoveWay()//在此修改僵尸移速
-//{
-//	Action* normalZombieMove = MoveTo::create(this->_normalZombieSprite->getPositionX() / 40, Vec2(0, this->_normalZombieSprite->getPositionY()));
-//	this->_normalZombieSprite->runAction(normalZombieMove);
-//}
-//
-//FiniteTimeAction* NormalZombieLayer::noHeadNormalZombieMoveWay()
-//{
-//	FiniteTimeAction* normalZombieMove = MoveTo::create(15, Vec2(0, this->_normalZombieSprite->getPositionY()));
-//	//this->_normalZombieSprite->runAction(normalZombieMove);
-//	return normalZombieMove;
-//}
 
 void NormalZombieLayer::diedNormalZombie()
 {
