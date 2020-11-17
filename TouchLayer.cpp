@@ -30,12 +30,12 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 	//我是植物方
 	//if (_iAmPlantSideGolbalVariable == true)
 	//{
-		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("peaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("PeaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
 			((GameLayer*)this->getParent())->_peaShooterLayer->initPeaShooterSprite(touch);
 		}
-		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("potatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("PotatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if(((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 80)
 			((GameLayer*)this->getParent())->_potatoMineLayer->initPotatoMineSprite(touch);
@@ -54,7 +54,7 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 	//我是僵尸方
 	//else
 	//{
-		if (((GameLayer*)this->getParent())->_zombieCardLayer->_zombieCardSprte->getBoundingBox().containsPoint(touch->getLocation()))
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("NormalZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
 		{
 			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
 		}

@@ -28,12 +28,9 @@ bool ZombieCardLayer::init()
 
 void ZombieCardLayer::initZombieCardSprite()
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	this->_zombieCardSprte = ZombieCardSprite::create();
-	this->_zombieCardSprte->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-	this->_zombieCardSprte->setPosition(Vec2(1321, 593));
-	this->addChild(_zombieCardSprte);
-
-
+	auto peaShooterCard = Sprite::create("res/NormalZombie.png");
+	peaShooterCard->setPosition(Vec2(1298, 557));
+	peaShooterCard->setName("NormalZombieCard");
+	this->addChild(peaShooterCard);
 
 }

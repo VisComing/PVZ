@@ -2,3 +2,7 @@ BoundingLayer.cpp
 BoundingLayer.h
 CardBaseSprite.cpp
 CardBaseSprite.h
+ZombieCardBaseSprite.cpp
+ZombieCardBaseSprite.h
+ZombieCardSprite.cpp
+ZombieCardSprite.h

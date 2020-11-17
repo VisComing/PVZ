@@ -28,12 +28,12 @@ void CardLayer::initCardSprite()
 {
 	auto peaShooterCard = Sprite::create("res/Peashooter.png");
 	peaShooterCard->setPosition(Vec2(325, 557));
-	peaShooterCard->setName("peaShooterCard");
+	peaShooterCard->setName("PeaShooterCard");
 	this->addChild(peaShooterCard);
 	
 	auto potatoMineCard = Sprite::create("res/PotatoMineCard.png");
 	potatoMineCard->setPosition(Vec2(325 + 50, 557));
-	potatoMineCard->setName("potatoMineCard");
+	potatoMineCard->setName("PotatoMineCard");
 	this->addChild(potatoMineCard);
 
 	
