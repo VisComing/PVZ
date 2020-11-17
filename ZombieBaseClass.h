@@ -18,7 +18,7 @@ public:
 	SpriteFrameCache* _normalZombieCache;
 	SpriteFrameCache* _boomDie1;
 	SpriteFrameCache* _armedNormalZombieCache;
-	int _hp;
+	
 	int _position[2];//僵尸的位置,第一个表示第几列（共9列），第二个表示第几行（共5行）
 	int typeOfDeath;
 	FiniteTimeAction* explodAnimation();//爆炸动画，僵尸通用
@@ -28,6 +28,9 @@ public:
 	FiniteTimeAction* headAnimation();//头落地，多个僵尸可以复用
 	FiniteTimeAction* downTheGround();//僵尸倒地动作，多个僵尸可以复用
 	FiniteTimeAction* _downAction;
-	Action* zombieMoveWay();//僵尸向前移动
+	Action* zombieMoveWay(int zombieSpeed = 40);//僵尸向前移动,基础speed为40，越大，僵尸速度越快
 	Action* _moveWayAction;
+	int zombieSpeed;//僵尸的移动速度，越贵的僵尸移速越快
+	int zombieMoney;//僵尸金币价格
+	int _hp;//僵尸的血量
 };

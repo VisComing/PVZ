@@ -69,8 +69,8 @@ FiniteTimeAction * ZombieBaseClass::downTheGround()
 	return this->_downAction;
 }
 
-Action * ZombieBaseClass::zombieMoveWay()
+Action * ZombieBaseClass::zombieMoveWay(int zombieSpeed)
 {
-	_moveWayAction = MoveTo::create(this->getPositionX() / 40, Vec2(0, this->getPositionY()));
+	_moveWayAction = MoveTo::create(this->getPositionX() / zombieSpeed, Vec2(0, this->getPositionY()));
 	return _moveWayAction;
 }
