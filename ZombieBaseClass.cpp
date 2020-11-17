@@ -5,8 +5,8 @@ ZombieBaseClass::ZombieBaseClass()
 	_normalZombieCache->addSpriteFramesWithFile("res/zombie.plist");
 	_boomDie1 = SpriteFrameCache::getInstance();
 	_boomDie1->addSpriteFramesWithFile("res/boomdie1.plist");
-	_flagZombieCache = SpriteFrameCache::getInstance();
-	_flagZombieCache->addSpriteFramesWithFile("res/flagzombie.plist");
+	_armedNormalZombieCache = SpriteFrameCache::getInstance();
+	_armedNormalZombieCache->addSpriteFramesWithFile("res/armednormalzombie.plist");
 }
 ZombieBaseClass::~ZombieBaseClass()
 {

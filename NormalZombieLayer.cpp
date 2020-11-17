@@ -24,8 +24,30 @@ bool NormalZombieLayer::init()
 
 void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 {
+
+	int _zombieDollar = 0;
 	//创建一个静态僵尸，为被种下时
-	Sprite* _normalZombieStatic = Sprite::create("res/ZombieStatic.png");
+	Sprite* _normalZombieStatic;
+	if (zombieName == "NormalZombie")
+	{
+		_normalZombieStatic = Sprite::create("res/ZombieStatic.png");
+		_zombieDollar = 100;
+	}
+	else if (zombieName == "FlagZombie")
+	{
+		_normalZombieStatic = Sprite::create("res/FlagZombieStatic.png");
+		_zombieDollar = 120;
+	}
+	else if (zombieName == "ConeheadZombie")
+	{
+		_normalZombieStatic = Sprite::create("res/ConeheadZombieStatic.png");
+		_zombieDollar = 150;
+	}
+	else if (zombieName == "BucketheadZombie")
+	{
+		_normalZombieStatic = Sprite::create("res/BucketheadZombieStatic.png");
+		_zombieDollar = 175;
+	}
 	_normalZombieStatic->setPosition(touch->getLocation());
 	this->addChild(_normalZombieStatic);
 
@@ -64,10 +86,23 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
 			_zombieVector.pushBack(this->_normalZombieSprite);
 
+			
+
+
 			this->_normalZombieSprite->setPosition(x, y + 20);
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个僵尸消耗100金币
-			this->_normalZombieSprite->zombieMoveWay();
+				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - _zombieDollar;//每产生一个僵尸消耗100金币
+			//此处需要用runaction，否则没有僵尸图像
+			if(zombieName == "NormalZombie")
+				this->_normalZombieSprite->runAction(this->_normalZombieSprite->normalZombieWalkAnimation());
+			else if (zombieName == "FlagZombie")
+				this->_normalZombieSprite->runAction(this->_normalZombieSprite->flagZombieWalkAnimation());
+			else if (zombieName == "ConeheadZombie")
+				this->_normalZombieSprite->runAction(this->_normalZombieSprite->coneheadZombieWalkAnimation());
+			else if (zombieName == "BucketheadZombie")
+				this->_normalZombieSprite->runAction(this->_normalZombieSprite->bucketheadZombieWalkAnimation());
+			this->_normalZombieSprite->_zombieName = zombieName;
+			this->_normalZombieSprite->runAction(this->_normalZombieSprite->zombieMoveWay());
 		}
 		else
 		{
@@ -86,7 +121,10 @@ void NormalZombieLayer::diedNormalZombie()
 		if ((*i)->_hp == (*i)->noHeadHp)//此时僵尸头掉了
 		{
 			(*i)->stopAllActions();
-			(*i)->runAction((*i)->noHeadWalkAnimation());
+			if((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+				(*i)->runAction((*i)->normalZombieNoHeadWalkAnimation());
+			else if((*i)->_zombieName == "FlagZombie")
+				(*i)->runAction((*i)->flagZombieNoHeadWalkAnimation());
 			(*i)->runAction((*i)->zombieMoveWay());
 			//(*i)->runAction(Spawn::create((*i)->noHeadAnimation(),(*i)->normalZombieMoveWay(), NULL));
 			tmpSprite = Sprite::create();
@@ -157,11 +195,21 @@ void NormalZombieLayer::normalZombieAttackPlant()
 						(*i)->stopAllActions();
 						if ((*i)->_hp > (*i)->noHeadHp)
 						{
-							(*i)->runAction((*i)->attackAnimation());
+							if((*i)->_zombieName == "NormalZombie")
+								(*i)->runAction((*i)->normalZombieAttackAnimation());
+							else if((*i)->_zombieName == "FlagZombie")
+								(*i)->runAction((*i)->flagZombieAttackAnimation());
+							else if ((*i)->_zombieName == "ConeheadZombie")
+								(*i)->runAction((*i)->coneheadZombieAttackAnimation());
+							else if ((*i)->_zombieName == "BucketheadZombie")
+								(*i)->runAction((*i)->bucketheadZombieAttackAnimation());
 						}
 						else
 						{
-							(*i)->runAction((*i)->zombieLostHeadAttackAnimation());
+							if ((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+								(*i)->runAction((*i)->normalZombieLostHeadAttackAnimation());
+							else if ((*i)->_zombieName == "FlagZombie")
+								(*i)->runAction((*i)->flagZombieLostHeadAttackAnimation());
 						}
 					}
 				}
@@ -180,11 +228,21 @@ void NormalZombieLayer::normalZombieAttackPlant()
 				(*i)->stopAllActions();
 				if ((*i)->_hp > (*i)->noHeadHp)
 				{
-					(*i)->runAction((*i)->walkAnimation());//11/16修改了此处，没必要用repeatforever create
+					if ((*i)->_zombieName == "NormalZombie")
+						(*i)->runAction((*i)->normalZombieWalkAnimation());//11/16修改了此处，没必要用repeatforever create
+					else if ((*i)->_zombieName == "FlagZombie")
+						(*i)->runAction((*i)->flagZombieWalkAnimation());
+					else if ((*i)->_zombieName == "ConeheadZombie")
+						(*i)->runAction((*i)->coneheadZombieWalkAnimation());
+					else if ((*i)->_zombieName == "BucketheadZombie")
+						(*i)->runAction((*i)->bucketheadZombieWalkAnimation());
 				}
 				else
 				{
-					(*i)->runAction((*i)->noHeadWalkAnimation());
+					if ((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+						(*i)->runAction((*i)->normalZombieNoHeadWalkAnimation());
+					else if ((*i)->_zombieName == "FlagZombie")
+						(*i)->runAction((*i)->flagZombieNoHeadWalkAnimation());
 				}
 				(*i)->runAction((*i)->zombieMoveWay());
 			}

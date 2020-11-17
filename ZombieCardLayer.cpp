@@ -28,9 +28,23 @@ bool ZombieCardLayer::init()
 
 void ZombieCardLayer::initZombieCardSprite()
 {
-	auto peaShooterCard = Sprite::create("res/NormalZombie.png");
-	peaShooterCard->setPosition(Vec2(1298, 557));
-	peaShooterCard->setName("NormalZombieCard");
-	this->addChild(peaShooterCard);
+	auto normalZombieCard = Sprite::create("res/NormalZombie.png");
+	normalZombieCard->setPosition(Vec2(1298, 557));
+	normalZombieCard->setName("NormalZombieCard");
+	this->addChild(normalZombieCard);
 
+	auto flagZombieCard = Sprite::create("res/FlagZombieCard.png");
+	flagZombieCard->setPosition(Vec2(1298 - 50, 557));
+	flagZombieCard->setName("FlagZombieCard");
+	this->addChild(flagZombieCard);
+
+	auto coneheadZombieCard = Sprite::create("res/ConeheadZombieCard.png");
+	coneheadZombieCard->setPosition(Vec2(1298 - 100, 557));
+	coneheadZombieCard->setName("ConeheadZombieCard");
+	this->addChild(coneheadZombieCard);
+
+	auto bucketheadZombieCard = Sprite::create("res/BucketheadZombieCard.png");
+	bucketheadZombieCard->setPosition(Vec2(1298 - 150, 557));
+	bucketheadZombieCard->setName("BucketheadZombieCard");
+	this->addChild(bucketheadZombieCard);
 }

@@ -56,7 +56,19 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 	//{
 		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("NormalZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
 		{
-			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch);
+			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "NormalZombie");
+		}
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("FlagZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "FlagZombie");
+		}
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("ConeheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "ConeheadZombie");
+		}
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("BucketheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "BucketheadZombie");
 		}
 	//}
 	return true;
