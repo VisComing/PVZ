@@ -140,7 +140,8 @@ void NormalZombieLayer::diedNormalZombie()
 {
 	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end();)
 	{
-		if ((*i)->_hp == (*i)->noHeadHp)//此时僵尸头掉了
+		//注意此时僵尸掉头的值，一定是离散的值，不能用小于等于、大于等于
+		if ((*i)->_hp == 20 || (*i)->_hp == 10 || (*i)->_hp == 15)//此时僵尸头掉了
 		{
 			(*i)->stopAllActions();
 			if((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
@@ -149,13 +150,16 @@ void NormalZombieLayer::diedNormalZombie()
 				(*i)->runAction((*i)->flagZombieNoHeadWalkAnimation());
 			(*i)->runAction((*i)->zombieMoveWay((*i)->zombieSpeed));
 			//(*i)->runAction(Spawn::create((*i)->noHeadAnimation(),(*i)->normalZombieMoveWay(), NULL));
-			tmpSprite = Sprite::create();
+			auto tmpSprite = Sprite::create();
 			this->addChild(tmpSprite);
 			tmpSprite->setPosition((*i)->getPosition());
+			tmpSprite->setPositionX(tmpSprite->getPositionX() + 35);
+
+			//注意，为了使僵尸只掉一次头，这里把僵尸的血量减一
 			(*i)->_hp -= 1;
 			//tmpSprite->runAction((*i)->headAnimation());
 			tmpSprite->runAction(Sequence::createWithTwoActions((*i)
-				->headAnimation(), CallFunc::create([this]() {
+				->headAnimation(), CallFunc::create([tmpSprite]() {
 						tmpSprite->removeFromParent(); 
 					})));
 		}

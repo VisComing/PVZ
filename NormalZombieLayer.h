@@ -19,5 +19,5 @@ public:
 	void diedNormalZombie();
 	void normalZombieAttackPlant();
 	virtual void update(float dt);
-	Sprite* tmpSprite;
+	//Sprite* tmpSprite;
 };
