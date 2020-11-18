@@ -14,4 +14,5 @@ public:
 	int _dollar;
 	string _dollarStr;
 	Label* _dollarLabel;
+	virtual void update(float dt);
 };

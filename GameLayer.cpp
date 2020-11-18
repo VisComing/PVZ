@@ -10,7 +10,7 @@ bool GameLayer::init()
 	
 	
 
-	scheduleUpdate();//监听一切活动/变化
+	//scheduleUpdate();//监听一切活动/变化
 	this->initCardLayer();
 	if (isSinglePlayerGameMode == false)
 	{
@@ -32,7 +32,9 @@ bool GameLayer::init()
 	if (isSinglePlayerGameMode == true)
 	{
 		this->initGameController();
+		this->showSinglePlayerGameFont();
 	}
+
 	return true;
 }
 
@@ -64,15 +66,15 @@ void GameLayer::initDollarDisplayerLayer()
 	this->addChild(this->_dollarDisplayLayer);
 }
 //在每一个层中执行update？
-void GameLayer::update(float dlt)//每一帧都会执行一次
-{
-	//监听金币变化
-	this->_dollarDisplayLayer->_dollarStr = StringUtils::format("%d", this->_dollarDisplayLayer->_dollar);
-	this->_dollarDisplayLayer->_dollarLabel->setString(this->_dollarDisplayLayer->_dollarStr);
-
-	//this->_boundingLayer->bulletBoundingZombie();//子弹碰撞僵尸，对僵尸造成伤害
-	//this->_boundingLayer->zombieEatPlant();//僵尸吃植物
-}
+//void GameLayer::update(float dlt)//每一帧都会执行一次
+//{
+//	//监听金币变化
+//	this->_dollarDisplayLayer->_dollarStr = StringUtils::format("%d", this->_dollarDisplayLayer->_dollar);
+//	this->_dollarDisplayLayer->_dollarLabel->setString(this->_dollarDisplayLayer->_dollarStr);
+//
+//	//this->_boundingLayer->bulletBoundingZombie();//子弹碰撞僵尸，对僵尸造成伤害
+//	//this->_boundingLayer->zombieEatPlant();//僵尸吃植物
+//}
 
 //初始化太阳因子层
 void GameLayer::initSunCellLayer()
@@ -153,4 +155,9 @@ void GameLayer::initGameController()
 {
 	_gameController = GameController::create();
 	this->addChild(this->_gameController);
+}
+
+void GameLayer::showSinglePlayerGameFont()
+{
+	//Sleep(10000);
 }

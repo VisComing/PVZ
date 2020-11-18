@@ -17,6 +17,7 @@ bool DollarDisplayLayer::init()
 	{
 		return false;
 	}
+	scheduleUpdate();
 	this->displayDollarLable();
 
 	
@@ -43,4 +44,10 @@ void DollarDisplayLayer::displayDollarLable()
 	}
 		
 	this->_dollarLabel->setColor(Color3B(0, 0, 0));
+}
+
+void DollarDisplayLayer::update(float dt)
+{
+	this->_dollarStr = StringUtils::format("%d", this->_dollar);
+	this->_dollarLabel->setString(this->_dollarStr);
 }

@@ -25,7 +25,7 @@ public:
 	GameLayer();
 	~GameLayer();
 	void initDollarDisplayerLayer();
-	virtual void update(float dt);//监听所有变化的事物,每一帧都会执行该函数
+	//virtual void update(float dt);//监听所有变化的事物,每一帧都会执行该函数
 	SunCellLayer* _sunCellLayer;
 	void initSunCellLayer();
 	Sprite* _bgSprite;
@@ -63,4 +63,6 @@ public:
 
 	GameController* _gameController;
 	void initGameController();
+
+	void showSinglePlayerGameFont();
 };

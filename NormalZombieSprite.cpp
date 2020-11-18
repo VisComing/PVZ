@@ -170,4 +170,3 @@ RepeatForever * NormalZombieSprite::bucketheadZombieAttackAnimation()
 }
 
 
-
