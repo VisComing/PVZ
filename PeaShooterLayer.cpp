@@ -5,6 +5,7 @@ extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 PeaShooterLayer::PeaShooterLayer()
 {
+	this->shadowTag = 0;
 	this->_peaShooterSprite = NULL;
 }
 
@@ -46,6 +47,9 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_peaShooterStatic);
 		this->removeChild(_peaShooterStaticShadow);
+		Sprite* shadow = Sprite::create("res/plantshadow.png");
+		this->addChild(shadow);
+		shadow->setTag(++(this->shadowTag));
 		//判断种豌豆射手位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
@@ -54,7 +58,7 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 				//精灵被种下，创建动图精灵
 				this->_peaShooterSprite = PeaShooterSprite::create();
 				this->addChild(_peaShooterSprite);
-
+				this->_peaShooterSprite->_peaShooterSpriteTag = this->shadowTag;
 				this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
 				_plantVector.pushBack(this->_peaShooterSprite);
 				
@@ -63,6 +67,7 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 				//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_peaShooterSprite->setPosition(x, y);
+				shadow->setPosition(x - 5, y - 27);
 				this->_peaShooterSprite->_position[0] = (x - 200) / 90;
 				this->_peaShooterSprite->_position[1] = y / 100;
 				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
@@ -95,6 +100,7 @@ void PeaShooterLayer::diedPeaShooter()
 					break;
 				}
 			}
+			this->removeChildByTag((*i)->_peaShooterSpriteTag);
 			(*i)->removeFromParent();
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 			i = _peaShooterVector.erase(i);

@@ -14,4 +14,5 @@ public:
 	Vector<SpriteFrame*> images;
 	int _potatoMineTime;
 	const int _potatoMineGrowTime = 10;
+	int _potatoMineSpriteTag;
 };

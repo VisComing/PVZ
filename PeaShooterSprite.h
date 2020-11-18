@@ -10,5 +10,5 @@ public:
 	PeaShooterSprite();
 	~PeaShooterSprite();
 	virtual bool init();
-
+	int _peaShooterSpriteTag;
 };

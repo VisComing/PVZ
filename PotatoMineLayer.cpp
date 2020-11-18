@@ -4,6 +4,7 @@ extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 PotatoMineLayer::PotatoMineLayer()
 {
+	this->shadowTag = 0;
 	this->_potatoMineSprite = NULL;
 }
 
@@ -46,6 +47,9 @@ void PotatoMineLayer::initPotatoMineSprite(Touch *touch)
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_potatoMineStatic);
 		this->removeChild(_potatoMineStaticShadow);
+		Sprite* shadow = Sprite::create("res/plantshadow.png");
+		this->addChild(shadow);
+		shadow->setTag(++(this->shadowTag));
 		//判断种下位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
@@ -54,12 +58,13 @@ void PotatoMineLayer::initPotatoMineSprite(Touch *touch)
 				//精灵被种下，创建一个土豆地雷
 				this->_potatoMineSprite = PotatoMineSprite::create();
 				this->addChild(_potatoMineSprite);
-
+				this->_potatoMineSprite->_potatoMineSpriteTag = this->shadowTag;
 				this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
 				_plantVector.pushBack(this->_potatoMineSprite);
 
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_potatoMineSprite->setPosition(x, y);//设置位置
+				shadow->setPosition(x, y - 20);
 				this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
 				this->_potatoMineSprite->_position[1] = y / 100;
 				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
@@ -151,6 +156,7 @@ void PotatoMineLayer::diedPotatoMine()
 			}
 			
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			this->removeChildByTag((*i)->_potatoMineSpriteTag);
 			(*i)->removeFromParent();
 			i = _potatoMineVector.erase(i);
 		}

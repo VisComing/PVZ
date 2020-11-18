@@ -244,7 +244,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 					if ((*i)->getNumberOfRunningActions() != 1)
 					{
 						(*i)->stopAllActions();
-						if ((*i)->_hp > (*i)->noHeadHp)
+						if ((*i)->_hp >= 20)//注意掉头时的血量2020/11/18
 						{
 							if((*i)->_zombieName == "NormalZombie")
 								(*i)->runAction((*i)->normalZombieAttackAnimation());
@@ -277,7 +277,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 			if ((*i)->getNumberOfRunningActions() == 1 && flag == false)
 			{
 				(*i)->stopAllActions();
-				if ((*i)->_hp > (*i)->noHeadHp)
+				if ((*i)->_hp > 20)//注意僵尸掉头时的血量，2020/11/18
 				{
 					if ((*i)->_zombieName == "NormalZombie")
 						(*i)->runAction((*i)->normalZombieWalkAnimation());//11/16修改了此处，没必要用repeatforever create

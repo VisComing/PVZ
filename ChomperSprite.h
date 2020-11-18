@@ -21,4 +21,5 @@ public:
 	Rect _chomperRect;
 	int _ateTime;
 	const int _ateDownTime = 500;
+	int _chomperSpriteTag;
 };

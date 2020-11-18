@@ -16,4 +16,5 @@ public:
 	void diedChomper();
 	virtual void update(float dt);
 	Vector<ChomperSprite*> _chomperVector;
+	int shadowTag;
 };

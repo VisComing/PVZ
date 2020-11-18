@@ -19,4 +19,5 @@ public:
 	void diedPotatoMine();
 	virtual void update(float dt);
 	//vector<int> _potatoMineTime;//该地雷已经被种下的时间，每隔0.1秒加一
+	int shadowTag;
 };

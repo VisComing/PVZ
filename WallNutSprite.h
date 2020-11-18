@@ -14,4 +14,5 @@ public:
 	RepeatForever * wallNutCracked1Action;
 	RepeatForever * wallNutCracked2();
 	RepeatForever * wallNutCracked2Action;
+	int _wallNutSpriteTag;//表明该精灵的编号
 };

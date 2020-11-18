@@ -6,6 +6,7 @@ extern Vector<ZombieBaseClass*> _zombieVector;
 
 ChomperLayer::ChomperLayer()
 {
+	this->shadowTag = 0;
 	this->_chomperSprite = NULL;
 }
 
@@ -49,6 +50,9 @@ void ChomperLayer::initChomperSprite(Touch * touch)
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_chomperStatic);
 		this->removeChild(_chomperStaticShadow);
+		Sprite* shadow = Sprite::create("res/plantshadow.png");
+		this->addChild(shadow);
+		shadow->setTag(++(this->shadowTag));
 		//判断种坚果墙位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
@@ -57,7 +61,7 @@ void ChomperLayer::initChomperSprite(Touch * touch)
 			//精灵被种下，创建动图精灵
 			this->_chomperSprite = ChomperSprite::create();
 			this->addChild(_chomperSprite);
-
+			this->_chomperSprite->_chomperSpriteTag = this->shadowTag;
 			this->_chomperVector.pushBack(this->_chomperSprite);//将精灵添加到数组中
 			_plantVector.pushBack(this->_chomperSprite);
 
@@ -66,6 +70,7 @@ void ChomperLayer::initChomperSprite(Touch * touch)
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_chomperSprite->setPosition(x + 10, y + 20);
+			shadow->setPosition(x - 20, y - 33);
 			this->_chomperSprite->_position[0] = (x - 200) / 90;
 			this->_chomperSprite->_position[1] = y / 100;
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
@@ -154,6 +159,7 @@ void ChomperLayer::diedChomper()
 			}
 
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			this->removeChildByTag((*i)->_chomperSpriteTag);
 			(*i)->removeFromParent();
 			i = _chomperVector.erase(i);
 		}

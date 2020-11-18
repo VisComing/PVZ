@@ -15,4 +15,5 @@ public:
 	void diedWallNut();
 	virtual void update(float dt);
 	Vector<WallNutSprite*> _wallNutVector;
+	int shadowTag;
 };

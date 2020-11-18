@@ -5,6 +5,7 @@ extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 WallNutLayer::WallNutLayer()
 {
+	this->shadowTag = 0;
 	this->_wallNutSprite = NULL;
 }
 
@@ -46,6 +47,9 @@ void WallNutLayer::initWallNutSprite(Touch * touch)
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_wallNutStatic);
 		this->removeChild(_wallNutStaticShadow);
+		Sprite* shadow = Sprite::create("res/plantshadow.png");
+		this->addChild(shadow);
+		shadow->setTag(++(this->shadowTag));
 		//判断种坚果墙位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
@@ -54,7 +58,7 @@ void WallNutLayer::initWallNutSprite(Touch * touch)
 			//精灵被种下，创建动图精灵
 			this->_wallNutSprite = WallNutSprite::create();
 			this->addChild(_wallNutSprite);
-
+			this->_wallNutSprite->_wallNutSpriteTag = this->shadowTag;
 			this->_wallNutVector.pushBack(this->_wallNutSprite);//将精灵添加到数组中
 			_plantVector.pushBack(this->_wallNutSprite);
 
@@ -63,6 +67,7 @@ void WallNutLayer::initWallNutSprite(Touch * touch)
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_wallNutSprite->setPosition(x, y);
+			shadow->setPosition(x, y - 30);
 			this->_wallNutSprite->_position[0] = (x - 200) / 90;
 			this->_wallNutSprite->_position[1] = y / 100;
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
@@ -105,7 +110,9 @@ void WallNutLayer::diedWallNut()
 			}
 
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			this->removeChildByTag((*i)->_wallNutSpriteTag);
 			(*i)->removeFromParent();
+			
 			i = _wallNutVector.erase(i);
 		}
 		else
