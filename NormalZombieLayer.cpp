@@ -59,7 +59,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 		return true;
 	};
 	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
-	lis->onMouseUp = [=](EventMouse* e) {
+	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_normalZombieStatic);
 
 		//判断中僵尸位置是否合法
@@ -91,7 +91,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 
 			this->_normalZombieSprite->setPosition(x, y + 20);
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - _zombieDollar;//每产生一个僵尸消耗100金币
+				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - _zombieDollar;//每产生一个僵尸消耗金币
 			//此处需要用runaction，否则没有僵尸图像
 
 			//在此处修改僵尸移速，僵尸血量，僵尸价格
@@ -153,6 +153,7 @@ void NormalZombieLayer::diedNormalZombie()
 			auto tmpSprite = Sprite::create();
 			this->addChild(tmpSprite);
 			tmpSprite->setPosition((*i)->getPosition());
+			//让掉头的动作靠前一点，更显得真实
 			tmpSprite->setPositionX(tmpSprite->getPositionX() + 35);
 
 			//注意，为了使僵尸只掉一次头，这里把僵尸的血量减一

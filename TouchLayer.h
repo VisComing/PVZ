@@ -11,7 +11,7 @@ public:
 	virtual bool init();
 
 	bool onTouchBegan(Touch*, Event*);
-	//void onTouchEnded(Touch*, Event*);
+	void onTouchEnded(Touch*, Event*);
 	bool _isCreatePeaShooter;
 
 	//SpriteFrameCache* _bulletCache;

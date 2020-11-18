@@ -93,7 +93,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 						}
 						else
 						{
-							//½©Ê¬¿¨Ñô¹Ø´¦
+							//½©Ê¬¿¨Ñô¹â´¦
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(1359, 525));
 						}
 						node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
