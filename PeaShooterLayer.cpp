@@ -26,19 +26,26 @@ void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
 {	
 	//创建一个静态的精灵，未被种下时
 	Sprite* _peaShooterStatic = Sprite::create("res/PeashooterStatic.png");
+	Sprite* _peaShooterStaticShadow = Sprite::create("res/PeashooterStatic.png");
 	_peaShooterStatic->setPosition(touch->getLocation());
+	_peaShooterStaticShadow->setOpacity(150);
+	this->addChild(_peaShooterStaticShadow);
 	this->addChild(_peaShooterStatic);
 
 	auto lis = EventListenerMouse::create();
 	//鼠标移动，则精灵跟着移动
 	lis->onMouseMove = [=](EventMouse* e) {
 		_peaShooterStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		_peaShooterStaticShadow->setPosition(x, y);
 		return true;
 	};
 	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
-	lis->onMouseUp = [=](EventMouse* e) {
+	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_peaShooterStatic);
-
+		this->removeChild(_peaShooterStaticShadow);
 		//判断种豌豆射手位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;

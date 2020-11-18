@@ -28,40 +28,64 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 	int _zombieDollar = 0;
 	//创建一个静态僵尸，为被种下时
 	Sprite* _normalZombieStatic;
+	Sprite* _normalZombieStaticShadow;
 	if (zombieName == "NormalZombie")
 	{
 		_normalZombieStatic = Sprite::create("res/ZombieStatic.png");
+		_normalZombieStaticShadow = Sprite::create("res/ZombieStatic.png");
 		_zombieDollar = 100;
 	}
 	else if (zombieName == "FlagZombie")
 	{
 		_normalZombieStatic = Sprite::create("res/FlagZombieStatic.png");
+		_normalZombieStaticShadow = Sprite::create("res/FlagZombieStatic.png");
 		_zombieDollar = 120;
 	}
 	else if (zombieName == "ConeheadZombie")
 	{
 		_normalZombieStatic = Sprite::create("res/ConeheadZombieStatic.png");
+		_normalZombieStaticShadow = Sprite::create("res/ConeheadZombieStatic.png");
 		_zombieDollar = 150;
 	}
 	else if (zombieName == "BucketheadZombie")
 	{
 		_normalZombieStatic = Sprite::create("res/BucketheadZombieStatic.png");
+		_normalZombieStaticShadow = Sprite::create("res/BucketheadZombieStatic.png");
 		_zombieDollar = 175;
 	}
 	_normalZombieStatic->setPosition(touch->getLocation());
+	_normalZombieStaticShadow->setOpacity(180);
+	this->addChild(_normalZombieStaticShadow);
 	this->addChild(_normalZombieStatic);
-
+	
 	
 	auto lis = EventListenerMouse::create();
 	//鼠标移动，则精灵跟着移动
 	lis->onMouseMove = [=](EventMouse* e) {
 		_normalZombieStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		if ((x > 995 && x < 1100) && (y < 510 && y > 30))
+		{
+			x = 1045;
+			if (y > 30 && y < 129)
+				y = 80;
+			else if (y < 219)
+				y = 175;
+			else if (y < 320)
+				y = 274;
+			else if (y < 419)
+				y = 375;
+			else if (y < 510)
+				y = 475;
+		}
+		_normalZombieStaticShadow->setPosition(x, y);
 		return true;
 	};
 	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_normalZombieStatic);
-
+		this->removeChild(_normalZombieStaticShadow);
 		//判断中僵尸位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
@@ -217,7 +241,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 				if ((*j)->plantBounding().intersectsRect((*i)->zombieBounding()))//如果碰撞
 				{
 					(*j)->_plantHP -= 1;
-					if ((*i)->numberOfRunningActions() != 1)
+					if ((*i)->getNumberOfRunningActions() != 1)
 					{
 						(*i)->stopAllActions();
 						if ((*i)->_hp > (*i)->noHeadHp)
@@ -250,7 +274,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 					break;
 				}
 			}
-			if ((*i)->numberOfRunningActions() == 1 && flag == false)
+			if ((*i)->getNumberOfRunningActions() == 1 && flag == false)
 			{
 				(*i)->stopAllActions();
 				if ((*i)->_hp > (*i)->noHeadHp)

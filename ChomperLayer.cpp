@@ -27,19 +27,28 @@ void ChomperLayer::initChomperSprite(Touch * touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _chomperStatic = Sprite::create("res/ChomperStatic.png");
+	Sprite* _chomperStaticShadow = Sprite::create("res/ChomperStatic.png");
 	_chomperStatic->setPosition(touch->getLocation());
+	_chomperStaticShadow->setOpacity(150);
+	this->addChild(_chomperStaticShadow);
 	this->addChild(_chomperStatic);
+	
 
 	auto lis = EventListenerMouse::create();
 	//鼠标移动，则精灵跟着移动
 	lis->onMouseMove = [=](EventMouse* e) {
 		_chomperStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		
+		_chomperStaticShadow->setPosition(x, y);
 		return true;
 	};
 	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
-	lis->onMouseUp = [=](EventMouse* e) {
+	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_chomperStatic);
-
+		this->removeChild(_chomperStaticShadow);
 		//判断种坚果墙位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;

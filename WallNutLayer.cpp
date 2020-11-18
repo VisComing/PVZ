@@ -26,19 +26,26 @@ void WallNutLayer::initWallNutSprite(Touch * touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _wallNutStatic = Sprite::create("res/WallNutStatic.png");
+	Sprite* _wallNutStaticShadow = Sprite::create("res/WallNutStatic.png");
+	_wallNutStaticShadow->setOpacity(150);
 	_wallNutStatic->setPosition(touch->getLocation());
+	this->addChild(_wallNutStaticShadow);
 	this->addChild(_wallNutStatic);
 
 	auto lis = EventListenerMouse::create();
 	//鼠标移动，则精灵跟着移动
 	lis->onMouseMove = [=](EventMouse* e) {
 		_wallNutStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		_wallNutStaticShadow->setPosition(x, y);
 		return true;
 	};
 	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
-	lis->onMouseUp = [=](EventMouse* e) {
+	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_wallNutStatic);
-
+		this->removeChild(_wallNutStaticShadow);
 		//判断种坚果墙位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;

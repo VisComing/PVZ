@@ -25,20 +25,27 @@ void PotatoMineLayer::initPotatoMineSprite(Touch *touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _potatoMineStatic = Sprite::create("res/PotatoMineStatic.png");
+	Sprite* _potatoMineStaticShadow = Sprite::create("res/PotatoMineStatic.png");
+	_potatoMineStaticShadow->setOpacity(150);
 	_potatoMineStatic->setPosition(touch->getLocation());
+	this->addChild(_potatoMineStaticShadow);
 	this->addChild(_potatoMineStatic);
 
 	auto lis = EventListenerMouse::create();
 	//鼠标移动，则精灵跟着移动
 	lis->onMouseMove = [=](EventMouse* e) {
 		_potatoMineStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		_potatoMineStaticShadow->setPosition(x, y);
 		return true;
 	};
 
 	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
-	lis->onMouseUp = [=](EventMouse* e) {
+	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_potatoMineStatic);
-
+		this->removeChild(_potatoMineStaticShadow);
 		//判断种下位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
