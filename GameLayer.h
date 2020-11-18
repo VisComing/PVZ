@@ -14,6 +14,7 @@
 #include "WallNutLayer.h"
 #include "ChomperLayer.h"
 #include "GameController.h"
+#include "ShowSloganLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -64,5 +65,6 @@ public:
 	GameController* _gameController;
 	void initGameController();
 
-	void showSinglePlayerGameFont();
+	ShowSloganLayer* _showSloganLayer;
+	void initShowSloganLayer();
 };

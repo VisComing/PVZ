@@ -32,7 +32,7 @@ bool GameLayer::init()
 	if (isSinglePlayerGameMode == true)
 	{
 		this->initGameController();
-		this->showSinglePlayerGameFont();
+		this->initShowSloganLayer();
 	}
 
 	return true;
@@ -157,7 +157,9 @@ void GameLayer::initGameController()
 	this->addChild(this->_gameController);
 }
 
-void GameLayer::showSinglePlayerGameFont()
+void GameLayer::initShowSloganLayer()
 {
-	//Sleep(10000);
+	_showSloganLayer = ShowSloganLayer::create();
+	this->addChild(this->_showSloganLayer);
 }
+
