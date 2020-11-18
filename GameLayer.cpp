@@ -1,5 +1,5 @@
 #include "GameLayer.h"
-
+#include "global.h"
 bool GameLayer::init()
 {
 	if (!Layer::init())
@@ -11,10 +11,11 @@ bool GameLayer::init()
 	
 
 	scheduleUpdate();//监听一切活动/变化
-	
-	
 	this->initCardLayer();
-	this->initZombieCardLayer();
+	if (isSinglePlayerGameMode == false)
+	{
+		this->initZombieCardLayer();
+	}
 	this->initTouchLayer();
 	
 	this->initDollarDisplayerLayer();//初始化金币展示板
@@ -28,6 +29,10 @@ bool GameLayer::init()
 	this->initBulletLayer();//子弹层  在最上面一层
 	this->initNormalZombieLayer();
 	this->initSunCellLayer();//阳光下落
+	if (isSinglePlayerGameMode == true)
+	{
+		this->initGameController();
+	}
 	return true;
 }
 
@@ -142,4 +147,10 @@ void GameLayer::initChomperLayer()
 {
 	this->_chomperLayer = ChomperLayer::create();
 	this->addChild(this->_chomperLayer);
+}
+
+void GameLayer::initGameController()
+{
+	_gameController = GameController::create();
+	this->addChild(this->_gameController);
 }

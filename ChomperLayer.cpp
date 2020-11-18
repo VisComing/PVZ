@@ -24,12 +24,12 @@ bool ChomperLayer::init()
 	return true;
 }
 
-void ChomperLayer::initChomperSprite(Touch * touch)
+void ChomperLayer::initChomperSprite(Vec2 touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _chomperStatic = Sprite::create("res/ChomperStatic.png");
 	Sprite* _chomperStaticShadow = Sprite::create("res/ChomperStatic.png");
-	_chomperStatic->setPosition(touch->getLocation());
+	_chomperStatic->setPosition(touch);
 	_chomperStaticShadow->setOpacity(150);
 	this->addChild(_chomperStaticShadow);
 	this->addChild(_chomperStatic);
@@ -122,7 +122,7 @@ void ChomperLayer::chomperAttackZombie()
 						NULL));*/
 					(*i)->runAction(Sequence::create((*i)
 						->chomperAttack(), CallFunc::create([tmp]() {
-							tmp->_hp -= 200;
+							tmp->_hp -= 500;
 							tmp->removeFromParent();
 							
 							//_zombieVector.erase(a);

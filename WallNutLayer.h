@@ -11,7 +11,7 @@ public:
 	~WallNutLayer();
 	virtual bool init();
 	WallNutSprite* _wallNutSprite;
-	void initWallNutSprite(Touch*);//初始化豌豆射手，传一个触摸点给它
+	void initWallNutSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void diedWallNut();
 	virtual void update(float dt);
 	Vector<WallNutSprite*> _wallNutVector;

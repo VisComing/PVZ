@@ -25,7 +25,7 @@ Rect ZombieBaseClass::zombieBounding()
 	this->_zombieRect.origin.x = originRect.origin.x + 90;
 	this->_zombieRect.origin.y = originRect.origin.y + 20;
 	this->_zombieRect.size.width = originRect.size.width - 90;
-	this->_zombieRect.size.height = originRect.size.height - 50;
+	this->_zombieRect.size.height = originRect.size.height - 60;
 	return this->_zombieRect;
 }
 

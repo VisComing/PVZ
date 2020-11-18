@@ -13,7 +13,7 @@ public:
 	~PeaShooterLayer();
 	virtual bool init();
 	PeaShooterSprite* _peaShooterSprite;
-	void initPeaShooterSprite(Touch*);//初始化豌豆射手，传一个触摸点给它
+	void initPeaShooterSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void diedPeaShooter();
 	virtual void update(float dt);
 	Vector<PeaShooterSprite*> _peaShooterVector;

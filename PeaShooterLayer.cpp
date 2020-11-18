@@ -23,12 +23,12 @@ bool PeaShooterLayer::init()
 	return true;
 }
 
-void PeaShooterLayer::initPeaShooterSprite(Touch * touch)
+void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 {	
 	//创建一个静态的精灵，未被种下时
 	Sprite* _peaShooterStatic = Sprite::create("res/PeashooterStatic.png");
 	Sprite* _peaShooterStaticShadow = Sprite::create("res/PeashooterStatic.png");
-	_peaShooterStatic->setPosition(touch->getLocation());
+	_peaShooterStatic->setPosition(touch);
 	_peaShooterStaticShadow->setOpacity(150);
 	this->addChild(_peaShooterStaticShadow);
 	this->addChild(_peaShooterStatic);

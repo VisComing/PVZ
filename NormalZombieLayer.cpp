@@ -22,9 +22,9 @@ bool NormalZombieLayer::init()
 }
 
 
-void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
+void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 {
-
+	
 	int _zombieDollar = 0;
 	//创建一个静态僵尸，为被种下时
 	Sprite* _normalZombieStatic;
@@ -53,7 +53,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 		_normalZombieStaticShadow = Sprite::create("res/BucketheadZombieStatic.png");
 		_zombieDollar = 175;
 	}
-	_normalZombieStatic->setPosition(touch->getLocation());
+	_normalZombieStatic->setPosition(touch);
 	_normalZombieStaticShadow->setOpacity(180);
 	this->addChild(_normalZombieStaticShadow);
 	this->addChild(_normalZombieStatic);
@@ -104,7 +104,7 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 				y = 475;
 			//僵尸被种下，创建动图
 			this->_normalZombieSprite = NormalZombieSprite::create();
-			this->_normalZombieSprite->setPosition(touch->getLocation());
+			this->_normalZombieSprite->setPosition(touch);
 			this->addChild(_normalZombieSprite);
 
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
@@ -158,6 +158,56 @@ void NormalZombieLayer::initNormalZombieSprite(Touch* touch, string zombieName)
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+}
+
+void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
+{
+	this->_normalZombieSprite = NormalZombieSprite::create();
+	this->_normalZombieSprite->setPosition(position);
+	this->addChild(_normalZombieSprite);
+
+	this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
+	_zombieVector.pushBack(this->_normalZombieSprite);
+
+
+	int x = position.x;
+	int y = position.y;
+
+	this->_normalZombieSprite->setPosition(x, y + 20);
+	//此处需要用runaction，否则没有僵尸图像
+
+	//在此处修改僵尸移速，僵尸血量，僵尸价格
+	if (zombieName == "NormalZombie")
+	{
+		this->_normalZombieSprite->zombieMoney = 100;
+		this->_normalZombieSprite->runAction(this->_normalZombieSprite->normalZombieWalkAnimation());
+		this->_normalZombieSprite->zombieSpeed = 40;
+		this->_normalZombieSprite->_hp = 100;
+	}
+	else if (zombieName == "FlagZombie")
+	{
+		this->_normalZombieSprite->zombieMoney = 120;
+		this->_normalZombieSprite->runAction(this->_normalZombieSprite->flagZombieWalkAnimation());
+		this->_normalZombieSprite->zombieSpeed = 48;
+		this->_normalZombieSprite->_hp = 110;
+	}
+	else if (zombieName == "ConeheadZombie")
+	{
+		this->_normalZombieSprite->zombieMoney = 150;
+		this->_normalZombieSprite->runAction(this->_normalZombieSprite->coneheadZombieWalkAnimation());
+		this->_normalZombieSprite->zombieSpeed = 55;
+		this->_normalZombieSprite->_hp = 120;
+	}
+	else if (zombieName == "BucketheadZombie")
+	{
+		this->_normalZombieSprite->zombieMoney = 175;
+		this->_normalZombieSprite->runAction(this->_normalZombieSprite->bucketheadZombieWalkAnimation());
+		this->_normalZombieSprite->zombieSpeed = 62;
+		this->_normalZombieSprite->_hp = 130;
+	}
+	this->_normalZombieSprite->_zombieName = zombieName;
+	this->_normalZombieSprite->runAction(this->_normalZombieSprite->zombieMoveWay(this->_normalZombieSprite->zombieSpeed));
+
 }
 
 void NormalZombieLayer::diedNormalZombie()

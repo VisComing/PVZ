@@ -23,13 +23,13 @@ bool WallNutLayer::init()
 	return true;
 }
 
-void WallNutLayer::initWallNutSprite(Touch * touch)
+void WallNutLayer::initWallNutSprite(Vec2 touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _wallNutStatic = Sprite::create("res/WallNutStatic.png");
 	Sprite* _wallNutStaticShadow = Sprite::create("res/WallNutStatic.png");
 	_wallNutStaticShadow->setOpacity(150);
-	_wallNutStatic->setPosition(touch->getLocation());
+	_wallNutStatic->setPosition(touch);
 	this->addChild(_wallNutStaticShadow);
 	this->addChild(_wallNutStatic);
 

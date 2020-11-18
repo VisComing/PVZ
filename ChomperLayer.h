@@ -11,7 +11,7 @@ public:
 	~ChomperLayer();
 	virtual bool init();
 	ChomperSprite* _chomperSprite;
-	void initChomperSprite(Touch*);//初始化豌豆射手，传一个触摸点给它
+	void initChomperSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void chomperAttackZombie();
 	void diedChomper();
 	virtual void update(float dt);

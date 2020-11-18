@@ -4,7 +4,7 @@ extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 PotatoMineLayer::PotatoMineLayer()
 {
-	this->shadowTag = 0;
+	this->shadowTag = 20;
 	this->_potatoMineSprite = NULL;
 }
 
@@ -22,13 +22,13 @@ bool PotatoMineLayer::init()
 	return true;
 }
 
-void PotatoMineLayer::initPotatoMineSprite(Touch *touch)
+void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 {
 	//创建一个静态的精灵，未被种下时
 	Sprite* _potatoMineStatic = Sprite::create("res/PotatoMineStatic.png");
 	Sprite* _potatoMineStaticShadow = Sprite::create("res/PotatoMineStatic.png");
 	_potatoMineStaticShadow->setOpacity(150);
-	_potatoMineStatic->setPosition(touch->getLocation());
+	_potatoMineStatic->setPosition(touch);
 	this->addChild(_potatoMineStaticShadow);
 	this->addChild(_potatoMineStatic);
 
@@ -111,21 +111,22 @@ void PotatoMineLayer::potatoMineAttackZombie()
 					if ((*i)->plantBounding().intersectsRect((*j)->zombieBounding()))
 					{
 						_iFlag = true;
-						(*i)->removeFromParent();//将土豆地雷删除
+						(*i)->_plantHP -= 500;
+						//(*i)->removeFromParent();//将土豆地雷删除
 						((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 						
 						//在总植物的vector中也要删除
-						for (auto x = _plantVector.begin(); x != _plantVector.end(); x++)
+						/*for (auto x = _plantVector.begin(); x != _plantVector.end(); x++)
 						{
 							if ((*i) == (*x))
 							{
 								_plantVector.erase(x);
 								break;
 							}
-						}
-						(*j)->_hp -= 150;//僵尸扣血
+						}*/
+						(*j)->_hp -= 500;//僵尸扣血
 						(*j)->typeOfDeath = 1;
-						i = _potatoMineVector.erase(i);//删除土豆地雷
+						//i = _potatoMineVector.erase(i);//删除土豆地雷
 						break;
 					}
 					j++;

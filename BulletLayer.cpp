@@ -57,7 +57,13 @@ void BulletLayer::bulletMoveWay()
 	
 	FiniteTimeAction* bulletMove = MoveTo::create(time, Vec2(8 * visibleSize.width / 9,
 		this->_bulletSprite->getPositionY() + 15));
-	this->_bulletSprite->runAction(Sequence::create(bulletMove, CallFuncN::create(this, callfuncN_selector(BulletLayer::removeBullet)), NULL));
+	//this->_bulletSprite->runAction(Sequence::create(bulletMove, CallFuncN::create(this, callfuncN_selector(BulletLayer::removeBullet)), NULL));
+	auto tmp = this->_bulletSprite;
+	this->_bulletSprite->runAction(Sequence::createWithTwoActions(
+		bulletMove, CallFunc::create([tmp]() {
+			(tmp)->removeFromParent();//½«½©Ê¬É¾³ý
+			})));
+	
 }
 void BulletLayer::removeBullet(Node* pSend)
 {

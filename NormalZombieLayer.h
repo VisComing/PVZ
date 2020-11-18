@@ -12,12 +12,13 @@ public:
 	~NormalZombieLayer();
 	virtual bool init();
 	NormalZombieSprite* _normalZombieSprite;
-	void initNormalZombieSprite(Touch* touch, string zombieName = "");//初始化僵尸
+	void initNormalZombieSprite(Vec2 touch, string zombieName = "");//初始化僵尸
 	//void normalZombieMoveWay();//僵尸移动路线
 	//FiniteTimeAction* noHeadNormalZombieMoveWay();
 	Vector<NormalZombieSprite*> _normalZombieVector;
 	void diedNormalZombie();
 	void normalZombieAttackPlant();
 	virtual void update(float dt);
+	void autoInitZombie(string, Vec2);
 	//Sprite* tmpSprite;
 };

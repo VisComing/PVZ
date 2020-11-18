@@ -1,6 +1,7 @@
 #include "TouchLayer.h"
 #include "GameLayer.h"
 #include "GameScene.h"
+#include "global.h"
 extern bool _iAmPlantSideGolbalVariable;
 TouchLayer::TouchLayer()
 {
@@ -39,46 +40,49 @@ void TouchLayer::onTouchEnded(Touch* touch, Event* event)
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("PeaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
-				((GameLayer*)this->getParent())->_peaShooterLayer->initPeaShooterSprite(touch);
+				((GameLayer*)this->getParent())->_peaShooterLayer->initPeaShooterSprite(touch->getLocation());
 		}
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("PotatoMineCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 25)
-				((GameLayer*)this->getParent())->_potatoMineLayer->initPotatoMineSprite(touch);
+				((GameLayer*)this->getParent())->_potatoMineLayer->initPotatoMineSprite(touch->getLocation());
 		}
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("WallNutCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 50)
-				((GameLayer*)this->getParent())->_wallNutLayer->initWallNutSprite(touch);
+				((GameLayer*)this->getParent())->_wallNutLayer->initWallNutSprite(touch->getLocation());
 		}
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("ChomperCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
-				((GameLayer*)this->getParent())->_chomperLayer->initChomperSprite(touch);
+				((GameLayer*)this->getParent())->_chomperLayer->initChomperSprite(touch->getLocation());
 		}
 	//}
 	//我是僵尸方
 	//else
 	//{
-		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("NormalZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		if (isSinglePlayerGameMode == false)
 		{
-			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
-				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "NormalZombie");
-		}
-		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("FlagZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
-		{
-			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 120)
-				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "FlagZombie");
-		}
-		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("ConeheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
-		{
-			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
-				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "ConeheadZombie");
-		}
-		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("BucketheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
-		{
-			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 175)
-				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch, "BucketheadZombie");
+			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("NormalZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+			{
+				//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "NormalZombie");
+			}
+			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("FlagZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+			{
+				//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 120)
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "FlagZombie");
+			}
+			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("ConeheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+			{
+				//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "ConeheadZombie");
+			}
+			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("BucketheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+			{
+				//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 175)
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "BucketheadZombie");
+			}
 		}
 	//}
 	return;
