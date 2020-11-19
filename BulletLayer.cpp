@@ -1,6 +1,8 @@
 #include "BulletLayer.h"
 #include "GameLayer.h"
 #include "TouchLayer.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 extern Vector<ZombieBaseClass*> _zombieVector;
 BulletLayer::BulletLayer()
 {
@@ -84,6 +86,7 @@ void BulletLayer::bulletAttackZombie()
 		{
 			if ((*i)->getBoundingBox().intersectsRect((*j)->zombieBounding()))
 			{
+				SimpleAudioEngine::getInstance()->playEffect("res/music/bullet.wma");
 				_iFlag = true;
 				(*i)->removeFromParent();//½«×Óµ¯É¾³ý
 				i = _bulletVector.erase(i);//É¾³ý×Óµ¯

@@ -1,6 +1,8 @@
 #include "NormalZombieLayer.h"
 #include "GameLayer.h"
 #include "global.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 extern Vector<ZombieBaseClass*>_zombieVector;
 extern Vector<PlantBaseClass*> _plantVector;
 NormalZombieLayer::NormalZombieLayer()
@@ -111,8 +113,19 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
 			_zombieVector.pushBack(this->_normalZombieSprite);
 
-			
-
+			int _random = rand() % 6;
+			if(_random == 0)
+				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan.wma");
+			else if(_random == 1)
+				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan2.wma");
+			else if(_random == 2)
+				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan3.wma");
+			else if(_random == 3)
+				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan4.wma");
+			else if(_random == 4)
+				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan5.wma");
+			else
+				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan6.wma");
 
 			this->_normalZombieSprite->setPosition(x, y + 20);
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
@@ -166,7 +179,19 @@ void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
 	this->_normalZombieSprite = NormalZombieSprite::create();
 	this->_normalZombieSprite->setPosition(position);
 	this->addChild(_normalZombieSprite);
-
+	int _random = rand() % 6;
+	if (_random == 0)
+		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan.wma");
+	else if (_random == 1)
+		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan2.wma");
+	else if (_random == 2)
+		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan3.wma");
+	else if (_random == 3)
+		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan4.wma");
+	else if (_random == 4)
+		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan5.wma");
+	else
+		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan6.wma");
 	this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
 	_zombieVector.pushBack(this->_normalZombieSprite);
 
@@ -256,6 +281,7 @@ void NormalZombieLayer::diedNormalZombie()
 
 		if ((*i)->_hp <= 0)
 		{
+			(*i)->stopMusic();
 			//从全部僵尸数组中将其删除
 			for (auto j = _zombieVector.begin(); j != _zombieVector.end(); j++)
 			{
@@ -305,9 +331,11 @@ void NormalZombieLayer::normalZombieAttackPlant()
 			{
 				if ((*j)->plantBounding().intersectsRect((*i)->zombieBounding()))//如果碰撞
 				{
+					
 					(*j)->_plantHP -= 1;
 					if ((*i)->getNumberOfRunningActions() != 1)
 					{
+						(*i)->startMusic();
 						(*i)->stopAllActions();
 						if ((*i)->_hp >= 20)//注意掉头时的血量2020/11/18
 						{
@@ -341,6 +369,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 			}
 			if ((*i)->getNumberOfRunningActions() == 1 && flag == false)
 			{
+				(*i)->stopMusic();
 				(*i)->stopAllActions();
 				if ((*i)->_hp > 20)//注意僵尸掉头时的血量，2020/11/18
 				{

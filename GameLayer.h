@@ -15,6 +15,7 @@
 #include "ChomperLayer.h"
 #include "GameController.h"
 #include "ShowSloganLayer.h"
+#include "MusicLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -67,4 +68,7 @@ public:
 
 	ShowSloganLayer* _showSloganLayer;
 	void initShowSloganLayer();
+
+	MusicLayer* _musicLayer;
+	void initMusicLayer();
 };

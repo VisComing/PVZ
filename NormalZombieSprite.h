@@ -43,4 +43,7 @@ public:
 	RepeatForever* _bucketheadZombieAttackAction;
 	RepeatForever* bucketheadZombieAttackAnimation();//≥‘÷≤ŒÔ∂Øª≠
 
+	void startMusic();
+	void stopMusic();
+	unsigned int _effectMusicID;
 };

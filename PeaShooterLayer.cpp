@@ -61,7 +61,7 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 				this->_peaShooterSprite->_peaShooterSpriteTag = this->shadowTag;
 				this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
 				_plantVector.pushBack(this->_peaShooterSprite);
-				
+				this->_peaShooterSprite->startGrowPlantMusic();
 				this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
 				//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;

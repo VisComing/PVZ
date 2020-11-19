@@ -61,7 +61,7 @@ void WallNutLayer::initWallNutSprite(Vec2 touch)
 			this->_wallNutSprite->_wallNutSpriteTag = this->shadowTag;
 			this->_wallNutVector.pushBack(this->_wallNutSprite);//将精灵添加到数组中
 			_plantVector.pushBack(this->_wallNutSprite);
-
+			this->_wallNutSprite->startGrowPlantMusic();
 			//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;

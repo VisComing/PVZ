@@ -1,6 +1,8 @@
 #include "SunCellLayer.h"
 #include "GameLayer.h"
 #include "GameScene.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 extern bool _iAmPlantSideGolbalVariable;
 SunCellLayer::SunCellLayer()
 {
@@ -84,6 +86,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 					
 					if (SunCellSprite::getRect(node).containsPoint(point))
 					{
+						SimpleAudioEngine::getInstance()->playEffect("res/music/clickSunSprite.wma");
 						node->stopActionByTag(1);
 						FiniteTimeAction* sunCellMove2;
 						if (_iAmPlantSideGolbalVariable == true)
@@ -97,7 +100,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(1359, 525));
 						}
 						node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
-
+						break;
 					}
 						
 				}

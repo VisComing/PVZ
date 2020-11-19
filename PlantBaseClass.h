@@ -18,4 +18,5 @@ public:
 	//void plantPlants();//÷÷÷≤ŒÔ
 	bool under_attack;
 	virtual Rect plantBounding();
+	void startGrowPlantMusic();
 };

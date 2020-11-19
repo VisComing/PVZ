@@ -1,5 +1,7 @@
 #include "PotatoMineLayer.h"
 #include "GameLayer.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 PotatoMineLayer::PotatoMineLayer()
@@ -61,7 +63,7 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 				this->_potatoMineSprite->_potatoMineSpriteTag = this->shadowTag;
 				this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
 				_plantVector.pushBack(this->_potatoMineSprite);
-
+				this->_potatoMineSprite->startGrowPlantMusic();
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_potatoMineSprite->setPosition(x, y);//设置位置
 				shadow->setPosition(x, y - 20);
@@ -110,6 +112,7 @@ void PotatoMineLayer::potatoMineAttackZombie()
 				{
 					if ((*i)->plantBounding().intersectsRect((*j)->zombieBounding()))
 					{
+						SimpleAudioEngine::getInstance()->playEffect("res/music/potatoMine.wma");
 						_iFlag = true;
 						(*i)->_plantHP -= 500;
 						//(*i)->removeFromParent();//将土豆地雷删除

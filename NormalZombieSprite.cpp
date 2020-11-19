@@ -1,4 +1,6 @@
 #include "NormalZombieSprite.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 NormalZombieSprite::NormalZombieSprite()
 {
@@ -16,6 +18,7 @@ bool NormalZombieSprite::init()
 	{
 		return false;
 	}
+
 	return true;
 }
 
@@ -167,6 +170,22 @@ RepeatForever * NormalZombieSprite::bucketheadZombieAttackAnimation()
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 11);
 	this->_bucketheadZombieAttackAction = RepeatForever::create(Animate::create(_animation));
 	return this->_bucketheadZombieAttackAction;
+}
+
+void NormalZombieSprite::startMusic()
+{
+	int random = rand() % 3;
+	if(random == 0)
+		_effectMusicID = SimpleAudioEngine::getInstance()->playEffect("res/music/zombieChomp.wma", true);
+	else if(random == 1)
+		_effectMusicID = SimpleAudioEngine::getInstance()->playEffect("res/music/zombieChomp2.wma", true);
+	else
+		_effectMusicID = SimpleAudioEngine::getInstance()->playEffect("res/music/zombieChomp3.wma", true);
+}
+
+void NormalZombieSprite::stopMusic()
+{
+	SimpleAudioEngine::getInstance()->stopEffect(_effectMusicID);
 }
 
 

@@ -58,13 +58,14 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 		int y = 1200 - e->getLocation().y;
 		if (((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y))
 		{
+
 			//精灵被种下，创建动图精灵
 			this->_chomperSprite = ChomperSprite::create();
 			this->addChild(_chomperSprite);
 			this->_chomperSprite->_chomperSpriteTag = this->shadowTag;
 			this->_chomperVector.pushBack(this->_chomperSprite);//将精灵添加到数组中
 			_plantVector.pushBack(this->_chomperSprite);
-
+			this->_chomperSprite->startGrowPlantMusic();
 			//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;

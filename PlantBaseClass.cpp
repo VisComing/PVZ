@@ -1,5 +1,7 @@
 #include "PlantBaseClass.h"
 #include "PeaShooterLayer.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 PlantBaseClass::PlantBaseClass()
 {
 	_peaShooterCache = SpriteFrameCache::getInstance();
@@ -30,6 +32,15 @@ bool PlantBaseClass::init()
 Rect PlantBaseClass::plantBounding()
 {
 	return this->getBoundingBox();
+}
+
+void PlantBaseClass::startGrowPlantMusic()
+{
+	int random = rand() % 2;
+	if(random == 0)
+		SimpleAudioEngine::getInstance()->playEffect("res/music/GrowPlant.wma");
+	else 
+		SimpleAudioEngine::getInstance()->playEffect("res/music/GrowPlant2.wma");
 }
 
 //void PlantBaseClass::plantPlants()

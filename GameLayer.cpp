@@ -34,7 +34,7 @@ bool GameLayer::init()
 		this->initGameController();
 		this->initShowSloganLayer();
 	}
-
+	this->initMusicLayer();
 	return true;
 }
 
@@ -161,5 +161,11 @@ void GameLayer::initShowSloganLayer()
 {
 	_showSloganLayer = ShowSloganLayer::create();
 	this->addChild(this->_showSloganLayer);
+}
+
+void GameLayer::initMusicLayer()
+{
+	_musicLayer = MusicLayer::create();
+	this->addChild(_musicLayer);
 }
 
