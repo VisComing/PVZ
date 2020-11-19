@@ -11,4 +11,5 @@ public:
 	~ShowSloganLayer();
 	virtual bool init();
 	void showPrepareInfo();
+	void showZombieEnterYourHome();
 };

@@ -21,4 +21,5 @@ public:
 	virtual void update(float dt);
 	void autoInitZombie(string, Vec2);
 	//Sprite* tmpSprite;
+	void isZombieWin();
 };

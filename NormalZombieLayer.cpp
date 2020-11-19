@@ -1,5 +1,6 @@
 #include "NormalZombieLayer.h"
 #include "GameLayer.h"
+#include "global.h"
 extern Vector<ZombieBaseClass*>_zombieVector;
 extern Vector<PlantBaseClass*> _plantVector;
 NormalZombieLayer::NormalZombieLayer()
@@ -210,6 +211,20 @@ void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
 
 }
 
+void NormalZombieLayer::isZombieWin()
+{
+	for (auto i = _zombieVector.begin(); i != _zombieVector.end(); i++)
+	{
+		if ((*i)->getPositionX() < 200)//僵尸进入家园，僵尸胜利
+		{
+			((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
+			//此时切换场景，切换回主场景
+			((GameLayer*)this->getParent())->onExit();
+			return;
+		}
+	}
+}
+
 void NormalZombieLayer::diedNormalZombie()
 {
 	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end();)
@@ -356,4 +371,8 @@ void NormalZombieLayer::update(float dt)
 {
 	this->diedNormalZombie();
 	this->normalZombieAttackPlant();
+	if (isSinglePlayerGameMode == true)
+	{
+		this->isZombieWin();
+	}
 }

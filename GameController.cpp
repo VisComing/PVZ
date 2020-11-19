@@ -13,7 +13,7 @@ bool GameController::init()
 	{
 		return false;
 	}
-	this->schedule(schedule_selector(GameController::produceZombieUpdate), 7);
+	this->schedule(schedule_selector(GameController::produceZombieUpdate), 8);
 	return true;
 }
 void GameController::update(float dt)

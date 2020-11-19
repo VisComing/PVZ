@@ -38,3 +38,11 @@ void ShowSloganLayer::showPrepareInfo()
 			prepare->removeFromParent();
 			})));
 }
+
+//怎么不会消失，不应该显示三秒然后消失吗？2020/11/19  原因是一直调用这个函数，所以不会消失。以后添加上转换场景
+void ShowSloganLayer::showZombieEnterYourHome()
+{
+	Sprite* gameOver = Sprite::create("res/ZombiesWon.png");
+	this->addChild(gameOver);
+	gameOver->setPosition(700, 300);
+}
