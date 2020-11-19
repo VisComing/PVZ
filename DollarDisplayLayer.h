@@ -13,6 +13,10 @@ public:
 	void displayDollarLable();
 	int _dollar;
 	string _dollarStr;
+	string _remainTimeStr;
 	Label* _dollarLabel;
+	Label* _remainTimeLabel;
+	int _remainingTime;
 	virtual void update(float dt);
+	void remainTimeMinueOneSecond(float dlt);
 };

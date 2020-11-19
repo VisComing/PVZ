@@ -5,7 +5,7 @@ extern bool _iAmPlantSideGolbalVariable;
 DollarDisplayLayer::DollarDisplayLayer()
 {
 	_dollar = 200;
-
+	_remainingTime = 10;
 }
 DollarDisplayLayer::~DollarDisplayLayer()
 {
@@ -19,7 +19,7 @@ bool DollarDisplayLayer::init()
 	}
 	scheduleUpdate();
 	this->displayDollarLable();
-
+	this->schedule(schedule_selector(DollarDisplayLayer::remainTimeMinueOneSecond), 1);
 	
 
 	return true;
@@ -27,15 +27,19 @@ bool DollarDisplayLayer::init()
 
 void DollarDisplayLayer::displayDollarLable()
 {
+	this->_remainTimeLabel = Label::createWithSystemFont("", "arial", 24);
 	this->_dollarLabel = Label::createWithSystemFont("","arial",18);
 	this->_dollarStr = StringUtils::format("%d", this->_dollar);
 	this->_dollarLabel->setString(this->_dollarStr);//动态金币展示板转化完毕
+
 	this->addChild(this->_dollarLabel);
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	//this->_dollarLabel->setPosition(Vec2(2 * visibleSize.width / 7, 8 * visibleSize.height / 9));
 
 	if (_iAmPlantSideGolbalVariable == true)
 	{
+		this->addChild(this->_remainTimeLabel);
+		this->_remainTimeLabel->setPosition(Vec2(1000, 263));
 		this->_dollarLabel->setPosition(Vec2(263, 527));
 	}
 	else
@@ -50,4 +54,15 @@ void DollarDisplayLayer::update(float dt)
 {
 	this->_dollarStr = StringUtils::format("%d", this->_dollar);
 	this->_dollarLabel->setString(this->_dollarStr);
+}
+
+void DollarDisplayLayer::remainTimeMinueOneSecond(float dlt)
+{
+	this->_remainTimeStr = StringUtils::format("%dsecond", --(this->_remainingTime));
+	this->_remainTimeLabel->setString(this->_remainTimeStr);
+	if (this->_remainingTime <= 0)
+	{
+		//胜利了，显示胜利图片，退出场景
+		log("Win!!!");
+	}
 }
