@@ -92,7 +92,7 @@ void BulletLayer::bulletAttackZombie()
 				i = _bulletVector.erase(i);//删除子弹
 				
 				(*j)->_hp -= 15;//僵尸扣血
-				(*j)->typeOfDeath = 0;
+				(*j)->typeOfDeath = 0;//死亡类型0表示被子弹打死
 				break;
 			}
 			j++;

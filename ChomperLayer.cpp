@@ -121,11 +121,12 @@ void ChomperLayer::chomperAttackZombie()
 						->chomperAttack(), CallFunc::create(CC_CALLBACK_0(Sprite::removeFromParent, tmp)),
 						(*i)->chomperDigest(),
 						NULL));*/
+					(*j)->typeOfDeath = 2;//死亡类型2表示被食人花吃掉
 					(*i)->runAction(Sequence::create((*i)
 						->chomperAttack(), CallFunc::create([tmp]() {
 							tmp->_hp -= 500;
-							tmp->removeFromParent();
-							
+							//tmp->removeFromParent();
+							//在植物layer中不要删除僵尸啊，只扣除僵尸血量2020/11/19
 							//_zombieVector.erase(a);
 							}),
 						(*i)->chomperDigest(),

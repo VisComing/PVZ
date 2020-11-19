@@ -240,7 +240,7 @@ void NormalZombieLayer::isZombieWin()
 {
 	for (auto i = _zombieVector.begin(); i != _zombieVector.end(); i++)
 	{
-		if ((*i)->getPositionX() < 200)//僵尸进入家园，僵尸胜利
+		if ((*i)->getPositionX() < 170)//僵尸进入家园，僵尸胜利
 		{
 			((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
 			//此时切换场景，切换回主场景
@@ -308,6 +308,10 @@ void NormalZombieLayer::diedNormalZombie()
 					-> explodAnimation(), CallFunc::create([tmp]() {
 						(tmp)->removeFromParent();//将僵尸删除
 						})));
+			}
+			else if ((*i)->typeOfDeath == 2)//被食人花吃掉
+			{
+				(*i)->removeFromParent();
 			}
 			//注意，下一行要放在该循环的所有操作后，如果在之前删除了，那么接下来还要使用它的怎么办呢
 			i = _normalZombieVector.erase(i);

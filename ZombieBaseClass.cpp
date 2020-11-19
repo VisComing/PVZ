@@ -7,6 +7,7 @@ ZombieBaseClass::ZombieBaseClass()
 	_boomDie1->addSpriteFramesWithFile("res/boomdie1.plist");
 	_armedNormalZombieCache = SpriteFrameCache::getInstance();
 	_armedNormalZombieCache->addSpriteFramesWithFile("res/armednormalzombie.plist");
+	typeOfDeath = -1;
 }
 ZombieBaseClass::~ZombieBaseClass()
 {
