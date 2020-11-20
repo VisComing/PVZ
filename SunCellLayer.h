@@ -16,4 +16,5 @@ public:
 	//void removeSunCell(Node*);
 	//void removeSunCell2(Node*);
 	bool onTouchBegan(Touch* touch, Event* event);
+	void produceSunCell(Vec2);
 };

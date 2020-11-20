@@ -51,9 +51,16 @@ void CardLayer::initCardSprite()
 	ChomperCard->setName("ChomperCard");
 	this->addChild(ChomperCard);
 	
+	auto SunFlowerCard = Sprite::create("res/SunFlowerCard.png");
+	SunFlowerCard->setPosition(Vec2(325 + 200, 557));
+	SunFlowerCard->setName("SunFlowerCard");
+	this->addChild(SunFlowerCard);
+
 	auto shovel = Sprite::create("res/Shovel.png");
 	shovel->setPosition(Vec2(705, 563));
 	shovel->setName("Shovel");
 	this->addChild(shovel);
+
+
 
 }

@@ -120,3 +120,20 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 			}	
 	return true;
 }
+
+void SunCellLayer::produceSunCell(Vec2 _pos)
+{
+	auto _sunCellSprite1 = SunCellSprite::create();//创建一个太阳精灵
+	Vec2 _pos1, _pos2;
+	_pos1.y = _pos.y + 30;
+	_pos2.y = _pos.y - 20;
+	int random = rand() % 2;
+	if (random == 0) _pos1.x = _pos.x - 25, _pos2.x = _pos.x - 30;
+	else _pos1.x = _pos.x + 25, _pos2.x = _pos.x + 30;
+	_sunCellSprite1->setPosition(_pos);
+	this->addChild(_sunCellSprite1);
+	auto tmpSprite = _sunCellSprite1;
+	_sunCellSprite1->runAction(Sequence::create(MoveTo::create(0.4, _pos1), MoveTo::create(0.6, _pos2), DelayTime::create(5), CallFunc::create([tmpSprite]() {
+		tmpSprite->removeFromParent();
+		}), NULL));
+}

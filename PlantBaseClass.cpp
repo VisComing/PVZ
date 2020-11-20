@@ -12,6 +12,8 @@ PlantBaseClass::PlantBaseClass()
 	_wallNutCache->addSpriteFramesWithFile("res/wallnut.plist");
 	_chomperCache = SpriteFrameCache::getInstance();
 	_chomperCache->addSpriteFramesWithFile("res/chomper.plist");
+	_sunFlowerCache = SpriteFrameCache::getInstance();
+	_sunFlowerCache->addSpriteFramesWithFile("res/sunflower.plist");
 	under_attack = false;
 }
 

@@ -16,6 +16,7 @@
 #include "GameController.h"
 #include "ShowSloganLayer.h"
 #include "MusicLayer.h"
+#include "SunFlowerLayer.h"
 USING_NS_CC;
 class GameLayer : public Layer
 {
@@ -71,4 +72,7 @@ public:
 
 	MusicLayer* _musicLayer;
 	void initMusicLayer();
+
+	SunFlowerLayer* _sunFlowerLayer;
+	void initSunFlowerLayer();
 };

@@ -21,7 +21,7 @@ bool GameLayer::init()
 	this->initDollarDisplayerLayer();//初始化金币展示板
 	
 	this->initPotatoMineLayer();//土豆地雷层
-	
+	this->initSunFlowerLayer();//太阳花层
 	//this->initBoundingLayer();
 	this->initWallNutLayer();//坚果墙
 	this->initChomperLayer();
@@ -169,5 +169,11 @@ void GameLayer::initMusicLayer()
 {
 	_musicLayer = MusicLayer::create();
 	this->addChild(_musicLayer);
+}
+
+void GameLayer::initSunFlowerLayer()
+{
+	_sunFlowerLayer = SunFlowerLayer::create();
+	this->addChild(_sunFlowerLayer);
 }
 
