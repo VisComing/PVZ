@@ -116,3 +116,38 @@ void PeaShooterLayer::update(float dt)
 {
 	this->diedPeaShooter();
 }
+
+void PeaShooterLayer::removePlant(Vec2 touch)
+{
+	Sprite* _shovel = Sprite::create("res/Shovel.png");
+	_shovel->setPosition(touch);
+	this->addChild(_shovel);
+	auto lis = EventListenerMouse::create();
+	//鼠标移动，则精灵跟着移动
+	lis->onMouseMove = [=](EventMouse* e) {
+		_shovel->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		_shovel->setPosition(x, y);
+		return true;
+	};
+	lis->onMouseDown = [=](EventMouse* e) {
+		this->removeChild(_shovel);
+		//判断种豌豆射手位置是否合法
+		int x = e->getLocation().x;
+		int y = 1200 - e->getLocation().y;
+		Vec2 _pos(x, y);
+		for (auto x : _plantVector)
+		{
+			if (x->getBoundingBox().containsPoint(_pos))
+			{
+				this->_peaShooterSprite->startGrowPlantMusic();
+				x->_plantHP -= 30000;
+				break;
+			}
+		}
+		_eventDispatcher->removeEventListener(lis);
+		return true;
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+}

@@ -52,27 +52,31 @@ void SunCellLayer::sunCellMoveWay()
 	FiniteTimeAction* sunCellMove2 = MoveBy::create(5.0f, Vec2(0,0));
 	//FiniteTimeAction* fade = FadeOut::create(0.01f);
 	//this->_sunCellSprite->runAction(CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL));
-	Sequence* seq = CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL);
+	//Sequence* seq = CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL);
 	
-	this->_sunCellSprite->runAction(seq);
-	seq->setTag(1);
+	//this->_sunCellSprite->runAction(seq);
+	//seq->setTag(1);
+	auto tmpSprite = this->_sunCellSprite;
 	//sunCellMove1->setTag(1);//阳光向下运动的tag为1
-	
+	this->_sunCellSprite->runAction(Sequence::create(sunCellMove1, DelayTime::create(5), CallFunc::create(
+		[tmpSprite]() {
+			tmpSprite->removeFromParent();
+		}), NULL));
 }
-void SunCellLayer::removeSunCell(Node* pSend)
-{
-
-	Sprite* sprite = (Sprite*)pSend;
-	this->removeChild(sprite, true);
-	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar = ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar + 25;
-}
-
-void SunCellLayer::removeSunCell2(Node* pSend)
-{
-
-	Sprite* sprite = (Sprite*)pSend;
-	this->removeChild(sprite, true);
-}
+//void SunCellLayer::removeSunCell(Node* pSend)
+//{
+//
+//	Sprite* sprite = (Sprite*)pSend;
+//	this->removeChild(sprite, true);
+//	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar = ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar + 25;
+//}
+//
+//void SunCellLayer::removeSunCell2(Node* pSend)
+//{
+//
+//	Sprite* sprite = (Sprite*)pSend;
+//	this->removeChild(sprite, true);
+//}
 
 
 bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
@@ -87,7 +91,8 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 					if (SunCellSprite::getRect(node).containsPoint(point))
 					{
 						SimpleAudioEngine::getInstance()->playEffect("res/music/clickSunSprite.wma");
-						node->stopActionByTag(1);
+						//node->stopActionByTag(1);
+						node->stopAllActions();
 						FiniteTimeAction* sunCellMove2;
 						if (_iAmPlantSideGolbalVariable == true)
 						{
@@ -99,7 +104,15 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 							//僵尸卡阳光处
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(1359, 525));
 						}
-						node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
+						//node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
+						
+						//node->runAction(Sequence::createWithTwoActions(sunCellMove2, CallFunc::create())
+						auto tmpSprite = node;
+						node->runAction(Sequence::createWithTwoActions(sunCellMove2, 
+							CallFunc::create([=]() {
+								tmpSprite->removeFromParent();
+								((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar += 25;
+							})));
 						break;
 					}
 						

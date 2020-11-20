@@ -19,7 +19,7 @@ bool GameLayer::init()
 	this->initTouchLayer();
 	
 	this->initDollarDisplayerLayer();//初始化金币展示板
-	this->initPeaShooterLayer();
+	
 	this->initPotatoMineLayer();//土豆地雷层
 	
 	//this->initBoundingLayer();
@@ -28,12 +28,14 @@ bool GameLayer::init()
 	
 	this->initBulletLayer();//子弹层  在最上面一层
 	this->initNormalZombieLayer();
+	this->initPeaShooterLayer();
 	this->initSunCellLayer();//阳光下落
 	if (isSinglePlayerGameMode == true)
 	{
 		this->initGameController();
 		this->initShowSloganLayer();
 	}
+
 	this->initMusicLayer();
 	return true;
 }

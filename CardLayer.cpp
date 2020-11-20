@@ -20,6 +20,10 @@ bool CardLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	seedBank->setPosition(Vec2(225,visibleSize.height));
 	this->addChild(seedBank);
+	Sprite* shovelBank = Sprite::create("res/ShovelBank.png");
+	shovelBank->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+	shovelBank->setPosition(Vec2(225 + seedBank->getContentSize().width, visibleSize.height));
+	this->addChild(shovelBank);
 	this->initCardSprite();
 	return true;
 }
@@ -46,4 +50,10 @@ void CardLayer::initCardSprite()
 	ChomperCard->setPosition(Vec2(325 + 150, 557));
 	ChomperCard->setName("ChomperCard");
 	this->addChild(ChomperCard);
+	
+	auto shovel = Sprite::create("res/Shovel.png");
+	shovel->setPosition(Vec2(705, 563));
+	shovel->setName("Shovel");
+	this->addChild(shovel);
+
 }

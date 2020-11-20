@@ -63,7 +63,7 @@ void BulletLayer::bulletMoveWay()
 	auto tmp = this->_bulletSprite;
 	this->_bulletSprite->runAction(Sequence::createWithTwoActions(
 		bulletMove, CallFunc::create([tmp]() {
-			(tmp)->removeFromParent();//½«½©Ê¬É¾³ý
+			(tmp)->removeFromParent();//½«×Óµ¯É¾³ý
 			})));
 	
 }

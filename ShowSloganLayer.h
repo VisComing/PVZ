@@ -12,4 +12,5 @@ public:
 	virtual bool init();
 	void showPrepareInfo();
 	void showZombieEnterYourHome();
+	void winInSingleMode();
 };

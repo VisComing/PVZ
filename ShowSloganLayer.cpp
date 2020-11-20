@@ -46,3 +46,11 @@ void ShowSloganLayer::showZombieEnterYourHome()
 	this->addChild(gameOver);
 	gameOver->setPosition(700, 300);
 }
+
+void ShowSloganLayer::winInSingleMode()
+{
+	Sprite* winSprite = Sprite::create("res/winInSingleMode.png");
+	this->addChild(winSprite);
+	winSprite->setPosition(700, 300);
+	winSprite->runAction(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)));
+}

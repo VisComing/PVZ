@@ -13,7 +13,7 @@ public:
 	SunCellSprite* _sunCellSprite;//Ì«ÑôÒò×Ó¾«Áé
 	void initSunCell(float);
 	void sunCellMoveWay();
-	void removeSunCell(Node*);
-	void removeSunCell2(Node*);
+	//void removeSunCell(Node*);
+	//void removeSunCell2(Node*);
 	bool onTouchBegan(Touch* touch, Event* event);
 };

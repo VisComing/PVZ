@@ -63,6 +63,12 @@ void TouchLayer::onTouchEnded(Touch* touch, Event* event)
 			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
 				((GameLayer*)this->getParent())->_chomperLayer->initChomperSprite(touch->getLocation());
 		}
+		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("Shovel")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
+		{
+			SimpleAudioEngine::getInstance()->playEffect("res/music/shovel.wma");
+			//if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
+			((GameLayer*)this->getParent())->_peaShooterLayer->removePlant(touch->getLocation());
+		}
 	//}
 	//我是僵尸方
 	//else

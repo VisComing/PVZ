@@ -11,6 +11,7 @@ public:
 	~BulletLayer();
 	virtual bool init();
 	BulletSprite* _bulletSprite;
+	Sprite* _bulletSpriteShadow;
 	void initBulletSprite(float dlt);
 	void bulletMoveWay();
 	void removeBullet(Node*);

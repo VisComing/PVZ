@@ -38,5 +38,8 @@ void MusicLayer::preLoadMusic()
 	_effectiveMusic->preloadEffect("res/music/zombieGroan5.wma");
 	_effectiveMusic->preloadEffect("res/music/zombieGroan6.wma");
 	_effectiveMusic->preloadEffect("res/music/clickCard.wma");
+	_effectiveMusic->preloadEffect("res/music/losemusic.wma");
+	_effectiveMusic->preloadEffect("res/music/winmusic.wma");
+	_effectiveMusic->preloadEffect("res/music/shovel.wma");
 }
 

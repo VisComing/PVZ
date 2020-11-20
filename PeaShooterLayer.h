@@ -20,4 +20,5 @@ public:
 
 	vector<int> _peaShooterTime;//该射手已经被种下的时间，每隔0.1秒加一
 	int shadowTag;
+	void removePlant(Vec2);
 };

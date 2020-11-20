@@ -243,6 +243,9 @@ void NormalZombieLayer::isZombieWin()
 		if ((*i)->getPositionX() < 170)//僵尸进入家园，僵尸胜利
 		{
 			((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
+			SimpleAudioEngine::getInstance()->stopAllEffects();
+			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+			SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
 			//此时切换场景，切换回主场景
 			((GameLayer*)this->getParent())->onExit();
 			return;

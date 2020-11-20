@@ -10,4 +10,5 @@ public:
 	~BulletSprite();
 	virtual bool init();
 	FiniteTimeAction* _bulletBroken;
+
 };

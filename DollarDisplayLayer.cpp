@@ -1,11 +1,14 @@
 #include "DollarDisplayLayer.h"
 #include "GameScene.h"
 #include "GameLayer.h"
+#include "SimpleAudioEngine.h"
+#include "global.h"
+using namespace CocosDenshion;
 extern bool _iAmPlantSideGolbalVariable;
 DollarDisplayLayer::DollarDisplayLayer()
 {
 	_dollar = 200;
-	_remainingTime = 10;
+	_remainingTime = 20;
 }
 DollarDisplayLayer::~DollarDisplayLayer()
 {
@@ -19,9 +22,8 @@ bool DollarDisplayLayer::init()
 	}
 	scheduleUpdate();
 	this->displayDollarLable();
-	this->schedule(schedule_selector(DollarDisplayLayer::remainTimeMinueOneSecond), 1);
-	
-
+	if(isSinglePlayerGameMode == true)
+		this->schedule(schedule_selector(DollarDisplayLayer::remainTimeMinueOneSecond), 1);
 	return true;
 }
 
@@ -39,7 +41,7 @@ void DollarDisplayLayer::displayDollarLable()
 	if (_iAmPlantSideGolbalVariable == true)
 	{
 		this->addChild(this->_remainTimeLabel);
-		this->_remainTimeLabel->setPosition(Vec2(1000, 263));
+		this->_remainTimeLabel->setPosition(Vec2(1000, 527));
 		this->_dollarLabel->setPosition(Vec2(263, 527));
 	}
 	else
@@ -62,7 +64,14 @@ void DollarDisplayLayer::remainTimeMinueOneSecond(float dlt)
 	this->_remainTimeLabel->setString(this->_remainTimeStr);
 	if (this->_remainingTime <= 0)
 	{
+		SimpleAudioEngine::getInstance()->stopAllEffects();
+		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+		SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
+		((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
 		//胜利了，显示胜利图片，退出场景
+		//((GameLayer*)this->getParent())->onExit();
+		((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
+		this->unschedule(schedule_selector(DollarDisplayLayer::remainTimeMinueOneSecond));
 		log("Win!!!");
 	}
 }
