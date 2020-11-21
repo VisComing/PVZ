@@ -1,6 +1,8 @@
 #include "WallNutLayer.h"
 #include "GameLayer.h"
 #include "MapLayer.h"
+#include "socket.h"
+#include "global.h"
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 WallNutLayer::WallNutLayer()
@@ -67,11 +69,16 @@ void WallNutLayer::initWallNutSprite(Vec2 touch)
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_wallNutSprite->setPosition(x, y);
+			//在此处发送
+			if (isSinglePlayerGameMode == false)
+			{
+				std::string message = "WallNut:" + to_string(x) + "," + to_string(y) + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(message);
+			}
 			shadow->setPosition(x, y - 30);
 			this->_wallNutSprite->_position[0] = (x - 200) / 90;
 			this->_wallNutSprite->_position[1] = y / 100;
-			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 50;//每产生一个坚果墙消耗50金币
+			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -= 50;//每产生一个坚果墙消耗50金币
 		}
 		else//位置错误
 		{
@@ -82,6 +89,31 @@ void WallNutLayer::initWallNutSprite(Vec2 touch)
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+}
+
+void WallNutLayer::produceWallNutSprite(Vec2 position)
+{
+	int x = position.x;
+	int y = position.y;
+	Sprite* shadow = Sprite::create("res/plantshadow.png");
+	this->addChild(shadow);
+	shadow->setTag(++(this->shadowTag));
+	this->_wallNutSprite = WallNutSprite::create();
+	this->addChild(_wallNutSprite);
+	this->_wallNutSprite->_wallNutSpriteTag = this->shadowTag;
+	this->_wallNutVector.pushBack(this->_wallNutSprite);//将精灵添加到数组中
+	_plantVector.pushBack(this->_wallNutSprite);
+	this->_wallNutSprite->startGrowPlantMusic();
+	//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
+
+	//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
+	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	this->_wallNutSprite->setPosition(x, y);
+	shadow->setPosition(x, y - 30);
+	this->_wallNutSprite->_position[0] = (x - 200) / 90;
+	this->_wallNutSprite->_position[1] = y / 100;
+	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -= 50;//每产生一个坚果墙消耗50金币
+
 }
 
 void WallNutLayer::diedWallNut()

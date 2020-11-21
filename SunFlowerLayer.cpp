@@ -1,6 +1,8 @@
 #include "SunFlowerLayer.h"
 #include "GameLayer.h"
 #include "MapLayer.h"
+#include "socket.h"
+#include "global.h"
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 SunFlowerLayer::SunFlowerLayer()
@@ -68,11 +70,16 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_sunFlowerSprite->setPosition(x, y);
+			//在此处发送
+			if (isSinglePlayerGameMode == false)
+			{
+				std::string message = "SunFlower:" + to_string(x) + "," + to_string(y) + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(message);
+			}
 			shadow->setPosition(x, y - 30);
 			this->_sunFlowerSprite->_position[0] = (x - 200) / 90;
 			this->_sunFlowerSprite->_position[1] = y / 100;
-			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 50;//每产生一个太阳花消耗50金币
+			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -= 50;//每产生一个太阳花消耗50金币
 		}
 		else//位置错误
 		{
@@ -83,6 +90,31 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+}
+
+void SunFlowerLayer::produceSunFlowerSprite(Vec2 position)
+{
+	int x = position.x;
+	int y = position.y;
+	Sprite* shadow = Sprite::create("res/plantshadow.png");
+	this->addChild(shadow);
+	shadow->setTag(++(this->shadowTag));
+	this->_sunFlowerSprite = SunFlowerSprite::create();
+	this->addChild(_sunFlowerSprite);
+	this->_sunFlowerSprite->_sunFlowerSpriteTag = this->shadowTag;
+	this->_sunFlowerVector.pushBack(this->_sunFlowerSprite);//将精灵添加到数组中
+	_plantVector.pushBack(this->_sunFlowerSprite);
+	this->_sunFlowerSprite->startGrowPlantMusic();
+	//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
+
+	//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
+	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	this->_sunFlowerSprite->setPosition(x, y);
+	shadow->setPosition(x, y - 30);
+	this->_sunFlowerSprite->_position[0] = (x - 200) / 90;
+	this->_sunFlowerSprite->_position[1] = y / 100;
+	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -=  50;//每产生一个太阳花消耗50金币
+
 }
 
 void SunFlowerLayer::diedSunFlower()

@@ -2,6 +2,7 @@
 #include "GameLayer.h"
 #include "global.h"
 #include "SimpleAudioEngine.h"
+#include "socket.h"
 using namespace CocosDenshion;
 extern Vector<ZombieBaseClass*>_zombieVector;
 extern Vector<PlantBaseClass*> _plantVector;
@@ -128,6 +129,12 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan6.wma");
 
 			this->_normalZombieSprite->setPosition(x, y + 20);
+			//在此处发送
+			if (isSinglePlayerGameMode == false)
+			{
+				std::string message = zombieName + ":" + to_string(x) + "," + to_string(y + 20) + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(message);
+			}
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
 				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - _zombieDollar;//每产生一个僵尸消耗金币
 			//此处需要用runaction，否则没有僵尸图像
@@ -236,7 +243,7 @@ void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
 
 }
 
-void NormalZombieLayer::isZombieWin()
+bool NormalZombieLayer::isZombieWin()
 {
 	for (auto i = _zombieVector.begin(); i != _zombieVector.end(); i++)
 	{
@@ -247,10 +254,11 @@ void NormalZombieLayer::isZombieWin()
 			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
 			//此时切换场景，切换回主场景
-			((GameLayer*)this->getParent())->onExit();
-			return;
+			//((GameLayer*)this->getParent())->onExit();
+			return true;
 		}
 	}
+	return false;
 }
 
 void NormalZombieLayer::diedNormalZombie()
@@ -407,8 +415,8 @@ void NormalZombieLayer::update(float dt)
 {
 	this->diedNormalZombie();
 	this->normalZombieAttackPlant();
-	if (isSinglePlayerGameMode == true)
+	/*if (isSinglePlayerGameMode == true)
 	{
 		this->isZombieWin();
-	}
+	}*/
 }

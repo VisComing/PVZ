@@ -41,5 +41,6 @@ void MusicLayer::preLoadMusic()
 	_effectiveMusic->preloadEffect("res/music/losemusic.wma");
 	_effectiveMusic->preloadEffect("res/music/winmusic.wma");
 	_effectiveMusic->preloadEffect("res/music/shovel.wma");
+	_effectiveMusic->preloadEffect("res/music/noEnoughMoney.wma");
 }
 

@@ -1,6 +1,8 @@
 #include "ChomperLayer.h"
 #include "GameLayer.h"
 #include "MapLayer.h"
+#include "socket.h"
+#include "global.h"
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 
@@ -71,6 +73,12 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_chomperSprite->setPosition(x + 10, y + 20);
+			//在此处发送
+			if (isSinglePlayerGameMode == false)
+			{
+				std::string message = "Chomper:" + to_string(x) + "," + to_string(y) + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(message);
+			}
 			shadow->setPosition(x - 20, y - 33);
 			this->_chomperSprite->_position[0] = (x - 200) / 90;
 			this->_chomperSprite->_position[1] = y / 100;
@@ -86,6 +94,30 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+}
+
+void ChomperLayer::produceChomperSprite(Vec2 position)
+{
+	int x = position.x;
+	int y = position.y;
+	Sprite* shadow = Sprite::create("res/plantshadow.png");
+	this->addChild(shadow);
+	shadow->setTag(++(this->shadowTag));
+	//精灵被种下，创建动图精灵
+	this->_chomperSprite = ChomperSprite::create();
+	this->addChild(_chomperSprite);
+	this->_chomperSprite->_chomperSpriteTag = this->shadowTag;
+	this->_chomperVector.pushBack(this->_chomperSprite);//将精灵添加到数组中
+	_plantVector.pushBack(this->_chomperSprite);
+	this->_chomperSprite->startGrowPlantMusic();
+	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	this->_chomperSprite->setPosition(x + 10, y + 20);
+	shadow->setPosition(x - 20, y - 33);
+	this->_chomperSprite->_position[0] = (x - 200) / 90;
+	this->_chomperSprite->_position[1] = y / 100;
+	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
+		= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
+
 }
 
 

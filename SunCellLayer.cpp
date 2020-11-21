@@ -133,7 +133,7 @@ void SunCellLayer::produceSunCell(Vec2 _pos)
 	_sunCellSprite1->setPosition(_pos);
 	this->addChild(_sunCellSprite1);
 	auto tmpSprite = _sunCellSprite1;
-	_sunCellSprite1->runAction(Sequence::create(MoveTo::create(0.4, _pos1), MoveTo::create(0.6, _pos2), DelayTime::create(5), CallFunc::create([tmpSprite]() {
+	_sunCellSprite1->runAction(Sequence::create(MoveTo::create(0.3f, _pos1), MoveTo::create(0.6f, _pos2), DelayTime::create(5.f), CallFunc::create([tmpSprite]() {
 		tmpSprite->removeFromParent();
 		}), NULL));
 }

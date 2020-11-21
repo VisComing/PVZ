@@ -1,6 +1,9 @@
 #include "PeaShooterLayer.h"
 #include "GameLayer.h"
 #include "MapLayer.h"
+#include "socket.h"
+#include <string>
+#include "global.h"
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
 PeaShooterLayer::PeaShooterLayer()
@@ -43,7 +46,7 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 		_peaShooterStaticShadow->setPosition(x, y);
 		return true;
 	};
-	//当鼠标按键抬起时，精灵被种下，同时取消鼠标监听
+	//当鼠标按键再一次按下时，精灵被种下，同时取消鼠标监听
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_peaShooterStatic);
 		this->removeChild(_peaShooterStaticShadow);
@@ -67,6 +70,12 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 				//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_peaShooterSprite->setPosition(x, y);
+				//在此处发送
+				if (isSinglePlayerGameMode == false)
+				{
+					std::string message = "PeaShooter:" + to_string(x) + "," + to_string(y) + ";\n";
+					TCPSocket::getInstance()->writeIntoServer(message);
+				}
 				shadow->setPosition(x - 5, y - 27);
 				this->_peaShooterSprite->_position[0] = (x - 200) / 90;
 				this->_peaShooterSprite->_position[1] = y / 100;
@@ -83,6 +92,34 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+
+}
+
+void PeaShooterLayer::producePeaShooterSprite(Vec2 position)
+{
+	int x = position.x;
+	int y = position.y;
+	Sprite* shadow = Sprite::create("res/plantshadow.png");
+	this->addChild(shadow);
+	shadow->setTag(++(this->shadowTag));
+	//精灵被种下，创建动图精灵
+	this->_peaShooterSprite = PeaShooterSprite::create();
+	this->addChild(_peaShooterSprite);
+	this->_peaShooterSprite->_peaShooterSpriteTag = this->shadowTag;
+	this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
+	_plantVector.pushBack(this->_peaShooterSprite);
+	this->_peaShooterSprite->startGrowPlantMusic();
+	this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
+
+	//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
+	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	this->_peaShooterSprite->setPosition(x, y);
+	shadow->setPosition(x - 5, y - 27);
+	this->_peaShooterSprite->_position[0] = (x - 200) / 90;
+	this->_peaShooterSprite->_position[1] = y / 100;
+	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
+		= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
+	((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 
 }
 

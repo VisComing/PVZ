@@ -13,6 +13,7 @@ public:
 	virtual bool init();
 	PotatoMineSprite* _potatoMineSprite;
 	void initPotatoMineSprite(Vec2);//初始化土豆地雷，传一个触摸点给它
+	void producePotatoMineSprite(Vec2);//根据服务器的消息直接种植
 	void grow(float);
 	Vector<PotatoMineSprite*> _potatoMineVector;
 	void potatoMineAttackZombie();

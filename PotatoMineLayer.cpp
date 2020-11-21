@@ -1,6 +1,8 @@
 #include "PotatoMineLayer.h"
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
+#include "socket.h"
+#include "global.h"
 using namespace CocosDenshion;
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;
@@ -66,6 +68,12 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 				this->_potatoMineSprite->startGrowPlantMusic();
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_potatoMineSprite->setPosition(x, y);//设置位置
+				//在此处发送
+				if (isSinglePlayerGameMode == false)
+				{
+					std::string message = "PotatoMine:" + to_string(x) + "," + to_string(y) + ";\n";
+					TCPSocket::getInstance()->writeIntoServer(message);
+				}
 				shadow->setPosition(x, y - 20);
 				this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
 				this->_potatoMineSprite->_position[1] = y / 100;
@@ -80,6 +88,30 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 		return true;
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(lis, this);
+}
+
+void PotatoMineLayer::producePotatoMineSprite(Vec2 position)
+{
+	int x = position.x;
+	int y = position.y;
+	Sprite* shadow = Sprite::create("res/plantshadow.png");
+	this->addChild(shadow);
+	shadow->setTag(++(this->shadowTag));
+	//精灵被种下，创建一个土豆地雷
+	this->_potatoMineSprite = PotatoMineSprite::create();
+	this->addChild(_potatoMineSprite);
+	this->_potatoMineSprite->_potatoMineSpriteTag = this->shadowTag;
+	this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
+	_plantVector.pushBack(this->_potatoMineSprite);
+	this->_potatoMineSprite->startGrowPlantMusic();
+	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	this->_potatoMineSprite->setPosition(x, y);//设置位置
+	shadow->setPosition(x, y - 20);
+	this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
+	this->_potatoMineSprite->_position[1] = y / 100;
+	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
+		= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
+	this->schedule(schedule_selector(PotatoMineLayer::grow), 1.0f);
 }
 
 void PotatoMineLayer::grow(float dlt)

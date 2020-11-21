@@ -1,5 +1,6 @@
 #include "GameLayer.h"
 #include "global.h"
+#include "socket.h"
 bool GameLayer::init()
 {
 	if (!Layer::init())
@@ -7,7 +8,11 @@ bool GameLayer::init()
 		return false;
 	}
 	this->initMapLayer();
-	
+	if (TCPSocket::getInstance()->connectToServer() == -1)//连接失败
+	{
+		for(int i = 0; i < 10; i++)
+			log("connect failed!");
+	}
 	
 
 	//scheduleUpdate();//监听一切活动/变化
@@ -30,9 +35,10 @@ bool GameLayer::init()
 	this->initNormalZombieLayer();
 	this->initPeaShooterLayer();
 	this->initSunCellLayer();//阳光下落
+	this->initGameController();
 	if (isSinglePlayerGameMode == true)
 	{
-		this->initGameController();
+		
 		this->initShowSloganLayer();
 	}
 
