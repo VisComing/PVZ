@@ -1,5 +1,5 @@
 #include "ShowSloganLayer.h"
-
+#include "global.h"
 ShowSloganLayer::ShowSloganLayer()
 {
 }
@@ -14,8 +14,11 @@ bool ShowSloganLayer::init()
 	{
 		return false;
 	}
-	scheduleUpdate();
-	this->showPrepareInfo();
+	//scheduleUpdate();
+	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
+	{
+		this->showPrepareInfo();
+	}
 	return true;
 }
 
@@ -50,6 +53,14 @@ void ShowSloganLayer::showZombieEnterYourHome()
 void ShowSloganLayer::winInSingleMode()
 {
 	Sprite* winSprite = Sprite::create("res/winInSingleMode.png");
+	this->addChild(winSprite);
+	winSprite->setPosition(700, 300);
+	winSprite->runAction(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)));
+}
+
+void ShowSloganLayer::showZombieLose()
+{
+	Sprite* winSprite = Sprite::create("res/zombieLose.png");
 	this->addChild(winSprite);
 	winSprite->setPosition(700, 300);
 	winSprite->runAction(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)));

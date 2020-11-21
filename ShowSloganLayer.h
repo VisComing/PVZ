@@ -13,4 +13,5 @@ public:
 	void showPrepareInfo();
 	void showZombieEnterYourHome();
 	void winInSingleMode();
+	void showZombieLose();
 };

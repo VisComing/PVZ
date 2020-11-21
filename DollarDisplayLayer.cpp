@@ -4,7 +4,6 @@
 #include "SimpleAudioEngine.h"
 #include "global.h"
 using namespace CocosDenshion;
-extern bool _iAmPlantSideGolbalVariable;
 DollarDisplayLayer::DollarDisplayLayer()
 {
 	_dollar = 200;
@@ -35,7 +34,7 @@ void DollarDisplayLayer::displayDollarLable()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	//this->_dollarLabel->setPosition(Vec2(2 * visibleSize.width / 7, 8 * visibleSize.height / 9));
 
-	if (_iAmPlantSideGolbalVariable == true)
+	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
 	{
 		//this->addChild(this->_remainTimeLabel);
 		//this->_remainTimeLabel->setPosition(Vec2(1000, 527));

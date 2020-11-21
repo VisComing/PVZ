@@ -37,30 +37,27 @@ string TCPSocket::readFromServer()//返回的一定是完整的数据包，或者是个空串
 	unsigned long bytesToRecv;
 	if (ioctlsocket(sock, FIONREAD, &bytesToRecv) == 0)
 	{
-		if (bytesToRecv == 0)//缓冲区中没有数据
+		if (bytesToRecv != 0)//如果缓冲区有数据，那么把数据读进来
 		{
-			return "";
-		}
-		else
-		{
-			string ans;
 			char ch[BUF_SIZE];
 			int len = recv(sock, ch, BUF_SIZE, 0);
 			for (int i = 0; i < len; i++) res += ch[i];
-			for (size_t i = 0; i < res.size(); i++)
-			{
-				if (res[i] == '\n')
-				{
-					res = res.substr(i + 1, res.size() - i);
-					break;
-				}
-				else
-				{
-					ans += res[i];
-				}
-			}
-			return ans;
 		}
+		string ans;//处理res中的数据
+		for (size_t i = 0; i < res.size(); i++)
+		{
+			if (res[i] == '\n')//遇到了第一个\n，表明从res开始到这是一个完整的句子
+			{
+				res = res.substr(i + 1);
+				return ans;
+			}
+			else
+			{
+				ans += res[i];
+			}
+		}
+
+		return "";
 	}
 	else
 	{

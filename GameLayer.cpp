@@ -36,11 +36,8 @@ bool GameLayer::init()
 	this->initPeaShooterLayer();
 	this->initSunCellLayer();//Ñô¹âÏÂÂä
 	this->initGameController();
-	if (isSinglePlayerGameMode == true)
-	{
-		
-		this->initShowSloganLayer();
-	}
+	this->initShowSloganLayer();
+
 
 	this->initMusicLayer();
 	return true;

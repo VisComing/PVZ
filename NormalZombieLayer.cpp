@@ -249,13 +249,23 @@ bool NormalZombieLayer::isZombieWin()
 	{
 		if ((*i)->getPositionX() < 170)//僵尸进入家园，僵尸胜利
 		{
-			((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
-			SimpleAudioEngine::getInstance()->stopAllEffects();
-			SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-			SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
-			//此时切换场景，切换回主场景
-			//((GameLayer*)this->getParent())->onExit();
-			return true;
+			if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
+			{
+				((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
+				SimpleAudioEngine::getInstance()->stopAllEffects();
+				SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+				SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
+				//此时切换场景，切换回主场景
+				//((GameLayer*)this->getParent())->onExit();
+				return true;
+			}
+			else//僵尸方显示胜利
+			{
+				SimpleAudioEngine::getInstance()->stopAllEffects();
+				SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+				SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
+				((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
+			}
 		}
 	}
 	return false;

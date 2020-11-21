@@ -31,4 +31,5 @@ public:
 	set<int> firstFiveZombieNotInSameLine;
 
 	void receiveFromServer(float dlt);
+	void sendHeartBeat(float dlt);
 };

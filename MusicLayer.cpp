@@ -1,5 +1,5 @@
 #include "MusicLayer.h"
-
+#include "global.h"
 MusicLayer::MusicLayer()
 {
 	_effectiveMusic = SimpleAudioEngine::getInstance();
@@ -16,13 +16,21 @@ bool MusicLayer::init()
 		return false;
 	}
 	this->preLoadMusic();
-	_effectiveMusic->playBackgroundMusic("res/music/backgroundMusic.wma", true);
+	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
+	{
+		_effectiveMusic->playBackgroundMusic("res/music/backgroundMusic.wma", true);
+	}
+	else
+	{
+		_effectiveMusic->playBackgroundMusic("res/music/zombiePlayerBGM.wma", true);
+	}
 	return true;
 }
 
 void MusicLayer::preLoadMusic()
 {
 	_effectiveMusic->preloadBackgroundMusic("res/music/backgroundMusic.wma");
+	_effectiveMusic->preloadBackgroundMusic("res/music/zombiePlayerBGM.wma");
 	_effectiveMusic->preloadEffect("res/music/clickSunSprite.wma");
 	_effectiveMusic->preloadEffect("res/music/potatoMine.wma");
 	_effectiveMusic->preloadEffect("res/music/bullet.wma");

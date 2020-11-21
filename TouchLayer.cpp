@@ -4,7 +4,6 @@
 #include "global.h"
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
-extern bool _iAmPlantSideGolbalVariable;
 TouchLayer::TouchLayer()
 {
 	this->_isCreatePeaShooter = false;
@@ -36,9 +35,9 @@ bool TouchLayer::onTouchBegan(Touch* touch, Event* event)
 
 void TouchLayer::onTouchEnded(Touch* touch, Event* event)
 {
-	//我是植物方
-	//if (_iAmPlantSideGolbalVariable == true)
-	//{
+	//我是植物方，或者是单机模式
+	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
+	{
 		if (((GameLayer*)this->getParent())->_cardLayer->getChildByName("PeaShooterCard")->getBoundingBox().containsPoint(touch->getLocation()))//判断触摸是否发生在植物卡上  
 		{
 			
@@ -91,52 +90,50 @@ void TouchLayer::onTouchEnded(Touch* touch, Event* event)
 			SimpleAudioEngine::getInstance()->playEffect("res/music/shovel.wma");
 			((GameLayer*)this->getParent())->_peaShooterLayer->removePlant(touch->getLocation());
 		}
-	//}
+	}
 	//我是僵尸方
-	//else
-	//{
-		if (isSinglePlayerGameMode == false)
+	else if(_iAmPlantSideGolbalVariable == false && isSinglePlayerGameMode == false)
+	{
+		
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("NormalZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
 		{
-			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("NormalZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+			
+			if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
 			{
-				
-				if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 100)
-				{
-					SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
-					((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "NormalZombie");
-				}
-				else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
+				SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "NormalZombie");
 			}
-			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("FlagZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
-			{
-				
-				if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 120)
-				{
-					SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
-					((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "FlagZombie");
-				}
-				else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
-			}
-			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("ConeheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
-			{
-				if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
-				{
-					SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
-					((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "ConeheadZombie");
-				}
-				else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
-			}
-			if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("BucketheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
-			{
-				if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 175)
-				{
-					SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
-					((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "BucketheadZombie");
-				}
-				else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
-			}
+			else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
 		}
-	//}
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("FlagZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			
+			if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 120)
+			{
+				SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "FlagZombie");
+			}
+			else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
+		}
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("ConeheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 150)
+			{
+				SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "ConeheadZombie");
+			}
+			else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
+		}
+		if (((GameLayer*)this->getParent())->_zombieCardLayer->getChildByName("BucketheadZombieCard")->getBoundingBox().containsPoint(touch->getLocation()))
+		{
+			if (((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar >= 175)
+			{
+				SimpleAudioEngine::getInstance()->playEffect("res/music/clickCard.wma");
+				((GameLayer*)this->getParent())->_normalZombieLayer->initNormalZombieSprite(touch->getLocation(), "BucketheadZombie");
+			}
+			else SimpleAudioEngine::getInstance()->playEffect("res/music/noEnoughMoney.wma");
+		}
+	}
 	return;
 	
 }

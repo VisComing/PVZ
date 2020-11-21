@@ -1,5 +1,5 @@
 #include "ZombieCardLayer.h"
-
+#include "global.h"
 ZombieCardLayer::ZombieCardLayer()
 {
 }
@@ -14,15 +14,18 @@ bool ZombieCardLayer::init()
 	{
 		return false;
 	}
+	//只有当我是僵尸方的时候才显示僵尸卡片
+	if (isSinglePlayerGameMode == false && _iAmPlantSideGolbalVariable == false)
+	{
+		Sprite* seedBank = Sprite::create("res/SeedBank.png");
+		seedBank->setFlipX(true);
+		seedBank->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+		auto visibleSize = Director::getInstance()->getVisibleSize();
+		seedBank->setPosition(visibleSize);
 
-	Sprite* seedBank = Sprite::create("res/SeedBank.png");
-	seedBank->setFlipX(true);
-	seedBank->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	seedBank->setPosition(visibleSize);
-	
-	this->addChild(seedBank);
-	this->initZombieCardSprite();
+		this->addChild(seedBank);
+		this->initZombieCardSprite();
+	}
 	return true;
 }
 

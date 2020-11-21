@@ -1,5 +1,5 @@
 #include "CardLayer.h"
-
+#include "global.h"
 CardLayer::CardLayer()
 {
 }
@@ -14,17 +14,20 @@ bool CardLayer::init()
 	{
 		return false;
 	}
-	
-	Sprite* seedBank = Sprite::create("res/SeedBank.png");
-	seedBank->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	seedBank->setPosition(Vec2(225,visibleSize.height));
-	this->addChild(seedBank);
-	Sprite* shovelBank = Sprite::create("res/ShovelBank.png");
-	shovelBank->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
-	shovelBank->setPosition(Vec2(225 + seedBank->getContentSize().width, visibleSize.height));
-	this->addChild(shovelBank);
-	this->initCardSprite();
+	//如果是单机模式或者是植物方
+	if (isSinglePlayerGameMode == true || _iAmPlantSideGolbalVariable == true)
+	{
+		Sprite* seedBank = Sprite::create("res/SeedBank.png");
+		seedBank->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+		auto visibleSize = Director::getInstance()->getVisibleSize();
+		seedBank->setPosition(Vec2(225, visibleSize.height));
+		this->addChild(seedBank);
+		Sprite* shovelBank = Sprite::create("res/ShovelBank.png");
+		shovelBank->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
+		shovelBank->setPosition(Vec2(225 + seedBank->getContentSize().width, visibleSize.height));
+		this->addChild(shovelBank);
+		this->initCardSprite();
+	}
 	return true;
 }
 
