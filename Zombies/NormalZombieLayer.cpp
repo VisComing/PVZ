@@ -1,8 +1,8 @@
 #include "NormalZombieLayer.h"
-#include "GameLayer.h"
-#include "global.h"
+#include "../Base/GameLayer.h"
+#include "../Base/global.h"
 #include "SimpleAudioEngine.h"
-#include "socket.h"
+#include "../Base/socket.h"
 using namespace CocosDenshion;
 extern Vector<ZombieBaseClass*>_zombieVector;
 extern Vector<PlantBaseClass*> _plantVector;

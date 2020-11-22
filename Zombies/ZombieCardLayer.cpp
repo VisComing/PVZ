@@ -1,5 +1,5 @@
 #include "ZombieCardLayer.h"
-#include "global.h"
+#include "../Base/global.h"
 ZombieCardLayer::ZombieCardLayer()
 {
 }

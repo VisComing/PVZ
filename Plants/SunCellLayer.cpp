@@ -1,8 +1,8 @@
 #include "SunCellLayer.h"
-#include "GameLayer.h"
-#include "GameScene.h"
+#include "../Base/GameLayer.h"
+#include "../Base/GameScene.h"
 #include "SimpleAudioEngine.h"
-#include "global.h"
+#include "../Base/global.h"
 using namespace CocosDenshion;
 SunCellLayer::SunCellLayer()
 {

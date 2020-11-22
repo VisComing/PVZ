@@ -1,8 +1,8 @@
 #include "PotatoMineLayer.h"
-#include "GameLayer.h"
+#include "../Base/GameLayer.h"
 #include "SimpleAudioEngine.h"
-#include "socket.h"
-#include "global.h"
+#include "../Base/socket.h"
+#include "../Base/global.h"
 using namespace CocosDenshion;
 extern Vector<PlantBaseClass*> _plantVector;
 extern Vector<ZombieBaseClass*> _zombieVector;

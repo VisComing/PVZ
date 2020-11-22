@@ -1,5 +1,5 @@
 #include "CardLayer.h"
-#include "global.h"
+#include "../Base/global.h"
 CardLayer::CardLayer()
 {
 }

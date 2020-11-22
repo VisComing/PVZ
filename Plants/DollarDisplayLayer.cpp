@@ -1,8 +1,8 @@
 #include "DollarDisplayLayer.h"
-#include "GameScene.h"
-#include "GameLayer.h"
+#include "../Base/GameScene.h"
+#include "../Base/GameLayer.h"
 #include "SimpleAudioEngine.h"
-#include "global.h"
+#include "../Base/global.h"
 using namespace CocosDenshion;
 DollarDisplayLayer::DollarDisplayLayer()
 {

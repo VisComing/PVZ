@@ -1,6 +1,6 @@
 #include "BulletLayer.h"
-#include "GameLayer.h"
-#include "TouchLayer.h"
+#include "../Base/GameLayer.h"
+#include "../Base/TouchLayer.h"
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 extern Vector<ZombieBaseClass*> _zombieVector;

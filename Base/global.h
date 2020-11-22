@@ -1,6 +1,6 @@
 #pragma once
-#include "ZombieBaseClass.h"
-#include "PlantBaseClass.h"
+#include "../Zombies/ZombieBaseClass.h"
+#include "../Plants/PlantBaseClass.h"
 #include "cocos2d.h"
 USING_NS_CC;
 extern Vector<ZombieBaseClass*> _zombieVector;
