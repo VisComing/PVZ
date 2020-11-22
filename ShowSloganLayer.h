@@ -14,4 +14,7 @@ public:
 	void showZombieEnterYourHome();
 	void winInSingleMode();
 	void showZombieLose();
+	SpriteFrameCache* _num;
+	FiniteTimeAction* _remainingTime;
+	void showRemainingTime();
 };

@@ -2,6 +2,8 @@
 #include "global.h"
 ShowSloganLayer::ShowSloganLayer()
 {
+	_num = SpriteFrameCache::getInstance();
+	_num->addSpriteFramesWithFile("res/num.plist");
 }
 
 ShowSloganLayer::~ShowSloganLayer()
@@ -64,4 +66,23 @@ void ShowSloganLayer::showZombieLose()
 	this->addChild(winSprite);
 	winSprite->setPosition(700, 300);
 	winSprite->runAction(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)));
+}
+
+void ShowSloganLayer::showRemainingTime()
+{
+	Vector<SpriteFrame*> images;
+	for (int i = 9; i >= 0; i--)
+	{
+		images.pushBack(_num->getSpriteFrameByName(StringUtils::format("num_%d.png", i)));
+	}
+	Animation* downAnimation = Animation::createWithSpriteFrames(images, 1.f);
+	this->_remainingTime = Animate::create(downAnimation);
+	Sprite* numSprite = Sprite::create();
+	this->addChild(numSprite);
+	numSprite->setPosition(700, 300);
+	numSprite->runAction(Sequence::createWithTwoActions(this->_remainingTime, CallFunc::create([numSprite]()
+		{
+			numSprite->removeFromParent();
+		})));
+	//numSprite->runAction(this->_remainingTime);
 }

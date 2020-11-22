@@ -32,4 +32,7 @@ public:
 
 	void receiveFromServer(float dlt);
 	void sendHeartBeat(float dlt);
+
+	void serverTellWin();//服务器判断我胜利
+	void serverTellLose();//服务器判断我失败
 };
