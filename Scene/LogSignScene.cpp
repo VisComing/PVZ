@@ -37,7 +37,7 @@ bool LogSignScene::init()
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 
 	//add background
-	auto bg = Sprite::create("test2.jpg");
+	auto bg = Sprite::create("res/CYHres/test2.jpg");
 	if (bg == nullptr) 
 	{
 		CCLOG("titlescreen.jpg wrong!");
@@ -50,58 +50,62 @@ bool LogSignScene::init()
 
 	//创建蝴蝶动画
 	auto cache = SpriteFrameCache::getInstance();
-	cache->addSpriteFramesWithFile("LogSignScene/butterfly/butterfly.plist");
+	cache->addSpriteFramesWithFile("res/CYHres/LogSignScene/butterfly/butterfly.plist");
 
-	Sprite* butterflySprite1 = Sprite::createWithSpriteFrameName("timg_1.png");
+	Sprite* butterflySprite1 = Sprite::createWithSpriteFrameName("res/CYHres/timg_1.png");
 	butterflySprite1->setPosition(Vec2(visibleSizeWidth / 4 - 20, visibleSizeHeight / 4 * 3));
 	this->addChild(butterflySprite1);
 
-	Sprite* butterflySprite2 = Sprite::createWithSpriteFrameName("timg_20.png");
+	Sprite* butterflySprite2 = Sprite::createWithSpriteFrameName("res/CYHres/timg_20.png");
 	butterflySprite2->setPosition(Vec2(visibleSizeWidth / 4 * 3 + 170, visibleSizeHeight / 2 - 100));
 	this->addChild(butterflySprite2);
 
 	Vector<SpriteFrame*> images;
-	images.pushBack(cache->getSpriteFrameByName("timg_1.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_2.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_3.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_4.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_5.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_6.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_7.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_8.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_9.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_10.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_11.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_12.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_13.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_14.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_15.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_16.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_17.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_18.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_19.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_20.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_21.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_22.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_23.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_24.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_25.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_26.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_27.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_28.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_29.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_30.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_31.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_32.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_33.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_34.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_35.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_36.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_37.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_38.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_39.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_40.png"));
-
+	//images.pushBack(cache->getSpriteFrameByName("res/CYHres/timg_1.png"));
+	//images.pushBack(cache->getSpriteFrameByName("res/CYHres/timg_2.png"));
+	//images.pushBack(cache->getSpriteFrameByName("res/CYHres/timg_3.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_4.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_5.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_6.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_7.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_8.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_9.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_10.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_11.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_12.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_13.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_14.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_15.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_16.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_17.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_18.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_19.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_20.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_21.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_22.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_23.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_24.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_25.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_26.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_27.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_28.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_29.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_30.png"));
+	////images.pushBack(cache->getSpriteFrameByName("timg_31.png"));
+	////images.pushBack(cache->getSpriteFrameByName("timg_32.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_33.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_34.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_35.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_36.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_37.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_38.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_39.png"));
+	//images.pushBack(cache->getSpriteFrameByName("timg_40.png"));
+	for (int i = 1; i <= 40; i++)
+	{
+		if(i != 31 || i != 32)
+			images.pushBack(cache->getSpriteFrameByName(StringUtils::format("res/CYHres/timg_%d.png", i)));
+	}
 	Animation* animation1 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate1 = Animate::create(animation1);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -126,7 +130,7 @@ bool LogSignScene::init()
 	));
 
 	//登录和注册面板设计
-	auto logBg1 = Sprite::create("LogSignScene/1.png");
+	auto logBg1 = Sprite::create("res/CYHres/LogSignScene/1.png");
 	if (logBg1 == nullptr)
 	{
 		CCLOG("LogSignScene/1.png wrong!");
@@ -136,7 +140,7 @@ bool LogSignScene::init()
 		this->addChild(logBg1);
 		logBg1->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8));
 	}
-	auto logBg2 = ui::Button::create("LogSignScene/2.png");
+	auto logBg2 = ui::Button::create("res/CYHres/LogSignScene/2.png");
 	if (logBg2 == nullptr)
 	{
 		CCLOG("LogSignScene/2.png wrong!");
@@ -151,7 +155,7 @@ bool LogSignScene::init()
 		});
 
 	}
-	auto logBg3 = ui::Button::create("LogSignScene/5.png");
+	auto logBg3 = ui::Button::create("res/CYHres/LogSignScene/5.png");
 	if (logBg3 == nullptr)
 	{
 		CCLOG("LogSignScene/5.png wrong!");
@@ -247,7 +251,7 @@ bool LogSignScene::init()
 		});
 	}
 
-	auto LoginBtn = ui::Button::create("LogSignScene/6.png");
+	auto LoginBtn = ui::Button::create("res/CYHres/LogSignScene/6.png");
 	if (LoginBtn == nullptr)
 	{
 		log("LoginBtn wrong!");

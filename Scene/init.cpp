@@ -29,7 +29,7 @@ bool initScene1::init()
     auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
     auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 
-    auto bgLogo = Sprite::create("PopCap_Logo.jpg");
+    auto bgLogo = Sprite::create("res/CYHres/PopCap_Logo.jpg");
     if (bgLogo == nullptr)
     {
         CCLOG("PopCap_Logo.jpg wrong!");
@@ -42,8 +42,8 @@ bool initScene1::init()
 
     //add return button
     auto changeBtn = MenuItemImage::create(
-        "options_backtogamebutton0.png",
-        "options_backtogamebutton2.png",
+        "res/CYHres/options_backtogamebutton0.png",
+        "res/CYHres/options_backtogamebutton2.png",
         CC_CALLBACK_1(initScene1::menuCloseCallback, this));
 
     if (changeBtn == nullptr ||
