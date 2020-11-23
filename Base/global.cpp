@@ -4,4 +4,4 @@
 bool _iAmPlantSideGolbalVariable = true;
 Vector<ZombieBaseClass*> _zombieVector;
 Vector<PlantBaseClass*> _plantVector;
-bool isSinglePlayerGameMode = true;//单机模式
+bool isSinglePlayerGameMode = false;//单机模式

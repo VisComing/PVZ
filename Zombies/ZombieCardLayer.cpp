@@ -18,7 +18,7 @@ bool ZombieCardLayer::init()
 	if (isSinglePlayerGameMode == false && _iAmPlantSideGolbalVariable == false)
 	{
 		Sprite* seedBank = Sprite::create("res/SeedBank.png");
-		seedBank->setFlipX(true);
+		seedBank->setFlippedX(true);
 		seedBank->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
 		auto visibleSize = Director::getInstance()->getVisibleSize();
 		seedBank->setPosition(visibleSize);
