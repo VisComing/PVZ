@@ -36,3 +36,6 @@ typedef struct _match
 	Client* client[2];
 	DWORD id[2];
 }Match;
+
+int thpoolMain();
+void jobCreate(int( *function)(void*), void* arg);

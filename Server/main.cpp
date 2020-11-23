@@ -1,6 +1,6 @@
 /* 2020.11.17
 当前问题：
-1.线程池？
+
 需要修改：
 1.封装成类class_recv
 */
@@ -33,11 +33,12 @@ int clientAddrLen;
 /*数据库相关全局变量*/
 sqlite3* db = NULL;
 	
+/*函数*/
 void handleRequest(char*, Client*);
 Request analysisRequest(char*);
 void waitMatch(Client*);
 void xferMatchData(Client*, Client*);
-int recv_line1(SOCKET, char*, int, int);
+int recvLine1(SOCKET, char*, int, int);
 int recvLine(SOCKET, char*, int, int);
 int endLine(char*, int);
 int dbOpen();
@@ -46,14 +47,16 @@ int dbRegister(char*, char*);
 void dbClose();
 int isOnline(char*);
 
-unsigned __stdcall threadAccept(void*);
-unsigned __stdcall threadServer(void*);
-unsigned __stdcall threadMatching(void*);
-unsigned __stdcall threadHeartBeat(void*);
+unsigned  threadAccept(void*);
+unsigned  threadServer(void*);
+unsigned  threadMatching(void*);
+unsigned  threadHeartBeat(void*);
 
 
 int main() 
 {
+	thpoolMain();
+
 	match.client[0] = NULL;
 	match.client[1] = NULL;
 	match.id[0] = 0;
@@ -94,9 +97,8 @@ int main()
 
 	clientAddrLen = sizeof(clientAddr);
 
-	_beginthreadex(NULL, 0, threadAccept, NULL, 0, 0);
-	/*thread t(&Server::threadAccept, this);
-	t.detach();*/
+	//_beginthreadex(NULL, 0, threadAccept, NULL, 0, 0);
+	jobCreate((int(*)(void*))threadAccept, NULL);
 	
 	while (1) 
 	{
@@ -104,7 +106,7 @@ int main()
 	}
 }
 
-unsigned __stdcall threadAccept(void* param)
+unsigned  threadAccept(void* param)
 {
 	while (1) 
 	{
@@ -123,25 +125,27 @@ unsigned __stdcall threadAccept(void* param)
 		head->next = clientP;
 		ReleaseSemaphore(mutexLinklist, 1, NULL);
 
-		_beginthreadex(NULL, 0, threadServer, clientP, 0, 0);
-		/*thread t(&Server::threadServer, clientP, this);
-		t.detach();*/
+		//_beginthreadex(NULL, 0, threadServer, clientP, 0, 0);
+		jobCreate((int(*)(void*))threadServer, clientP);
 
 		cout << "------------------------------------------------" << endl;
 		cout << "Socket:" << clientP->cSocket << " | IP:" << clientP->IP << " | Port:" << clientP->port << endl;
 		cout << "[ACCEPT]" << endl;
 		cout << "客户端已连接至服务器" << endl;
 	}
+
+	return 0;
 }
 
-unsigned __stdcall threadServer(void* param)
+unsigned  threadServer(void* param)
 {
 	Client* thisClient = (Client*)param;
 	thisClient->threadId = _getpid();
 	char rbuf[BUFSIZE];
 	char sbuf[BUFSIZE];
 	
-	_beginthreadex(NULL, 0, threadHeartBeat, thisClient, 0, 0);
+	//_beginthreadex(NULL, 0, threadHeartBeat, thisClient, 0, 0);
+	//job_create((int(*)(void*))threadHeartBeat, thisClient);
 
 	while (1) 
 	{
@@ -315,9 +319,8 @@ void waitMatch(Client* thisClient)
 			match.client[0] = thisClient;
 			match.id[0] = thisId;
 			thisClient->flag = 1;
-			_beginthreadex(NULL, 0, threadMatching, thisClient, 0, 0);
-			/*thread t(&Server::threadAccept, thisClient, this);
-			t.detach();*/
+			//_beginthreadex(NULL, 0, threadMatching, thisClient, 0, 0);
+			jobCreate((int(*)(void*))threadMatching, thisClient);
 		}
 		else if (NULL != match.client[0] && NULL == match.client[1] && thisClient != match.client[0]) 
 		{
@@ -443,7 +446,7 @@ void xferMatchData(Client* thisClient, Client* oppoClient)
 	}
 }
 
-unsigned __stdcall threadMatching(void* param)
+unsigned  threadMatching(void* param)
 {
 	Client* thisClient = (Client*)param;
 	char rbuf[BUFSIZE];
@@ -577,7 +580,7 @@ void dbClose()
 	sqlite3_close(db);
 }
 
-int recv_Line1(SOCKET s, char* buf, int len, int flags)
+int recvLine1(SOCKET s, char* buf, int len, int flags)
 {
 	int rbyte = recv(s, buf, len, MSG_PEEK);
 	if (rbyte > 0) 
@@ -641,7 +644,7 @@ int isOnline(char* username)
 	return 0;
 }
 
-unsigned __stdcall threadHeartBeat(void* param)
+unsigned  threadHeartBeat(void* param)
 {
 	Client* client = (Client*)param;
 	Client remClient = *client;
