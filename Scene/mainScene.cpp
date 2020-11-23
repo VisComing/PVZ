@@ -1,6 +1,7 @@
 #pragma once
 #include "mainScene.h"
-
+#include "../Base/GameScene.h"
+#include "../Base/global.h"
 cocos2d::Scene* mainScene::createScene()
 {
 	return mainScene::create();
@@ -27,7 +28,7 @@ bool mainScene::init()
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 
 	//add background
-	auto bgSky = Sprite::create("Store_Background.jpg");
+	auto bgSky = Sprite::create("res/CYHres/Store_Background.jpg");
 	if (bgSky == nullptr)
 	{
 		CCLOG("Store_Background.jpg wrong!");
@@ -38,7 +39,7 @@ bool mainScene::init()
 		bgSky->setPosition(Vec2(visibleSizeWidth / 2 - 500, visibleSizeHeight / 2 ));
 	}
 
-	auto bgHouse = Sprite::create("SelectorScreen_BG_Center.png");
+	auto bgHouse = Sprite::create("res/CYHres/SelectorScreen_BG_Center.png");
 	if (bgHouse == nullptr)
 	{
 		CCLOG("titlescreen.jpg wrong!");
@@ -49,7 +50,7 @@ bool mainScene::init()
 		bgHouse->setPosition(Vec2(visibleSizeWidth / 2 - 50, visibleSizeHeight / 2 - 130));
 	}
 
-	auto bgTree = Sprite::create("SelectorScreen_BG_Left.png");
+	auto bgTree = Sprite::create("res/CYHres/SelectorScreen_BG_Left.png");
 	if (bgTree == nullptr)
 	{
 		CCLOG("SelectorScreen_BG_Left.png wrong!");
@@ -61,7 +62,7 @@ bool mainScene::init()
 	}
 
 	//add challange choice background and button
-	auto stele = Sprite::create("SelectorScreen_BG_Right1.png");
+	auto stele = Sprite::create("res/CYHres/SelectorScreen_BG_Right1.png");
 	if (stele == nullptr)
 	{
 		CCLOG("SelectorScreen_BG_Right1.jpg wrong!");
@@ -72,42 +73,37 @@ bool mainScene::init()
 		stele->setPosition(Vec2(visibleSizeWidth / 8 * 7 - 175, visibleSizeHeight / 4 + 118));
 	}
 
-	auto aiBtn = ui::Button::create("aiChallengeBtn.png");
+	auto aiBtn = ui::Button::create("res/CYHres/aiChallengeBtn.png");
 	addChild(aiBtn);
 	aiBtn->setPosition(Vec2(visibleSizeWidth / 8 * 7 - 50, visibleSizeHeight / 4 + 270));
 	aiBtn->addClickEventListener([&](Ref* ref) {
-		;
+		//单机模式
+		isSinglePlayerGameMode = true;
+		Director::getInstance()->pushScene(GameScene::create());
 	});
 
-	auto pkBtn = ui::Button::create("matchChallengeBtn.png");
+	auto pkBtn = ui::Button::create("res/CYHres/matchChallengeBtn.png");
 	addChild(pkBtn);
 	pkBtn->setPosition(Vec2(visibleSizeWidth / 8 * 7 - 50, visibleSizeHeight / 4 + 165));
 	pkBtn->addClickEventListener([&](Ref* ref) {
+
 		Director::getInstance()->pushScene(TransitionSlideInR::create(0.3f, matchScene::create()));
 	});
 
 	//创建僵尸动画
 	//1
 	auto cache1 = SpriteFrameCache::getInstance();
-	cache1->addSpriteFramesWithFile("mainScene/FlagZombie/FlagZombie.plist");
+	cache1->addSpriteFramesWithFile("res/CYHres/mainScene/FlagZombie/FlagZombie.plist");
 
 	Sprite* FlagZombie = Sprite::createWithSpriteFrameName("FlagZombie_1.png");
 	FlagZombie->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 4));
 	this->addChild(FlagZombie);
 
 	Vector<SpriteFrame*> images1;
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_1.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_2.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_3.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_4.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_5.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_6.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_7.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_8.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_9.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_10.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_11.png"));
-	images1.pushBack(cache1->getSpriteFrameByName("FlagZombie_12.png"));
+	for (int i = 1; i <= 12; i++)
+	{
+		images1.pushBack(cache1->getSpriteFrameByName(StringUtils::format("FlagZombie_%d.png", i)));
+	}
 
 	Animation* animation1 = Animation::createWithSpriteFrames(images1, 2.f / images1.size());
 	Animate* animate1 = Animate::create(animation1);
@@ -122,29 +118,17 @@ bool mainScene::init()
 	));
 	//2
 	auto cache2 = SpriteFrameCache::getInstance();
-	cache2->addSpriteFramesWithFile("mainScene/BucketheadZombie/BucketheadZombie.plist");
+	cache2->addSpriteFramesWithFile("res/CYHres/mainScene/BucketheadZombie/BucketheadZombie.plist");
 
 	Sprite* BucketheadZombie = Sprite::createWithSpriteFrameName("BucketheadZombie_1.png");
 	BucketheadZombie->setPosition(Vec2(visibleSizeWidth / 2 + 80, visibleSizeHeight / 4 + 100));
 	this->addChild(BucketheadZombie);
 
 	Vector<SpriteFrame*> images2;
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_1.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_2.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_3.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_4.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_5.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_6.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_7.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_8.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_9.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_10.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_11.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_12.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_13.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_14.png"));
-	images2.pushBack(cache2->getSpriteFrameByName("BucketheadZombie_15.png"));
-
+	for (int i = 1; i <= 15; i++)
+	{
+		images2.pushBack(cache2->getSpriteFrameByName(StringUtils::format("BucketheadZombie_%d.png", i)));
+	}
 	Animation* animation2 = Animation::createWithSpriteFrames(images2, 2.f / images2.size());
 	Animate* animate2 = Animate::create(animation2);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -158,35 +142,17 @@ bool mainScene::init()
 	));
 	//3
 	auto cache3 = SpriteFrameCache::getInstance();
-	cache3->addSpriteFramesWithFile("mainScene/ConeheadZombie/ConeheadZombie.plist");
+	cache3->addSpriteFramesWithFile("res/CYHres/mainScene/ConeheadZombie/ConeheadZombie.plist");
 
 	Sprite* ConeheadZombie = Sprite::createWithSpriteFrameName("ConeheadZombie_1.png");
 	ConeheadZombie->setPosition(Vec2(visibleSizeWidth / 2 + 70, visibleSizeHeight / 4 + 20));
 	this->addChild(ConeheadZombie);
 
 	Vector<SpriteFrame*> images3;
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_1.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_2.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_3.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_4.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_5.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_6.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_7.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_8.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_9.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_10.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_11.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_12.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_13.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_14.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_15.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_16.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_17.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_18.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_19.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_20.png"));
-	images3.pushBack(cache3->getSpriteFrameByName("ConeheadZombie_21.png"));
-
+	for (int i = 1; i <= 21; i++)
+	{
+		images3.pushBack(cache3->getSpriteFrameByName(StringUtils::format("ConeheadZombie_%d.png", i)));
+	}
 	Animation* animation3 = Animation::createWithSpriteFrames(images3, 2.f / images3.size());
 	Animate* animate3 = Animate::create(animation3);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -200,28 +166,17 @@ bool mainScene::init()
 	));
 	//4
 	auto cache4 = SpriteFrameCache::getInstance();
-	cache4->addSpriteFramesWithFile("mainScene/TallNut/TallNut.plist");
+	cache4->addSpriteFramesWithFile("res/CYHres/mainScene/TallNut/TallNut.plist");
 
 	Sprite* TallNut = Sprite::createWithSpriteFrameName("TallNut_1.png");
 	TallNut->setPosition(Vec2(visibleSizeWidth / 2 - 150, visibleSizeHeight / 4 - 40));
 	this->addChild(TallNut);
 
 	Vector<SpriteFrame*> images4;
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_1.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_2.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_3.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_4.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_5.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_6.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_7.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_8.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_9.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_10.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_11.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_12.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_13.png"));
-	images4.pushBack(cache4->getSpriteFrameByName("TallNut_14.png"));
-
+	for (int i = 1; i <= 14; i++)
+	{
+		images4.pushBack(cache4->getSpriteFrameByName(StringUtils::format("TallNut_%d.png", i)));
+	}
 	Animation* animation4 = Animation::createWithSpriteFrames(images4, 2.f / images4.size());
 	Animate* animate4 = Animate::create(animation4);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -235,26 +190,17 @@ bool mainScene::init()
 	));
 	//5
 	auto cache5 = SpriteFrameCache::getInstance();
-	cache5->addSpriteFramesWithFile("mainScene/Peashooter/Peashooter.plist");
+	cache5->addSpriteFramesWithFile("res/CYHres/mainScene/Peashooter/Peashooter.plist");
 
 	Sprite* Peashooter = Sprite::createWithSpriteFrameName("Peashooter_1.png");
 	Peashooter->setPosition(Vec2(visibleSizeWidth / 2 - 350, visibleSizeHeight / 2 - 120));
 	this->addChild(Peashooter);
 
 	Vector<SpriteFrame*> images5;
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_1.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_2.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_3.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_4.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_5.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_6.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_7.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_8.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_9.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_10.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_11.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_12.png"));
-	images5.pushBack(cache5->getSpriteFrameByName("Peashooter_13.png"));
+	for (int i = 1; i <= 13; i++)
+	{
+		images5.pushBack(cache5->getSpriteFrameByName(StringUtils::format("Peashooter_%d.png", i)));
+	}
 
 	Animation* animation5 = Animation::createWithSpriteFrames(images5, 2.f / images5.size());
 	Animate* animate5 = Animate::create(animation5);
@@ -269,7 +215,7 @@ bool mainScene::init()
 	));
 
 	//add return button
-	auto returnBtn = ui::Button::create("timg.png");
+	auto returnBtn = ui::Button::create("res/CYHres/timg.png");
 	if (returnBtn == nullptr)
 	{
 		log("returnBtn wrong!");
@@ -285,7 +231,7 @@ bool mainScene::init()
 	});
 
 	//add menu button and create menuLayer
-	auto menuBtn = ui::Button::create("Credits_PlayButton.png");
+	auto menuBtn = ui::Button::create("res/CYHres/Credits_PlayButton.png");
 	if (menuBtn == nullptr)
 	{
 		log("menuBtn wrong!");
@@ -343,7 +289,7 @@ bool menuLayer::init()
 	auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 
-	auto bgMenu = Sprite::create("options_menuback.png");
+	auto bgMenu = Sprite::create("res/CYHres/options_menuback.png");
 	if (bgMenu == nullptr)
 	{
 		CCLOG("options_menuback.png wrong!");
@@ -364,7 +310,7 @@ bool menuLayer::init()
 	bgplayBtn->setTitleFontSize(36);
 	bgplayBtn->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 + 100));
 	bgplayBtn->addClickEventListener([](Ref* sender) {
-		SimpleAudioEngine::getInstance()->playBackgroundMusic("Laura Shigihara - Rigor Hormist.wav", true);
+		SimpleAudioEngine::getInstance()->playBackgroundMusic("res/CYHres/Laura Shigihara - Rigor Hormist.wav", true);
 	});
 	this->addChild(bgplayBtn);
 

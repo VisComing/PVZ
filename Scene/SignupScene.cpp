@@ -27,7 +27,7 @@ bool SignupScene::init()
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 
 	//add background
-	auto bg = Sprite::create("test2.jpg");
+	auto bg = Sprite::create("res/CYHres/test2.jpg");
 	if (bg == nullptr)
 	{
 		CCLOG("titlescreen.jpg wrong!");

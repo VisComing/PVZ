@@ -4,7 +4,7 @@
 #include "SimpleAudioEngine.h"
 #include "../Base/socket.h"
 using namespace CocosDenshion;
-extern Vector<ZombieBaseClass*>_zombieVector;
+extern Vector<ZombieBaseClass*>_zombieVector;//注意，这两个是全局变量
 extern Vector<PlantBaseClass*> _plantVector;
 NormalZombieLayer::NormalZombieLayer()
 {

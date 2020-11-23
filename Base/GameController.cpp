@@ -4,7 +4,9 @@
 #include "global.h"
 #include "socket.h"
 #include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
+using namespace CocosDenshion; 
+extern Vector<ZombieBaseClass*>_zombieVector;//注意，这两个是全局变量
+extern Vector<PlantBaseClass*> _plantVector;
 /*不管联机还是单机，都要有：倒计时，判断僵尸是否进入家园，发送心跳
 *如果是联机：要从服务器接收信息，根据接收的信息创建植物/僵尸
 *当倒计时为0时，如果时单机模式，胜利，显示
@@ -149,6 +151,9 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 			//((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
 			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 			this->unschedule(schedule_selector(GameController::isZombieWin));
+			_zombieVector.clear();
+			_plantVector.clear();
+			Director::getInstance()->popScene();
 			log("Win!!!");
 		}
 		else if (_iAmPlantSideGolbalVariable == true && isSinglePlayerGameMode == false)//联机模式植物发送胜利
@@ -177,6 +182,9 @@ void GameController::isZombieWin(float dlt)
 		{
 			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 			this->unschedule(schedule_selector(GameController::isZombieWin));
+			_zombieVector.clear();
+			_plantVector.clear();
+			Director::getInstance()->popScene();
 		}
 	}
 }
