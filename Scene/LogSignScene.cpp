@@ -73,26 +73,27 @@ bool LogSignScene::init()
 
 	Animation* animation1 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate1 = Animate::create(animation1);
-	//matchSprite->runAction(RepeatForever::create(animate));
-	butterflySprite1->runAction(Sequence::createWithTwoActions
+	butterflySprite1->runAction(RepeatForever::create(animate1));
+	/*butterflySprite1->runAction(Sequence::createWithTwoActions
 	(
 		Repeat::create(animate1, 50000),
 		CallFunc::create([butterflySprite1]()
 	{
 		butterflySprite1->removeFromParent();
 	})
-	));
+	));*/
 
 	Animation* animation2 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate2 = Animate::create(animation2);
-	butterflySprite2->runAction(Sequence::createWithTwoActions
+	butterflySprite2->runAction(RepeatForever::create(animate2));
+	/*butterflySprite2->runAction(Sequence::createWithTwoActions
 	(
 		Repeat::create(animate2, 50000),
 		CallFunc::create([butterflySprite2]()
 	{
 		butterflySprite2->removeFromParent();
 	})
-	));
+	));*/
 
 	//登录和注册面板设计
 	auto logBg1 = Sprite::create("res/CYHres/LogSignScene/1.png");
@@ -144,30 +145,33 @@ bool LogSignScene::init()
 	}
 	else
 	{
-		addChild(UsernameInput);
-		addChild(PasswordInput);
+		this->addChild(UsernameInput);
+		this->addChild(PasswordInput);
 
 		UsernameInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - 3));
 		UsernameInput->setPlaceHolder("Username");
+		UsernameInput->setCursorEnabled(true);
 		UsernameInput->setFontSize(24);
 		UsernameInput->setColor(Color3B::BLACK);
 		UsernameInput->setMaxLengthEnabled(true);
 		UsernameInput->setMaxLength(6);
 		UsernameInput->ignoreContentAdaptWithSize(false);  //自动换行，使输入从左端开始
-
+		
 		PasswordInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8 - 3));
 		PasswordInput->setPlaceHolder("Password");
+		PasswordInput->setCursorEnabled(true);
 		PasswordInput->setFontSize(24);
 		PasswordInput->setColor(Color3B::BLACK);
 		PasswordInput->setMaxLengthEnabled(true);
 		PasswordInput->setMaxLength(9);
 		PasswordInput->ignoreContentAdaptWithSize(false);  //自动换行，使输入从左端开始
 		PasswordInput->setPasswordEnabled(true);
-
-		/*UsernameInput->addClickEventListener([&](Ref* ref)
-		{
-			dynamic_cast<ui::TextField*>(ref)->setString("");
-		});*/
+		
+		//UsernameInput->addClickEventListener([&](Ref* ref)
+		//{
+		//		//UsernameInput->setPlaceHolder("");
+		//	dynamic_cast<ui::TextField*>(ref)->setString("");
+		//});
 		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
 		{
 			if (type == ui::TextField::EventType::INSERT_TEXT) 
@@ -190,10 +194,10 @@ bool LogSignScene::init()
 			}
 		});
 
-		PasswordInput->addClickEventListener([&](Ref* ref)
+		/*PasswordInput->addClickEventListener([&](Ref* ref)
 		{
 			dynamic_cast<ui::TextField*>(ref)->setString("");
-		});
+		});*/
 		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
 		{
 			if (type == ui::TextField::EventType::INSERT_TEXT) 

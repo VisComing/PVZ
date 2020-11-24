@@ -35,4 +35,7 @@ public:
 
 	void serverTellWin();//服务器判断我胜利
 	void serverTellLose();//服务器判断我失败
+
+	Sprite* readySprite;
+	Sprite* startSprite;
 };

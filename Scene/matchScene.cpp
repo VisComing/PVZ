@@ -86,14 +86,15 @@ bool matchScene::init()
 	Animation* animationMatch = Animation::createWithSpriteFrames(imagesMatch, 2.f / imagesMatch.size());
 	Animate* animateMatch = Animate::create(animationMatch);
 	//matchSprite->runAction(RepeatForever::create(animate));
-	matchSprite->runAction(Sequence::createWithTwoActions
+	matchSprite->runAction(RepeatForever::create(animateMatch));
+	/*matchSprite->runAction(Sequence::createWithTwoActions
 	(
 		Repeat::create(animateMatch, 50000),
 		CallFunc::create([matchSprite]()
 	{
 		matchSprite->removeFromParent();
 	})
-	));
+	));*/
 
 	//¹Ø±ÕÌ×½Ó×Ö
 	//closesocket(clntSock);

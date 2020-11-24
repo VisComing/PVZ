@@ -55,25 +55,27 @@ bool SignupScene::init()
 	Animation* animation1 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate1 = Animate::create(animation1);
 	//matchSprite->runAction(RepeatForever::create(animate));
-	butterflySprite1->runAction(Sequence::createWithTwoActions
+	butterflySprite1->runAction(RepeatForever::create(animate1));
+	/*butterflySprite1->runAction(Sequence::createWithTwoActions
 	(
 		Repeat::create(animate1, 50000),
 		CallFunc::create([butterflySprite1]()
 	{
 		butterflySprite1->removeFromParent();
 	})
-	));
+	));*/
 
 	Animation* animation2 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate2 = Animate::create(animation2);
-	butterflySprite2->runAction(Sequence::createWithTwoActions
+	butterflySprite2->runAction(RepeatForever::create(animate2));
+	/*butterflySprite2->runAction(Sequence::createWithTwoActions
 	(
 		Repeat::create(animate2, 50000),
 		CallFunc::create([butterflySprite2]()
 	{
 		butterflySprite2->removeFromParent();
 	})
-	));
+	));*/
 
 	//登录和注册面板设计
 	auto logBg1 = Sprite::create("res/CYHres/LogSignScene/8.png");
@@ -131,6 +133,7 @@ bool SignupScene::init()
 
 		UsernameInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 + 20));
 		UsernameInput->setPlaceHolder("Username");
+		UsernameInput->setCursorEnabled(true);
 		UsernameInput->setFontSize(24);
 		UsernameInput->setColor(Color3B::BLACK);
 		UsernameInput->setMaxLengthEnabled(true);
@@ -139,6 +142,7 @@ bool SignupScene::init()
 
 		PasswordInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8 + 20));
 		PasswordInput->setPlaceHolder("Password");
+		PasswordInput->setCursorEnabled(true);
 		PasswordInput->setFontSize(24);
 		PasswordInput->setColor(Color3B::BLACK);
 		PasswordInput->setMaxLengthEnabled(true);
@@ -148,6 +152,7 @@ bool SignupScene::init()
 
 		PasswordInput2->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 4 + 25));
 		PasswordInput2->setPlaceHolder("Password");
+		PasswordInput2->setCursorEnabled(true);
 		PasswordInput2->setFontSize(24);
 		PasswordInput2->setColor(Color3B::BLACK);
 		PasswordInput2->setMaxLengthEnabled(true);

@@ -18,7 +18,8 @@ bool ShowSloganLayer::init()
 		return false;
 	}
 	//scheduleUpdate();
-	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
+	//联机植物方不显示这个了
+	if (isSinglePlayerGameMode == true)
 	{
 		this->showPrepareInfo();
 	}
