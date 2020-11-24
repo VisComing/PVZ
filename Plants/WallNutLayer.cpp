@@ -112,7 +112,7 @@ void WallNutLayer::produceWallNutSprite(Vec2 position)
 	shadow->setPosition(x, y - 30);
 	this->_wallNutSprite->_position[0] = (x - 200) / 90;
 	this->_wallNutSprite->_position[1] = y / 100;
-	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -= 50;//每产生一个坚果墙消耗50金币
+	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -= 50;//每产生一个坚果墙消耗50金币
 
 }
 

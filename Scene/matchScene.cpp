@@ -1,6 +1,7 @@
 #pragma once
 #include "matchScene.h"
-
+#include "../Base/global.h"
+#include "../Base/GameScene.h"
 cocos2d::Scene* matchScene::createScene()
 {
 	return matchScene::create();
@@ -20,7 +21,7 @@ bool matchScene::init()
 	}
 
 	this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
-
+	this->schedule(schedule_selector(matchScene::matchSuccess), 0.1f);
 	auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 	
@@ -100,4 +101,23 @@ bool matchScene::init()
 	//WSACleanup();
 
 	return true;
+}
+
+void matchScene::matchSuccess(float)
+{
+	//注意此处是replaceScene
+	string ans = TCPSocket::getInstance()->readFromServer();
+	log(ans.c_str());
+	if (ans == "MATCHSUCCESS;0;")
+	{
+		isSinglePlayerGameMode = false;
+		_iAmPlantSideGolbalVariable = true;
+		Director::getInstance()->replaceScene(GameScene::create());
+	}
+	else if (ans == "MATCHSUCCESS;1;")
+	{
+		isSinglePlayerGameMode = false;
+		_iAmPlantSideGolbalVariable = false;
+		Director::getInstance()->replaceScene(GameScene::create());
+	}
 }

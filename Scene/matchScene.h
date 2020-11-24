@@ -20,6 +20,7 @@ public:
 	void menuCloseCallback(cocos2d::Ref* pSender);
 
 	virtual bool init();
+	void matchSuccess(float);
 
 private:
 	WSADATA wsaData;

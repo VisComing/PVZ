@@ -8,8 +8,8 @@ using namespace std;
 const int BUF_SIZE = 1024;
 class TCPSocket {
 private:
-	const string host = "123.56.111.64";
-	const int port = 8634;
+	const string host = "192.168.3.9";
+	const int port = 8000;
 	string res;
 	sockaddr_in sockAddr;
 	SOCKET sock;

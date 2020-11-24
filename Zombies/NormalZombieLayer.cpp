@@ -132,7 +132,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
 			{
-				std::string message = zombieName + ":" + to_string(x) + "," + to_string(y + 20) + ";\n";
+				std::string message = zombieName + ":" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar

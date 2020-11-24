@@ -48,9 +48,15 @@ void ShowSloganLayer::showPrepareInfo()
 //怎么不会消失，不应该显示三秒然后消失吗？2020/11/19  原因是一直调用这个函数，所以不会消失。以后添加上转换场景
 void ShowSloganLayer::showZombieEnterYourHome()
 {
+	auto returnBtn = ui::Button::create("res/returnToMainScene.png");
 	Sprite* gameOver = Sprite::create("res/ZombiesWon.png");
 	this->addChild(gameOver);
 	gameOver->setPosition(700, 300);
+	returnBtn->setPosition(Vec2(1000, 200));
+	this->addChild(returnBtn);
+	returnBtn->addClickEventListener([&](Ref* ref) {
+		Director::getInstance()->popScene();
+		});
 }
 
 void ShowSloganLayer::winInSingleMode()
@@ -75,9 +81,19 @@ void ShowSloganLayer::winInSingleMode()
 void ShowSloganLayer::showZombieLose()
 {
 	Sprite* winSprite = Sprite::create("res/zombieLose.png");
+	auto returnBtn = ui::Button::create("res/returnToMainScene.png");
+	returnBtn->setPosition(Vec2(1000, 200));
+	this->addChild(returnBtn);
 	this->addChild(winSprite);
+	returnBtn->setVisible(false);
 	winSprite->setPosition(700, 300);
-	winSprite->runAction(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)));
+	returnBtn->addClickEventListener([&](Ref* ref) {
+		Director::getInstance()->popScene();
+		});
+	winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1), ScaleBy::create(2, 2),
+		CallFunc::create([returnBtn]() {
+		returnBtn->setVisible(true);
+	}), NULL)));
 }
 
 void ShowSloganLayer::showRemainingTime()

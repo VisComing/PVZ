@@ -18,7 +18,7 @@ extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
 GameController::GameController()
 {
 	this->firstFiveZombie = 0;
-	this->_remainingTime = 40;
+	this->_remainingTime = 120;
 }
 GameController::~GameController()
 {
@@ -184,7 +184,7 @@ void GameController::isZombieWin(float dlt)
 			this->unschedule(schedule_selector(GameController::isZombieWin));
 			_zombieVectorGlobalVariable.clear();
 			_plantVectorGlobalVariable.clear();
-			Director::getInstance()->popScene();
+			//Director::getInstance()->popScene();
 		}
 	}
 }
@@ -260,12 +260,12 @@ void GameController::receiveFromServer(float dlt)
 		else if (_name[0] = 'W' && _name[1] == 'I' && _name[2] == 'N')
 		{
 			//服务器说我胜利了
-
+			this->serverTellWin();
 		}
 		else if (_name[0] = 'L' && _name[1] == 'O' && _name[2] == 'S' && _name[3] == 'E')
 		{
 			//服务器说我输了
-
+			this->serverTellLose();
 		}
 		else
 		{
@@ -292,6 +292,8 @@ void GameController::serverTellWin()
 	//((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
 	this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 	this->unschedule(schedule_selector(GameController::isZombieWin));
+	_zombieVectorGlobalVariable.clear();
+	_plantVectorGlobalVariable.clear();
 	log("Win!!!");
 }
 
@@ -305,7 +307,8 @@ void GameController::serverTellLose()
 	{
 		//我是植物方
 		((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
-		SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");		
+		SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");	
+	
 	}
 	else
 	{
@@ -313,6 +316,8 @@ void GameController::serverTellLose()
 		SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
 		((GameLayer*)this->getParent())->_showSloganLayer->showZombieLose();
 	}
+	_zombieVectorGlobalVariable.clear();
+	_plantVectorGlobalVariable.clear();
 	//此时切换场景，切换回主场景
 		//((GameLayer*)this->getParent())->onExit();
 }

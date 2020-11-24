@@ -117,8 +117,8 @@ void PeaShooterLayer::producePeaShooterSprite(Vec2 position)
 	shadow->setPosition(x - 5, y - 27);
 	this->_peaShooterSprite->_position[0] = (x - 200) / 90;
 	this->_peaShooterSprite->_position[1] = y / 100;
-	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-		= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
+	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
+	//	= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
 	((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 
 }

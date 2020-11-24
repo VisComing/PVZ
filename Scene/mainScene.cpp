@@ -1,5 +1,6 @@
 #pragma once
 #include "mainScene.h"
+#include "../Base/global.h"
 cocos2d::Scene* mainScene::createScene()
 {
 	return mainScene::create();

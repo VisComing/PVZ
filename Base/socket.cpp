@@ -1,6 +1,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "socket.h"
-
+#include "cocos2d.h"
+USING_NS_CC;
 TCPSocket* TCPSocket::tcpSocket_{ nullptr };
 std::mutex TCPSocket::mutex_;
 std::mutex TCPSocket::mutex_read;
@@ -68,7 +69,11 @@ string TCPSocket::readFromServer()//返回的一定是完整的数据包，或者是个空串
 void TCPSocket::writeIntoServer(string message)
 {
 	std::lock_guard<std::mutex> lock(mutex_write);
-	send(sock, message.c_str(), message.size(), 0);
+	int res = send(sock, message.c_str(), message.size(), 0);
+	if (res < 0)
+	{
+		log("socket send error!");
+	}
 }
 
 void TCPSocket::closeConnection()

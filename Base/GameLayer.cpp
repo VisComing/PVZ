@@ -8,11 +8,11 @@ bool GameLayer::init()
 		return false;
 	}
 	this->initMapLayer();
-	if (TCPSocket::getInstance()->connectToServer() == -1)//连接失败
-	{
-		for(int i = 0; i < 10; i++)
-			log("connect failed!");
-	}
+	//if (TCPSocket::getInstance()->connectToServer() == -1)//连接失败
+	//{
+	//	for(int i = 0; i < 10; i++)
+	//		log("connect failed!");
+	//}
 	
 
 	//scheduleUpdate();//监听一切活动/变化

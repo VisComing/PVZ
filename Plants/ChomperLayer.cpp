@@ -115,8 +115,8 @@ void ChomperLayer::produceChomperSprite(Vec2 position)
 	shadow->setPosition(x - 20, y - 33);
 	this->_chomperSprite->_position[0] = (x - 200) / 90;
 	this->_chomperSprite->_position[1] = y / 100;
-	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-		= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
+	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
+	//	= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
 
 }
 

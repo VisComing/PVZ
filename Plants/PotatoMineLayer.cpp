@@ -109,8 +109,8 @@ void PotatoMineLayer::producePotatoMineSprite(Vec2 position)
 	shadow->setPosition(x, y - 20);
 	this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
 	this->_potatoMineSprite->_position[1] = y / 100;
-	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-		= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
+	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
+	//	= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
 	this->schedule(schedule_selector(PotatoMineLayer::grow), 1.0f);
 }
 
