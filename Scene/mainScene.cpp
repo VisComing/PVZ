@@ -1,7 +1,5 @@
 #pragma once
 #include "mainScene.h"
-#include "../Base/GameScene.h"
-#include "../Base/global.h"
 cocos2d::Scene* mainScene::createScene()
 {
 	return mainScene::create();
@@ -14,15 +12,7 @@ bool mainScene::init()
 		return false;
 	}
 
-	this->schedule(schedule_selector(LogSignScene::callServer), 0.5f);
-
-	WSAStartup(MAKEWORD(2, 2), &wsaData);
-	clntSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-	memset(&clntAddr, 0, sizeof(clntAddr));  //每个字节都用0填充
-	clntAddr.sin_family = PF_INET;  //使用IPv4地址
-	clntAddr.sin_addr.s_addr = inet_addr("127.0.0.1");  //具体的IP地址
-	clntAddr.sin_port = htons(5550);  //端口
-	connect(clntSock, (SOCKADDR*)&clntAddr, sizeof(SOCKADDR));
+	this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
 
 	auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
@@ -129,6 +119,7 @@ bool mainScene::init()
 	{
 		images2.pushBack(cache2->getSpriteFrameByName(StringUtils::format("BucketheadZombie_%d.png", i)));
 	}
+
 	Animation* animation2 = Animation::createWithSpriteFrames(images2, 2.f / images2.size());
 	Animate* animate2 = Animate::create(animation2);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -153,6 +144,7 @@ bool mainScene::init()
 	{
 		images3.pushBack(cache3->getSpriteFrameByName(StringUtils::format("ConeheadZombie_%d.png", i)));
 	}
+
 	Animation* animation3 = Animation::createWithSpriteFrames(images3, 2.f / images3.size());
 	Animate* animate3 = Animate::create(animation3);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -177,6 +169,7 @@ bool mainScene::init()
 	{
 		images4.pushBack(cache4->getSpriteFrameByName(StringUtils::format("TallNut_%d.png", i)));
 	}
+
 	Animation* animation4 = Animation::createWithSpriteFrames(images4, 2.f / images4.size());
 	Animate* animate4 = Animate::create(animation4);
 	//matchSprite->runAction(RepeatForever::create(animate));

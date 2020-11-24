@@ -1,5 +1,6 @@
 #include "ShowSloganLayer.h"
 #include "global.h"
+#include"ui/CocosGUI.h"
 ShowSloganLayer::ShowSloganLayer()
 {
 	_num = SpriteFrameCache::getInstance();
@@ -54,10 +55,21 @@ void ShowSloganLayer::showZombieEnterYourHome()
 
 void ShowSloganLayer::winInSingleMode()
 {
+	auto returnBtn = ui::Button::create("res/returnToMainScene.png");
 	Sprite* winSprite = Sprite::create("res/winInSingleMode.png");
 	this->addChild(winSprite);
 	winSprite->setPosition(700, 300);
-	winSprite->runAction(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)));
+	returnBtn->setPosition(Vec2(1000, 200));
+	this->addChild(returnBtn);
+	returnBtn->setVisible(false);
+	returnBtn->addClickEventListener([&](Ref* ref) {
+		Director::getInstance()->popScene();
+		});
+	winSprite->runAction(Sequence::create(Spawn::createWithTwoActions(FadeIn::create(1), ScaleBy::create(2, 2)), 
+		CallFunc::create([returnBtn]()
+			{
+				returnBtn->setVisible(true);
+			}), NULL));
 }
 
 void ShowSloganLayer::showZombieLose()

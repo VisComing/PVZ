@@ -4,8 +4,8 @@
 #include "../Base/socket.h"
 #include "../Base/global.h"
 using namespace CocosDenshion;
-extern Vector<PlantBaseClass*> _plantVector;
-extern Vector<ZombieBaseClass*> _zombieVector;
+extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
+extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 PotatoMineLayer::PotatoMineLayer()
 {
 	this->shadowTag = 20;
@@ -64,7 +64,7 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 				this->addChild(_potatoMineSprite);
 				this->_potatoMineSprite->_potatoMineSpriteTag = this->shadowTag;
 				this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
-				_plantVector.pushBack(this->_potatoMineSprite);
+				_plantVectorGlobalVariable.pushBack(this->_potatoMineSprite);
 				this->_potatoMineSprite->startGrowPlantMusic();
 				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_potatoMineSprite->setPosition(x, y);//设置位置
@@ -102,7 +102,7 @@ void PotatoMineLayer::producePotatoMineSprite(Vec2 position)
 	this->addChild(_potatoMineSprite);
 	this->_potatoMineSprite->_potatoMineSpriteTag = this->shadowTag;
 	this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
-	_plantVector.pushBack(this->_potatoMineSprite);
+	_plantVectorGlobalVariable.pushBack(this->_potatoMineSprite);
 	this->_potatoMineSprite->startGrowPlantMusic();
 	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 	this->_potatoMineSprite->setPosition(x, y);//设置位置
@@ -140,7 +140,7 @@ void PotatoMineLayer::potatoMineAttackZombie()
 			
 			if ((*i)->_potatoMineTime == (*i)->_potatoMineGrowTime + 1)
 			{
-				for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
+				for (auto j = _zombieVectorGlobalVariable.begin(); j != _zombieVectorGlobalVariable.end();)
 				{
 					if ((*i)->plantBounding().intersectsRect((*j)->zombieBounding()))
 					{
@@ -151,11 +151,11 @@ void PotatoMineLayer::potatoMineAttackZombie()
 						((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 						
 						//在总植物的vector中也要删除
-						/*for (auto x = _plantVector.begin(); x != _plantVector.end(); x++)
+						/*for (auto x = _plantVectorGlobalVariable.begin(); x != _plantVectorGlobalVariable.end(); x++)
 						{
 							if ((*i) == (*x))
 							{
-								_plantVector.erase(x);
+								_plantVectorGlobalVariable.erase(x);
 								break;
 							}
 						}*/
@@ -182,11 +182,11 @@ void PotatoMineLayer::diedPotatoMine()
 	{
 		if ((*i)->_plantHP <= 0)
 		{
-			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			for (auto j = _plantVectorGlobalVariable.begin(); j != _plantVectorGlobalVariable.end(); j++)
 			{
 				if ((*i) == (*j))
 				{
-					_plantVector.erase(j);
+					_plantVectorGlobalVariable.erase(j);
 					break;
 				}
 			}

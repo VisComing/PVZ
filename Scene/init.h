@@ -1,13 +1,14 @@
 #pragma once
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
-#include"../AppDelegate.h"
+#include"AppDelegate.h"
 #include"LogSignScene.h"
 #include "ui/CocosGUI.h"
 #include "cocos-ext.h"
+#include"../Base/socket.h"
 
 
-class initScene1 : public cocos2d::Scene
+class initScene : public cocos2d::Scene
 {
 public:
 
@@ -18,5 +19,5 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
 
     // implement the "static create()" method manually
-    CREATE_FUNC(initScene1);
+    CREATE_FUNC(initScene);
 };

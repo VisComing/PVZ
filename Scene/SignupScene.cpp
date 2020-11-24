@@ -8,15 +8,7 @@ cocos2d::Scene* SignupScene::createScene()
 
 bool SignupScene::init()
 {
-	this->schedule(schedule_selector(LogSignScene::callServer), 0.5f);
-
-	WSAStartup(MAKEWORD(2, 2), &wsaData);
-	clntSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-	memset(&clntAddr, 0, sizeof(clntAddr));  //每个字节都用0填充
-	clntAddr.sin_family = PF_INET;  //使用IPv4地址
-	clntAddr.sin_addr.s_addr = inet_addr("127.0.0.1");  //具体的IP地址
-	clntAddr.sin_port = htons(5550);  //端口
-	connect(clntSock, (SOCKADDR*)&clntAddr, sizeof(SOCKADDR));
+	this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
 
 	if (!Scene::init())
 	{
@@ -40,7 +32,7 @@ bool SignupScene::init()
 
 	//创建蝴蝶动画
 	auto cache = SpriteFrameCache::getInstance();
-	cache->addSpriteFramesWithFile("LogSignScene/butterfly/butterfly.plist");
+	cache->addSpriteFramesWithFile("res/CYHres/LogSignScene/butterfly/butterfly.plist");
 
 	Sprite* butterflySprite1 = Sprite::createWithSpriteFrameName("timg_1.png");
 	butterflySprite1->setPosition(Vec2(visibleSizeWidth / 4 - 20, visibleSizeHeight / 4 * 3));
@@ -51,46 +43,14 @@ bool SignupScene::init()
 	this->addChild(butterflySprite2);
 
 	Vector<SpriteFrame*> images;
-	images.pushBack(cache->getSpriteFrameByName("timg_1.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_2.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_3.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_4.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_5.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_6.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_7.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_8.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_9.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_10.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_11.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_12.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_13.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_14.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_15.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_16.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_17.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_18.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_19.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_20.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_21.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_22.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_23.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_24.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_25.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_26.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_27.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_28.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_29.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_30.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_31.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_32.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_33.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_34.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_35.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_36.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_37.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_38.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_39.png"));
-	images.pushBack(cache->getSpriteFrameByName("timg_40.png"));
+	for (int i = 1; i <= 30; i++)
+	{
+		images.pushBack(cache->getSpriteFrameByName(StringUtils::format("timg_%d.png", i)));
+	}
+	for (int i = 33; i <= 40; i++)
+	{
+		images.pushBack(cache->getSpriteFrameByName(StringUtils::format("timg_%d.png", i)));
+	}
 
 	Animation* animation1 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate1 = Animate::create(animation1);
@@ -116,7 +76,7 @@ bool SignupScene::init()
 	));
 
 	//登录和注册面板设计
-	auto logBg1 = Sprite::create("LogSignScene/8.png");
+	auto logBg1 = Sprite::create("res/CYHres/LogSignScene/8.png");
 	if (logBg1 == nullptr)
 	{
 		CCLOG("LogSignScene/1.png wrong!");
@@ -126,7 +86,7 @@ bool SignupScene::init()
 		this->addChild(logBg1);
 		logBg1->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8));
 	}
-	auto logBg2 = ui::Button::create("LogSignScene/3.png");
+	auto logBg2 = ui::Button::create("res/CYHres/LogSignScene/3.png");
 	if (logBg2 == nullptr)
 	{
 		CCLOG("LogSignScene/2.png wrong!");
@@ -140,7 +100,7 @@ bool SignupScene::init()
 		});
 
 	}
-	auto logBg3 = ui::Button::create("LogSignScene/4.png");
+	auto logBg3 = ui::Button::create("res/CYHres/LogSignScene/4.png");
 	if (logBg3 == nullptr)
 	{
 		CCLOG("LogSignScene/5.png wrong!");
@@ -199,15 +159,19 @@ bool SignupScene::init()
 		{
 			dynamic_cast<ui::TextField*>(ref)->setString("");
 		});*/
-		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) {
-			if (type == ui::TextField::EventType::INSERT_TEXT) {
+		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
+		{
+			if (type == ui::TextField::EventType::INSERT_TEXT) 
+			{
 				username = dynamic_cast<ui::TextField*>(ref);
 
 				log("%s", username->getString().c_str());
 
 				//username must only includes English words
-				for (char c : username->getString()) {
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) {
+				for (char c : username->getString()) 
+				{
+					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) 
+					{
 						username->setString("");
 						log("please input English words!");
 						break;
@@ -221,15 +185,19 @@ bool SignupScene::init()
 		{
 			dynamic_cast<ui::TextField*>(ref)->setString("");
 		});*/
-		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) {
-			if (type == ui::TextField::EventType::INSERT_TEXT) {
+		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
+		{
+			if (type == ui::TextField::EventType::INSERT_TEXT) 
+			{
 				password = dynamic_cast<ui::TextField*>(ref);
 
 				log("%s", password->getString().c_str());
 
 				//username must only includes English words
-				for (char c : password->getString()) {
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) {
+				for (char c : password->getString()) 
+				{
+					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) 
+					{
 						password->setString("");
 						log("please input English words and numbers!");
 						break;
@@ -238,15 +206,19 @@ bool SignupScene::init()
 			}
 		});
 
-		PasswordInput2->addEventListener([&](Ref* ref, ui::TextField::EventType type) {
-			if (type == ui::TextField::EventType::INSERT_TEXT) {
+		PasswordInput2->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
+		{
+			if (type == ui::TextField::EventType::INSERT_TEXT) 
+			{
 				password2 = dynamic_cast<ui::TextField*>(ref);
 
 				log("%s", password2->getString().c_str());
 
 				//username must only includes English words
-				for (char c : password2->getString()) {
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) {
+				for (char c : password2->getString()) 
+				{
+					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) 
+					{
 						password2->setString("");
 						log("please input English words and numbers!");
 						break;
@@ -257,7 +229,7 @@ bool SignupScene::init()
 	}
 
 	//add login and signup button
-	auto SignupBtn = ui::Button::create("LogSignScene/7.png");
+	auto SignupBtn = ui::Button::create("res/CYHres/LogSignScene/7.png");
 	if (SignupBtn == nullptr)
 	{
 		log("LoginBtn and SignupBtn wrong!");
@@ -267,66 +239,51 @@ bool SignupScene::init()
 		addChild(SignupBtn);
 		SignupBtn->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 5 - 20));
 		SignupBtn->addClickEventListener([&](Ref* ref) {
-			/*if (username->getString() == "Username:") {
-				MessageBox("The username cannot be empty", "plants");
-			}*/
-			//else if (password->getString() == "" || password2->getString() == "") {
-			//	MessageBox("The password cannot be empty", "plants");
-			//}
-			if (strcmp(password->getString().c_str(), password2->getString().c_str()) == 0) {
-				log("SignupBtn clicked!");
-				char sendMsg[20] = { "" };
-				strcat(sendMsg, username->getString().c_str());
-				strcat(sendMsg, "+");
-				strcat(sendMsg, password->getString().c_str());
-				log("sendMsg %s", sendMsg);
-				send(clntSock, sendMsg, strlen(sendMsg) + sizeof(char), NULL);
-
-				//接收服务器传回的数据
-				char szBuffer[MAXBYTE] = { 0 };
-				recv(clntSock, szBuffer, MAXBYTE, NULL);
-
-				//输出接收到的数据
-				log("Message form server: %s", szBuffer);
-				if (strcmp(szBuffer, "SignupFai") == 0) {
-					MessageBox("Sign up failed", "plants");
+			
+			if (username == nullptr || password == nullptr || password2 == nullptr
+				|| username->getString().empty() == true || password->getString().empty() == true 
+				|| password2->getString().empty() == true) 
+			{
+				MessageBox("The username or password can not be empty!", "plants");
+			}
+			else if (password->getString() != password2->getString()) 
+			{
+				MessageBox("The passwords entered two times do not match!", "plants");
+			}
+			else
+			{
+				string signMsg = "REGISTER;";
+				signMsg = signMsg + username->getString() + ";";
+				signMsg = signMsg + password->getString() + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(signMsg);
+				string isSignupSuc;
+				while (1)
+				{
+					isSignupSuc = TCPSocket::getInstance()->readFromServer();
+					if (isSignupSuc.size() == 0 || isSignupSuc == "HeartBeat;")
+					{
+						log(isSignupSuc.c_str());
+						continue;
+					}
+					else
+					{
+						log(isSignupSuc.c_str());
+						break;
+					}
 				}
-				if (strcmp(szBuffer, "SignupSuc") == 0) {
-					MessageBox("Sign up succeed", "plants");
+				log(isSignupSuc.c_str());
+				if (isSignupSuc == "REGISTER;1;")
+				{
+					MessageBox("Sign up succeed!", "plants");
 					Director::getInstance()->replaceScene(LogSignScene::create());
 				}
+				else if (isSignupSuc == "REGISTER;0;")
+				{
+					MessageBox("Sign up failed!", "plants");
+				}
 			}
-			//else {
-			//	MessageBox("The passwords entered two times do not match", "plants");
-			//}
 		});
 	}
-	
-	
-	////创建帧动画
-	//auto cache = SpriteFrameCache::getInstance();
-	//cache->addSpriteFramesWithFile("test.plist");
-	//Sprite* matchSprite = Sprite::createWithSpriteFrameName("maching2.png");
-	//matchSprite->setPosition(Vec2(visibleSizeWidth / 4, visibleSizeHeight / 4));
-	//this->addChild(matchSprite);
-
-	////创建精灵帧集合
-	//Vector<SpriteFrame*> images;
-	//images.pushBack(cache->getSpriteFrameByName("maching2.png"));
-	//images.pushBack(cache->getSpriteFrameByName("matching1.png"));
-
-	////创建动画对象
-	//Animation* animation = Animation::createWithSpriteFrames(images, 1.f / images.size());
-	//Animate* animate = Animate::create(animation);
-
-	//matchSprite->runAction(RepeatForever::create(animate));
-
-	/*vampireSprite->runAction(Sequence::createWithTwoActions(
-		Repeat::create(animate, 3),
-		CallFunc::create([vampireSprite]() {
-			vampireSprite->removeFromParent();
-		})
-	));*/
 
 	//关闭套接字
 	//closesocket(clntSock);

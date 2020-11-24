@@ -3,7 +3,7 @@
 #include "../Base/TouchLayer.h"
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
-extern Vector<ZombieBaseClass*> _zombieVector;
+extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 BulletLayer::BulletLayer()
 {
 	this->_bulletSprite = NULL;
@@ -82,7 +82,7 @@ void BulletLayer::bulletAttackZombie()
 	for (auto i = this->_bulletVector.begin(); i != this->_bulletVector.end();)
 	{
 		bool _iFlag = false;
-		for (auto j = _zombieVector.begin(); j != _zombieVector.end();)
+		for (auto j = _zombieVectorGlobalVariable.begin(); j != _zombieVectorGlobalVariable.end();)
 		{
 			if ((*i)->getBoundingBox().intersectsRect((*j)->zombieBounding()))
 			{

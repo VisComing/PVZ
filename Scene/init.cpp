@@ -4,27 +4,32 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
-Scene* initScene1::createScene()
+Scene* initScene::createScene()
 {
-    return initScene1::create();
+    return initScene::create();
 }
 
-void initScene1::menuCloseCallback(cocos2d::Ref* pSender)
+void initScene::menuCloseCallback(cocos2d::Ref* pSender)
 {
     Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
 }
 
 // on "init" you need to initialize your instance
 
-bool initScene1::init()
+bool initScene::init()
 {
     if (!Scene::init())
     {
         return false;
     }
 
+    //connect to server
+    TCPSocket::getInstance()->connectToServer();
+
+    this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
+
     //bgm
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("Laura Shigihara - Rigor Hormist.wav", true);
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("res/CYHres/Laura Shigihara - Rigor Hormist.wav", true);
 
     auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
     auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
@@ -44,7 +49,7 @@ bool initScene1::init()
     auto changeBtn = MenuItemImage::create(
         "res/CYHres/options_backtogamebutton0.png",
         "res/CYHres/options_backtogamebutton2.png",
-        CC_CALLBACK_1(initScene1::menuCloseCallback, this));
+        CC_CALLBACK_1(initScene::menuCloseCallback, this));
 
     if (changeBtn == nullptr ||
         changeBtn->getContentSize().width <= 0 ||
@@ -69,7 +74,7 @@ bool initScene1::init()
     
 
     //add information of author and version
-    auto info = Sprite::create("info.png");
+    auto info = Sprite::create("res/CYHres/info.png");
     if (info == nullptr)
     {
         CCLOG("info.png wrong!");

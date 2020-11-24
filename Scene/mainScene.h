@@ -7,6 +7,8 @@
 #include "matchScene.h"
 #include"SimpleAudioEngine.h"
 #include"LogSignScene.h"
+#include"../Base/socket.h"
+#include "../Base/GameScene.h"
 using namespace CocosDenshion;
 
 

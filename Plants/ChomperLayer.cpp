@@ -3,8 +3,8 @@
 #include "../Base/MapLayer.h"
 #include "../Base/socket.h"
 #include "../Base/global.h"
-extern Vector<PlantBaseClass*> _plantVector;
-extern Vector<ZombieBaseClass*> _zombieVector;
+extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
+extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 
 ChomperLayer::ChomperLayer()
 {
@@ -66,7 +66,7 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 			this->addChild(_chomperSprite);
 			this->_chomperSprite->_chomperSpriteTag = this->shadowTag;
 			this->_chomperVector.pushBack(this->_chomperSprite);//将精灵添加到数组中
-			_plantVector.pushBack(this->_chomperSprite);
+			_plantVectorGlobalVariable.pushBack(this->_chomperSprite);
 			this->_chomperSprite->startGrowPlantMusic();
 			//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
@@ -108,7 +108,7 @@ void ChomperLayer::produceChomperSprite(Vec2 position)
 	this->addChild(_chomperSprite);
 	this->_chomperSprite->_chomperSpriteTag = this->shadowTag;
 	this->_chomperVector.pushBack(this->_chomperSprite);//将精灵添加到数组中
-	_plantVector.pushBack(this->_chomperSprite);
+	_plantVectorGlobalVariable.pushBack(this->_chomperSprite);
 	this->_chomperSprite->startGrowPlantMusic();
 	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 	this->_chomperSprite->setPosition(x + 10, y + 20);
@@ -137,7 +137,7 @@ void ChomperLayer::chomperAttackZombie()
 				(*i)->runAction((*i)->chomperNormal());
 			}
 		}
-		for (auto j = _zombieVector.begin(); j != _zombieVector.end(); j++)
+		for (auto j = _zombieVectorGlobalVariable.begin(); j != _zombieVectorGlobalVariable.end(); j++)
 		{
 			if ((*i)->_eatingZombie == false)
 			{
@@ -159,13 +159,13 @@ void ChomperLayer::chomperAttackZombie()
 							tmp->_hp -= 500;
 							//tmp->removeFromParent();
 							//在植物layer中不要删除僵尸啊，只扣除僵尸血量2020/11/19
-							//_zombieVector.erase(a);
+							//_zombieVectorGlobalVariable.erase(a);
 							}),
 						(*i)->chomperDigest(),
 						NULL));
 					//把僵尸吃了，僵尸消失
 					//(*j)->removeFromParent();
-					//_zombieVector.erase(j);
+					//_zombieVectorGlobalVariable.erase(j);
 					(*i)->_eatingZombie = true;
 
 					break;
@@ -183,11 +183,11 @@ void ChomperLayer::diedChomper()
 		if ((*i)->_plantHP < 0)
 		{
 			(*i)->stopAllActions();
-			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			for (auto j = _plantVectorGlobalVariable.begin(); j != _plantVectorGlobalVariable.end(); j++)
 			{
 				if ((*i) == (*j))
 				{
-					_plantVector.erase(j);
+					_plantVectorGlobalVariable.erase(j);
 					break;
 				}
 			}

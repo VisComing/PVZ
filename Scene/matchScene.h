@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "mainScene.h"
 #include"LogSignScene.h"
+#include"../Base/socket.h"
 
 USING_NS_CC;
 

@@ -4,8 +4,8 @@
 #include "SimpleAudioEngine.h"
 #include "../Base/socket.h"
 using namespace CocosDenshion;
-extern Vector<ZombieBaseClass*>_zombieVector;//注意，这两个是全局变量
-extern Vector<PlantBaseClass*> _plantVector;
+extern Vector<ZombieBaseClass*>_zombieVectorGlobalVariable;//注意，这两个是全局变量
+extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
 NormalZombieLayer::NormalZombieLayer()
 {
 	_normalZombieSprite = NULL;
@@ -112,7 +112,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			this->addChild(_normalZombieSprite);
 
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
-			_zombieVector.pushBack(this->_normalZombieSprite);
+			_zombieVectorGlobalVariable.pushBack(this->_normalZombieSprite);
 
 			int _random = rand() % 6;
 			if(_random == 0)
@@ -200,7 +200,7 @@ void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
 	else
 		SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan6.wma");
 	this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
-	_zombieVector.pushBack(this->_normalZombieSprite);
+	_zombieVectorGlobalVariable.pushBack(this->_normalZombieSprite);
 
 
 	int x = position.x;
@@ -245,7 +245,7 @@ void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
 
 bool NormalZombieLayer::isZombieWin()
 {
-	for (auto i = _zombieVector.begin(); i != _zombieVector.end(); i++)
+	for (auto i = _zombieVectorGlobalVariable.begin(); i != _zombieVectorGlobalVariable.end(); i++)
 	{
 		if ((*i)->getPositionX() < 170)//僵尸进入家园，僵尸胜利
 		{
@@ -309,11 +309,11 @@ void NormalZombieLayer::diedNormalZombie()
 		{
 			(*i)->stopMusic();
 			//从全部僵尸数组中将其删除
-			for (auto j = _zombieVector.begin(); j != _zombieVector.end(); j++)
+			for (auto j = _zombieVectorGlobalVariable.begin(); j != _zombieVectorGlobalVariable.end(); j++)
 			{
 				if ((*i) == (*j))
 				{
-					_zombieVector.erase(j);
+					_zombieVectorGlobalVariable.erase(j);
 					break;
 				}
 			}
@@ -357,7 +357,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 		if ((*i)->_hp > 0)
 		{
 			
-			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			for (auto j = _plantVectorGlobalVariable.begin(); j != _plantVectorGlobalVariable.end(); j++)
 			{
 				if ((*j)->plantBounding().intersectsRect((*i)->zombieBounding()))//如果碰撞
 				{
@@ -389,7 +389,7 @@ void NormalZombieLayer::normalZombieAttackPlant()
 				}
 			}
 			bool flag = false;
-			for (auto x : _plantVector)
+			for (auto x : _plantVectorGlobalVariable)
 			{
 				if (x->plantBounding().intersectsRect((*i)->zombieBounding()))
 				{

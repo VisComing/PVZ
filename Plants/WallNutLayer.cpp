@@ -3,8 +3,8 @@
 #include "../Base/MapLayer.h"
 #include "../Base/socket.h"
 #include "../Base/global.h"
-extern Vector<PlantBaseClass*> _plantVector;
-extern Vector<ZombieBaseClass*> _zombieVector;
+extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
+extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 WallNutLayer::WallNutLayer()
 {
 	this->shadowTag = 0;
@@ -62,7 +62,7 @@ void WallNutLayer::initWallNutSprite(Vec2 touch)
 			this->addChild(_wallNutSprite);
 			this->_wallNutSprite->_wallNutSpriteTag = this->shadowTag;
 			this->_wallNutVector.pushBack(this->_wallNutSprite);//将精灵添加到数组中
-			_plantVector.pushBack(this->_wallNutSprite);
+			_plantVectorGlobalVariable.pushBack(this->_wallNutSprite);
 			this->_wallNutSprite->startGrowPlantMusic();
 			//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
@@ -102,7 +102,7 @@ void WallNutLayer::produceWallNutSprite(Vec2 position)
 	this->addChild(_wallNutSprite);
 	this->_wallNutSprite->_wallNutSpriteTag = this->shadowTag;
 	this->_wallNutVector.pushBack(this->_wallNutSprite);//将精灵添加到数组中
-	_plantVector.pushBack(this->_wallNutSprite);
+	_plantVectorGlobalVariable.pushBack(this->_wallNutSprite);
 	this->_wallNutSprite->startGrowPlantMusic();
 	//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
@@ -132,11 +132,11 @@ void WallNutLayer::diedWallNut()
 		}
 		if ((*i)->_plantHP <= 0)
 		{
-			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			for (auto j = _plantVectorGlobalVariable.begin(); j != _plantVectorGlobalVariable.end(); j++)
 			{
 				if ((*i) == (*j))
 				{
-					_plantVector.erase(j);
+					_plantVectorGlobalVariable.erase(j);
 					break;
 				}
 			}

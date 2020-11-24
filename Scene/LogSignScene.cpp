@@ -9,7 +9,7 @@ cocos2d::Scene* LogSignScene::createScene()
 
 void LogSignScene::callServer(float)
 {
-	log("HeartBeat;\n");
+	TCPSocket::getInstance()->writeIntoServer("HeartBeat;\n");
 	//发送给服务器心跳包
 }
 
@@ -20,7 +20,7 @@ bool LogSignScene::init()
 		return false;
 	}
 
-	this->schedule(schedule_selector(LogSignScene::callServer), 3.f);
+	this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
 
 	//WSAStartup(MAKEWORD(2, 2), &wsaData);
 	//clntSock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -52,60 +52,25 @@ bool LogSignScene::init()
 	auto cache = SpriteFrameCache::getInstance();
 	cache->addSpriteFramesWithFile("res/CYHres/LogSignScene/butterfly/butterfly.plist");
 
-	Sprite* butterflySprite1 = Sprite::createWithSpriteFrameName("res/CYHres/timg_1.png");
+	Sprite* butterflySprite1 = Sprite::createWithSpriteFrameName("timg_1.png");
 	butterflySprite1->setPosition(Vec2(visibleSizeWidth / 4 - 20, visibleSizeHeight / 4 * 3));
 	this->addChild(butterflySprite1);
 
-	Sprite* butterflySprite2 = Sprite::createWithSpriteFrameName("res/CYHres/timg_20.png");
+	Sprite* butterflySprite2 = Sprite::createWithSpriteFrameName("timg_20.png");
 	butterflySprite2->setPosition(Vec2(visibleSizeWidth / 4 * 3 + 170, visibleSizeHeight / 2 - 100));
 	this->addChild(butterflySprite2);
 
 	Vector<SpriteFrame*> images;
-	//images.pushBack(cache->getSpriteFrameByName("res/CYHres/timg_1.png"));
-	//images.pushBack(cache->getSpriteFrameByName("res/CYHres/timg_2.png"));
-	//images.pushBack(cache->getSpriteFrameByName("res/CYHres/timg_3.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_4.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_5.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_6.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_7.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_8.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_9.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_10.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_11.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_12.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_13.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_14.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_15.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_16.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_17.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_18.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_19.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_20.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_21.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_22.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_23.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_24.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_25.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_26.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_27.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_28.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_29.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_30.png"));
-	////images.pushBack(cache->getSpriteFrameByName("timg_31.png"));
-	////images.pushBack(cache->getSpriteFrameByName("timg_32.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_33.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_34.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_35.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_36.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_37.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_38.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_39.png"));
-	//images.pushBack(cache->getSpriteFrameByName("timg_40.png"));
-	for (int i = 1; i <= 40; i++)
+	for (int i = 1; i <= 30; i++)
 	{
-		if(i != 31 || i != 32)
-			images.pushBack(cache->getSpriteFrameByName(StringUtils::format("res/CYHres/timg_%d.png", i)));
+		images.pushBack(cache->getSpriteFrameByName(StringUtils::format("timg_%d.png", i)));
 	}
+	for (int i = 33; i <= 40; i++)
+	{
+		images.pushBack(cache->getSpriteFrameByName(StringUtils::format("timg_%d.png", i)));
+	}
+	
+
 	Animation* animation1 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate1 = Animate::create(animation1);
 	//matchSprite->runAction(RepeatForever::create(animate));
@@ -263,22 +228,42 @@ bool LogSignScene::init()
 		LoginBtn->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 5 - 20));
 		LoginBtn->addClickEventListener([&](Ref* ref)
 		{
-			TCPSocket::getInstance()->writeIntoServer("cyhhh?123456");
-			/*string a = TCPSocket::getInstance()->readFromServer();
-			log(a.c_str());
-			while (a.size() == 0) {
-				log("111111");
-				a = TCPSocket::getInstance()->readFromServer();
+			if (username == nullptr || password == nullptr 
+				|| username->getString().empty() == true || password->getString().empty() == true) {
+				MessageBox("The username or password can not be empty!", "plants");
 			}
-			log(a.c_str());*/
-			string a;
-			while (1) {
-				a = TCPSocket::getInstance()->readFromServer();
-				if (a.empty() == false) {
-					break;
+			else 
+			{
+				string loginMsg = "LOGIN;";
+				loginMsg = loginMsg + username->getString() + ";";
+				loginMsg = loginMsg + password->getString() + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(loginMsg);
+				string isloginSuc;
+				while (1) 
+				{
+					isloginSuc = TCPSocket::getInstance()->readFromServer();
+					if (isloginSuc.size() == 0 || isloginSuc == "HeartBeat;")
+					{
+						log(isloginSuc.c_str());
+						continue;
+					}
+					else 
+					{
+						log(isloginSuc.c_str());
+						break;
+					}
+				}
+				log(isloginSuc.c_str());
+				if (isloginSuc == "LOGIN;1;") 
+				{
+					Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
+				}
+				else if (isloginSuc == "LOGIN;0;") 
+				{
+					MessageBox("The username or password is wrong!", "plants");
 				}
 			}
-			log(a.c_str());
+			
 			
 			//char sendMsg[20] = { "" };
 			//strcat(sendMsg, username->getString().c_str());
@@ -300,7 +285,6 @@ bool LogSignScene::init()
 			//if (strcmp(szBuffer, "LoginSuc") == 0) 
 			//{
 			//	MessageBox("Log in succeed", "plants");
-				Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
 			//}
 		});
 	}

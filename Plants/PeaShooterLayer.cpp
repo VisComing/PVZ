@@ -4,8 +4,8 @@
 #include "../Base/socket.h"
 #include <string>
 #include "../Base/global.h"
-extern Vector<PlantBaseClass*> _plantVector;
-extern Vector<ZombieBaseClass*> _zombieVector;
+extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
+extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 PeaShooterLayer::PeaShooterLayer()
 {
 	this->shadowTag = 0;
@@ -63,7 +63,7 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 				this->addChild(_peaShooterSprite);
 				this->_peaShooterSprite->_peaShooterSpriteTag = this->shadowTag;
 				this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
-				_plantVector.pushBack(this->_peaShooterSprite);
+				_plantVectorGlobalVariable.pushBack(this->_peaShooterSprite);
 				this->_peaShooterSprite->startGrowPlantMusic();
 				this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
@@ -107,7 +107,7 @@ void PeaShooterLayer::producePeaShooterSprite(Vec2 position)
 	this->addChild(_peaShooterSprite);
 	this->_peaShooterSprite->_peaShooterSpriteTag = this->shadowTag;
 	this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
-	_plantVector.pushBack(this->_peaShooterSprite);
+	_plantVectorGlobalVariable.pushBack(this->_peaShooterSprite);
 	this->_peaShooterSprite->startGrowPlantMusic();
 	this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
@@ -129,11 +129,11 @@ void PeaShooterLayer::diedPeaShooter()
 	{
 		if ((*i)->_plantHP <= 0)
 		{
-			for (auto j = _plantVector.begin(); j != _plantVector.end(); j++)
+			for (auto j = _plantVectorGlobalVariable.begin(); j != _plantVectorGlobalVariable.end(); j++)
 			{
 				if ((*i) == (*j))
 				{
-					_plantVector.erase(j);
+					_plantVectorGlobalVariable.erase(j);
 					break;
 				}
 			}
@@ -174,7 +174,7 @@ void PeaShooterLayer::removePlant(Vec2 touch)
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
 		Vec2 _pos(x, y);
-		for (auto x : _plantVector)
+		for (auto x : _plantVectorGlobalVariable)
 		{
 			if (x->getBoundingBox().containsPoint(_pos))
 			{
