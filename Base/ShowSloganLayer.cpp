@@ -1,6 +1,8 @@
 #include "ShowSloganLayer.h"
 #include "global.h"
 #include"ui/CocosGUI.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 ShowSloganLayer::ShowSloganLayer()
 {
 	_num = SpriteFrameCache::getInstance();
@@ -49,6 +51,10 @@ void ShowSloganLayer::showPrepareInfo()
 //怎么不会消失，不应该显示三秒然后消失吗？2020/11/19  原因是一直调用这个函数，所以不会消失。以后添加上转换场景
 void ShowSloganLayer::showZombieEnterYourHome()
 {
+	SimpleAudioEngine::getInstance()->stopAllEffects();
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//注意，这里面一定要加上true，否则就会出现
+	//进程无法关闭的情况
+	SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
 	auto returnBtn = ui::Button::create("res/returnToMainScene.png");
 	Sprite* gameOver = Sprite::create("res/ZombiesWon.png");
 	this->addChild(gameOver);
@@ -91,7 +97,7 @@ void ShowSloganLayer::showZombieLose()
 	returnBtn->addClickEventListener([&](Ref* ref) {
 		Director::getInstance()->popScene();
 		});
-	winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1), ScaleBy::create(2, 2),
+	winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1), ScaleBy::create(2, 1,5),
 		CallFunc::create([returnBtn]() {
 		returnBtn->setVisible(true);
 	}), NULL)));

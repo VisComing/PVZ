@@ -245,16 +245,17 @@ void NormalZombieLayer::autoInitZombie(string zombieName, Vec2 position)
 
 bool NormalZombieLayer::isZombieWin()
 {
+	
 	for (auto i = _zombieVectorGlobalVariable.begin(); i != _zombieVectorGlobalVariable.end(); i++)
 	{
 		if ((*i)->getPositionX() < 170)//僵尸进入家园，僵尸胜利
 		{
 			if (isSinglePlayerGameMode == true)
-			{
+		{
 				((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
-				SimpleAudioEngine::getInstance()->stopAllEffects();
-				SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-				SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
+				//SimpleAudioEngine::getInstance()->stopAllEffects();
+				//SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+				//SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
 				//此时切换场景，切换回主场景
 				//((GameLayer*)this->getParent())->onExit();
 			}

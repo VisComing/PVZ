@@ -94,14 +94,17 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 						//node->stopActionByTag(1);
 						node->stopAllActions();
 						FiniteTimeAction* sunCellMove2;
+						int _dollardiff = 0;
 						if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
 						{
 							//植物卡阳光处
+							_dollardiff = 25;
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(261, 513));
 						}
 						else
 						{
 							//僵尸卡阳光处
+							_dollardiff = 40;
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(1359, 525));
 						}
 						//node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
@@ -111,7 +114,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 						node->runAction(Sequence::createWithTwoActions(sunCellMove2, 
 							CallFunc::create([=]() {
 								tmpSprite->removeFromParent();
-								((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar += 25;
+								((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar += _dollardiff;
 							})));
 						break;
 					}

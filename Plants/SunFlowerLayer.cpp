@@ -22,7 +22,10 @@ bool SunFlowerLayer::init()
 		return false;
 	}
 	scheduleUpdate();
-	schedule(schedule_selector(SunFlowerLayer::produceSunCellSprite), 1);
+	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
+	{
+		schedule(schedule_selector(SunFlowerLayer::produceSunCellSprite), 1);
+	}
 	return true;
 }
 

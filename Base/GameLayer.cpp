@@ -144,7 +144,7 @@ void GameLayer::initPotatoMineLayer()
 	this->addChild(this->_potatoMineLayer);
 }
 
-void GameLayer::initWallNutLayer()
+void GameLayer::initWallNutLayer()//
 {
 	this->_wallNutLayer = WallNutLayer::create();
 	this->addChild(this->_wallNutLayer);

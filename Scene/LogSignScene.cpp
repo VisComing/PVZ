@@ -151,6 +151,7 @@ bool LogSignScene::init()
 		UsernameInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - 3));
 		UsernameInput->setPlaceHolder("Username");
 		UsernameInput->setCursorEnabled(true);
+		UsernameInput->setCursorChar(true);
 		UsernameInput->setFontSize(24);
 		UsernameInput->setColor(Color3B::BLACK);
 		UsernameInput->setMaxLengthEnabled(true);
@@ -160,6 +161,7 @@ bool LogSignScene::init()
 		PasswordInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8 - 3));
 		PasswordInput->setPlaceHolder("Password");
 		PasswordInput->setCursorEnabled(true);
+		PasswordInput->setCursorChar(true);
 		PasswordInput->setFontSize(24);
 		PasswordInput->setColor(Color3B::BLACK);
 		PasswordInput->setMaxLengthEnabled(true);

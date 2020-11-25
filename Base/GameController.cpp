@@ -19,6 +19,7 @@ GameController::GameController()
 {
 	this->firstFiveZombie = 0;
 	this->_remainingTime = 120;
+	startTiming = false;
 }
 GameController::~GameController()
 {
@@ -33,24 +34,31 @@ bool GameController::init()
 	this->_remainTimeLabel->setTextColor(Color4B(200, 0, 0, 255));
 	this->addChild(this->_remainTimeLabel);
 	this->_remainTimeLabel->setPosition(Vec2(790, 570));
-	//this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
 	this->schedule(schedule_selector(GameController::isZombieWin), 0.5f);//判断僵尸是否胜利
 	this->schedule(schedule_selector(GameController::sendHeartBeat), 1.f);//不管是否联机，都需要发送心跳
+	//this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
 	if (isSinglePlayerGameMode)
 	{		
 		//单机模式自动产生僵尸
-		this->schedule(schedule_selector(GameController::produceZombieUpdate), 6.f);		
+		this->schedule(schedule_selector(GameController::produceZombieUpdate), 6.f);
+		this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
 	}
+	
 	else
 	{
 		//联机模式从服务器接收信息
 		this->schedule(schedule_selector(GameController::receiveFromServer), 0.15f);		
 	}
-	this->readySprite = Sprite::create("res/ready.png");
-	this->startSprite = Sprite::create("res/start.png");
-	this->readySprite->setPosition(700, 300);
-	this->addChild(readySprite);
-	this->startSprite->setPosition(700, 300);
+	if (isSinglePlayerGameMode == false)
+	{
+		this->readySprite = Sprite::create("res/ready.png");
+		this->startSprite = Sprite::create("res/start.png");
+		this->readySprite->setPosition(700, 300);
+		this->addChild(this->readySprite);
+		this->addChild(this->startSprite);
+		this->startSprite->setVisible(false);
+		this->startSprite->setPosition(700, 300);
+	}
 	return true;
 }
 void GameController::update(float dt)
@@ -132,6 +140,8 @@ void GameController::produceZombieUpdate(float dlt)
 void GameController::remainTimeMinueOneSecond(float dlt)
 {
 	//当收到start信息后才开始倒计时
+	//if (isSinglePlayerGameMode == true || startTiming == true)
+	//{
 		string _remainTimeStr = StringUtils::format("%d", --(this->_remainingTime));
 		this->_remainTimeLabel->setString(_remainTimeStr);
 		if (this->_remainingTime == 9)
@@ -147,7 +157,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 			{
 				//倒计时为0，只能是僵尸输了，植物方赢了
 				SimpleAudioEngine::getInstance()->stopAllEffects();
-				SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+				SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 				SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
 				//单机或者联机植物方都是赢了
 				((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
@@ -175,6 +185,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 			//	((GameLayer*)this->getParent())->_showSloganLayer->showZombieLose();
 			//}
 		}
+	//}
 }
 
 /*如果是单机，僵尸在倒计时结束前进入家园，僵尸胜利，显示“你的脑子被僵尸吃了”
@@ -182,7 +193,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 */
 void GameController::isZombieWin(float dlt)
 {
-	if (((GameLayer*)this->getParent())->_normalZombieLayer->isZombieWin())
+	if (((GameLayer*)this->getParent())->_normalZombieLayer->isZombieWin())//
 	{
 		if (isSinglePlayerGameMode == true)
 		{
@@ -276,13 +287,14 @@ void GameController::receiveFromServer(float dlt)
 		else if (_name[0] == 'S' && _name[1] == 'T' && _name[2] == 'A' && _name[3] == 'R' && _name[4] == 'T')
 		{
 			this->readySprite->removeFromParent();
-			this->addChild(this->startSprite);
+			this->startSprite->setVisible(true);
 			auto tempSprite = this->startSprite;
-			this->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([tempSprite]()
+			tempSprite->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([tempSprite]()
 				{
 					tempSprite->removeFromParent();
 				})));
 			this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
+			//this->startTiming = true;
 		}
 		else
 		{
@@ -299,7 +311,7 @@ void GameController::sendHeartBeat(float dlt)
 void GameController::serverTellWin()
 {
 	SimpleAudioEngine::getInstance()->stopAllEffects();
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
 	//单机或者联机植物方都是赢了
 	((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
@@ -319,7 +331,7 @@ void GameController::serverTellLose()
 	this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 	this->unschedule(schedule_selector(GameController::isZombieWin));
 	SimpleAudioEngine::getInstance()->stopAllEffects();
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	if (_iAmPlantSideGolbalVariable == true)
 	{
 		//我是植物方
