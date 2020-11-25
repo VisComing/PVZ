@@ -211,6 +211,7 @@ void GameController::isZombieWin(float dlt)
 		{
 			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 			this->unschedule(schedule_selector(GameController::isZombieWin));
+			this->unschedule(schedule_selector(GameController::produceZombieUpdate));
 			_zombieVectorGlobalVariable.clear();
 			_plantVectorGlobalVariable.clear();
 			//Director::getInstance()->popScene();
