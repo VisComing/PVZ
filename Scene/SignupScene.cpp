@@ -117,7 +117,7 @@ bool SignupScene::init()
 
 	}
 
-	spriteOnlyEnglish = Sprite::create("onlyEnglish.png");
+	spriteOnlyEnglish = Sprite::create("res/CYHres/onlyEnglish.png");
 	if (spriteOnlyEnglish == nullptr)
 	{
 		CCLOG("onlyEnglish.png wrong!");
@@ -126,7 +126,7 @@ bool SignupScene::init()
 	spriteOnlyEnglish->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
 	spriteOnlyEnglish->setVisible(false);
 
-	spriteOnlyEngNum = Sprite::create("onlyEngNum.png");
+	spriteOnlyEngNum = Sprite::create("res/CYHres/onlyEngNum.png");
 	if (spriteOnlyEngNum == nullptr)
 	{
 		CCLOG("onlyEngNum.png wrong!");
@@ -282,7 +282,7 @@ bool SignupScene::init()
 			});
 	}
 
-	spriteSignSuc = Sprite::create("signSuc.png");
+	spriteSignSuc = Sprite::create("res/CYHres/signSuc.png");
 	if (spriteSignSuc == nullptr)
 	{
 		CCLOG("loginSuc.png wrong!");
@@ -291,7 +291,7 @@ bool SignupScene::init()
 	spriteSignSuc->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
 	spriteSignSuc->setVisible(false);
 
-	spriteSignFai = Sprite::create("signFai.png");
+	spriteSignFai = Sprite::create("res/CYHres/signFai.png");
 	if (spriteSignFai == nullptr)
 	{
 		CCLOG("loginFai.png wrong!");
@@ -300,7 +300,7 @@ bool SignupScene::init()
 	spriteSignFai->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
 	spriteSignFai->setVisible(false);
 
-	spriteExistEmpty = Sprite::create("existEmpty.png");
+	spriteExistEmpty = Sprite::create("res/CYHres/existEmpty.png");
 	if (spriteExistEmpty == nullptr)
 	{
 		CCLOG("loginFai.png wrong!");
@@ -309,7 +309,7 @@ bool SignupScene::init()
 	spriteExistEmpty->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
 	spriteExistEmpty->setVisible(false);
 
-	spritePass2NotMatch = Sprite::create("pass2NotMatch.png");
+	spritePass2NotMatch = Sprite::create("res/CYHres/pass2NotMatch.png");
 	if (spritePass2NotMatch == nullptr)
 	{
 		CCLOG("loginFai.png wrong!");
