@@ -6,6 +6,7 @@ NormalZombieSprite::NormalZombieSprite()
 {
 	this->_hp = 100;
 	attacting = false;
+	this->zombieID = 0;
 }
 NormalZombieSprite::~NormalZombieSprite()
 {

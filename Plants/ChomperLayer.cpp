@@ -35,7 +35,6 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 	_chomperStaticShadow->setOpacity(150);
 	this->addChild(_chomperStaticShadow);
 	this->addChild(_chomperStatic);
-	
 
 	auto lis = EventListenerMouse::create();
 	//鼠标移动，则精灵跟着移动
@@ -76,7 +75,7 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
 			{
-				std::string message = "Chomper:" + to_string(x) + "," + to_string(y) + ";\n";
+				std::string message = "1Chomper:" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
 			shadow->setPosition(x - 20, y - 33);

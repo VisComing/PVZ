@@ -22,4 +22,6 @@ public:
 	void autoInitZombie(string, Vec2);
 	//Sprite* tmpSprite;
 	bool isZombieWin();
+	int zombieID;//Ω© ¨Œ®“ª±Í÷æ
+	void sendZombieStatus();
 };

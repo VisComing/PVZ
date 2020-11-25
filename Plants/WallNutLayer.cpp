@@ -72,7 +72,7 @@ void WallNutLayer::initWallNutSprite(Vec2 touch)
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
 			{
-				std::string message = "WallNut:" + to_string(x) + "," + to_string(y) + ";\n";
+				std::string message = "1WallNut:" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
 			shadow->setPosition(x, y - 30);

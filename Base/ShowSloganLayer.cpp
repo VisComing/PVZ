@@ -61,7 +61,11 @@ void ShowSloganLayer::showZombieEnterYourHome()
 	gameOver->setPosition(700, 300);
 	returnBtn->setPosition(Vec2(1200, 100));
 	this->addChild(returnBtn);
+	
 	returnBtn->addClickEventListener([&](Ref* ref) {
+		//在这里清空vector
+		_zombieVectorGlobalVariable.clear();
+		_plantVectorGlobalVariable.clear();
 		Director::getInstance()->popScene();
 		});
 }

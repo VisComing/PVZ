@@ -209,10 +209,11 @@ void GameController::isZombieWin(float dlt)
 	{
 		if (isSinglePlayerGameMode == true)
 		{
-			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
-			this->unschedule(schedule_selector(GameController::isZombieWin));
 			_zombieVectorGlobalVariable.clear();
 			_plantVectorGlobalVariable.clear();
+			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
+			this->unschedule(schedule_selector(GameController::isZombieWin));
+			this->unschedule(schedule_selector(GameController::produceZombieUpdate));
 			//Director::getInstance()->popScene();
 		}
 	}
@@ -224,53 +225,90 @@ void GameController::receiveFromServer(float dlt)
 	//1NormalZombie:1098,908;\n
 	//植物方只需要收到僵尸的位置
 	//僵尸方需要收到植物种下，植物死亡，僵尸的位置及动作
+	//僵尸方不需要扣植物或僵尸的血量
 	//WIN LOSE HeartBeat
 	//植物方做计算，僵尸方不做任何计算，只是单纯的显示
+	//僵尸方只会发送僵尸种下的信息
 	//1表示植物或僵尸种下的位置，当植物方或僵尸方种下时，发送该信息
 	//1NormalZombie:1999,21;\n   1Plant:132,321;\n
-	//2表示植物死亡，植物方植物死亡时，将该信息发送给服务器
-	//2Plant:2312,31;\n
+	//表示植物死亡，植物方植物死亡时，将该信息发送给服务器，这里只关心位置，不关心植物的名字
+	//1Remove:2312,31;\n
+	//植物方发送僵尸的状态,僵尸标号
+	//2NormalZombie:1231,321,ID,walk/attack/noHeadAttack/dropHead/noHeadWalk/die/boomDie;\n
+
 
 	string message = TCPSocket::getInstance()->readFromServer();
 	if (message == "") return;
-	else
+	if (message[0] == 'H' && message[1] == 'e' && message[2] == 'a')
 	{
+		//这是心跳数据包
+	}
+	else if (message[0] == 'W' && message[1] == 'I' && message[2] == 'N')
+	{
+		//服务器说我胜利了
+		this->serverTellWin();
+	}
+	else if (message[0] == 'L' && message[1] == 'O' && message[2] == 'S' && message[3] == 'E')
+	{
+		//收到失败的客户端再向服务器发送一个lose
+		TCPSocket::getInstance()->writeIntoServer("LOSE;\n");
+		//服务器说我输了
+		this->serverTellLose();
+	}
+	else if (message[0] == 'S' && message[1] == 'T' && message[2] == 'A' && message[3] == 'R')
+	{
+		//服务器说开始！
+		this->readySprite->removeFromParent();
+		this->startSprite->setVisible(true);
+		auto tempSprite = this->startSprite;
+		tempSprite->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([tempSprite]()
+			{
+				tempSprite->removeFromParent();
+			})));
+		this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
+	}
+	else if (message[0] = '1')
+	{
+		string _mess = message.substr(1);//去掉第一个字符1
+		//植物或僵尸种下，或者植物死亡
 		string _name, _pos1, _pos2;
 		size_t i = 0;
-		for (i = 0; i < message.size(); i++)
+		for (i = 0; i < _mess.size(); i++)
 		{
-			if (message[i] != ':')
+			if (_mess[i] != ':')
 			{
-				_name += message[i];
+				_name += _mess[i];
 			}
 			else break;
 		}
-		for (i = i + 1; i < message.size(); i++)
+		for (i = i + 1; i < _mess.size(); i++)
 		{
-			if (message[i] != ',')
+			if (_mess[i] != ',')
 			{
-				_pos1 += message[i];
+				_pos1 += _mess[i];
 			}
 			else break;
 		}
-		for (i = i + 1; i < message.size(); i++)
+		for (i = i + 1; i < _mess.size(); i++)
 		{
-			if (message[i] != ';')
+			if (_mess[i] != ';')
 			{
-				_pos2 += message[i];
+				_pos2 += _mess[i];
 			}
 			else break;
 		}
 		int pos1 = 0, pos2 = 0;
-		if(_pos1 != "")
+		if (_pos1 != "")
 			pos1 = stoi(_pos1);
-		if(_pos2 != "")
+		if (_pos2 != "")
 			pos2 = stoi(_pos2);
 		Vec2 pos(pos1, pos2);
+		//这个是植物方收到的
 		if (_name == "NormalZombie" || _name == "ConeheadZombie" || _name == "BucketheadZombie" || _name == "FlagZombie")
 		{
 			this->produceNormalZombieSprite(_name, pos);
 		}
+		//以下都是僵尸方收到的
 		else if (_name == "Chomper")
 		{
 			this->produceChomperSprite(pos);
@@ -291,43 +329,162 @@ void GameController::receiveFromServer(float dlt)
 		{
 			this->produceSunFlowerSprite(pos);
 		}
-		else if (_name == "remove")
+		else if (_name == "Remove")
 		{
 			this->removePlant(pos);
 		}
-		else if (_name[0] == 'H' && _name[1] == 'e')
+	}
+	//这是向僵尸方发送的
+	//2NormalZombie:1231,321,ID,walk/attack/noHeadAttack/dropHead/noHeadWalk/die/boomDie;\n
+	else if (message[0] == '2')
+	{
+		string _pos1, _pos2, _ID, _action;
+		int i, j;
+		for (i = 0; i < message.size(); i++)
 		{
-			//这是心跳数据包，不需要处理
+			if (message[i] == ':')
+				break;
 		}
-		else if (_name[0] == 'W' && _name[1] == 'I' && _name[2] == 'N')
+		//i为：的位置
+		for (i = i + 1; i < message.size(); i++)
 		{
-			//服务器说我胜利了
-			this->serverTellWin();
+			if (message[i] != ',')
+				_pos1 += message[i];
+			else
+				break;
 		}
-		else if (_name[0] == 'L' && _name[1] == 'O' && _name[2] == 'S' && _name[3] == 'E')
+		for (i = i + 1; i < message.size(); i++)
 		{
-			//收到失败的客户端再向服务器发送一个lose
-			TCPSocket::getInstance()->writeIntoServer("LOSE;\n");
-			//服务器说我输了
-			this->serverTellLose();
+			if (message[i] != ',')
+				_pos2 += message[i];
+			else
+				break;
 		}
-		else if (_name[0] == 'S' && _name[1] == 'T' && _name[2] == 'A' && _name[3] == 'R' && _name[4] == 'T')
+		for (i = i + 1; i < message.size(); i++)
 		{
-			this->readySprite->removeFromParent();
-			this->startSprite->setVisible(true);
-			auto tempSprite = this->startSprite;
-			tempSprite->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([tempSprite]()
+			if (message[i] != ',')
+				_ID += message[i];
+			else
+				break;
+		}
+		Vec2 _pos(stoi(_pos1), stoi(_pos2));
+		int _id = stoi(_ID);
+		vector<int> _action;
+		string tmp;
+		for (i = i + 1; i < message.size(); i++)
+		{
+			if (message[i] != ';')
+			{
+				if (message[i] != ',')
 				{
-					tempSprite->removeFromParent();
-				})));
-			this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
-			//this->startTiming = true;
+					tmp += message[i];
+				}
+				else
+				{
+					_action.push_back(stoi(tmp));
+					tmp = "";
+				}
+			}
+			else
+				break;
 		}
-		else
+		for (auto x : _zombieVectorGlobalVariable)
 		{
-			log("error in GameController receiveFromServer");
+			if (x->zombieID == _id)
+			{
+				x->setPosition(_pos);
+				x->stopAllActions();
+				for (auto y : _action)
+				{
+					if (y == 1)
+					{
+						x->runAction(x->normalZombieWalkAnimation());
+					}
+					else if (y == 2)
+					{
+						x->runAction(x->normalZombieNoHeadWalkAnimation());
+					}
+					else if (y == 3)
+					{
+						x->runAction(x->normalZombieAttackAnimation());
+					}
+					else if (y == 4)
+					{
+						x->runAction(x->normalZombieLostHeadAttackAnimation());
+					}
+					else if (y == 5)
+					{
+						x->runAction(x->flagZombieWalkAnimation());
+					}
+					else if (y == 6)
+					{
+						x->runAction(x->flagZombieNoHeadWalkAnimation());
+					}
+					else if (y == 7)
+					{
+						x->runAction(x->flagZombieAttackAnimation());
+					}
+					else if (y == 8)
+					{
+						x->runAction(x->flagZombieLostHeadAttackAnimation());
+					}
+					else if (y == 9)
+					{
+						x->runAction(x->coneheadZombieWalkAnimation());
+					}
+					else if (y == 10)
+					{
+						x->runAction(x->coneheadZombieAttackAnimation());
+					}
+					else if (y == 11)
+					{
+						x->runAction(x->bucketheadZombieWalkAnimation());
+					}
+					else if (y == 12)
+					{
+						x->runAction(x->bucketheadZombieAttackAnimation());
+					}
+					else if (y == 13)
+					{
+						x->runAction(x->zombieMoveWay(x->zombieSpeed))
+					}
+					else if (y == 14)//掉头动作
+					{
+						auto tmpSprite = Sprite::create();
+						this->addChild(tmpSprite);
+						tmpSprite->setPosition(x->getPosition());
+						//让掉头的动作靠前一点，更显得真实
+						tmpSprite->setPositionX(tmpSprite->getPositionX() + 35);
+
+						//注意，为了使僵尸只掉一次头，这里把僵尸的血量减一
+						//tmpSprite->runAction((*i)->headAnimation());
+						tmpSprite->runAction(Sequence::createWithTwoActions(x
+							->headAnimation(), CallFunc::create([tmpSprite]() {
+								tmpSprite->removeFromParent();
+								})));
+					}
+					else if (y == 15)
+					{
+						auto tmp = x;
+						x->runAction(Sequence::createWithTwoActions(x
+							->downTheGround(), CallFunc::create([tmp]() {
+								(tmp)->removeFromParent();//将僵尸删除
+								})));
+					}
+					else if (y == 16)
+					{
+						auto tmp = x;
+						x->runAction(Sequence::createWithTwoActions(x
+							->explodAnimation(), CallFunc::create([tmp]() {
+								(tmp)->removeFromParent();//将僵尸删除
+								})));
+					}
+				}
+				break;
+			}
 		}
 	}
+
 }
 
 void GameController::sendHeartBeat(float dlt)

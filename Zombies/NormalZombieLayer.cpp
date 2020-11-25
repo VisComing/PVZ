@@ -4,11 +4,10 @@
 #include "SimpleAudioEngine.h"
 #include "../Base/socket.h"
 using namespace CocosDenshion;
-extern Vector<ZombieBaseClass*>_zombieVectorGlobalVariable;//注意，这两个是全局变量
-extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
 NormalZombieLayer::NormalZombieLayer()
 {
 	_normalZombieSprite = NULL;
+	this->zombieID = 0;
 }
 NormalZombieLayer::~NormalZombieLayer()
 {
@@ -108,9 +107,10 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 				y = 475;
 			//僵尸被种下，创建动图
 			this->_normalZombieSprite = NormalZombieSprite::create();
+			this->_normalZombieSprite->zombieID = ++(this->zombieID);//此处为僵尸ID
 			this->_normalZombieSprite->setPosition(touch);
 			this->addChild(_normalZombieSprite);
-
+			this->_normalZombieSprite->_zombieName = zombieName;
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
 			_zombieVectorGlobalVariable.pushBack(this->_normalZombieSprite);
 
@@ -132,7 +132,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
 			{
-				std::string message = zombieName + ":" + to_string(x) + "," + to_string(y) + ";\n";
+				std::string message ="1" + zombieName + ":" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
 			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
@@ -144,6 +144,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			{
 				this->_normalZombieSprite->zombieMoney = 100;
 				this->_normalZombieSprite->runAction(this->_normalZombieSprite->normalZombieWalkAnimation());
+				this->_normalZombieSprite->actionTag.push_back(1);
 				this->_normalZombieSprite->zombieSpeed = 40;
 				this->_normalZombieSprite->_hp = 100;
 			}
@@ -151,6 +152,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			{
 				this->_normalZombieSprite->zombieMoney = 120;
 				this->_normalZombieSprite->runAction(this->_normalZombieSprite->flagZombieWalkAnimation());
+				this->_normalZombieSprite->actionTag.push_back(5);
 				this->_normalZombieSprite->zombieSpeed = 48;
 				this->_normalZombieSprite->_hp = 110;
 			}
@@ -158,6 +160,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			{
 				this->_normalZombieSprite->zombieMoney = 150;
 				this->_normalZombieSprite->runAction(this->_normalZombieSprite->coneheadZombieWalkAnimation());
+				this->_normalZombieSprite->actionTag.push_back(9);
 				this->_normalZombieSprite->zombieSpeed = 55;
 				this->_normalZombieSprite->_hp = 120;
 			}
@@ -165,11 +168,13 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			{
 				this->_normalZombieSprite->zombieMoney = 175;
 				this->_normalZombieSprite->runAction(this->_normalZombieSprite->bucketheadZombieWalkAnimation());
+				this->_normalZombieSprite->actionTag.push_back(11);
 				this->_normalZombieSprite->zombieSpeed = 62;
 				this->_normalZombieSprite->_hp = 130;
 			}
 			this->_normalZombieSprite->_zombieName = zombieName;
 			this->_normalZombieSprite->runAction(this->_normalZombieSprite->zombieMoveWay(this->_normalZombieSprite->zombieSpeed));
+			this->_normalZombieSprite->actionTag.push_back(13);
 		}
 		else
 		{
@@ -251,7 +256,7 @@ bool NormalZombieLayer::isZombieWin()
 		if ((*i)->getPositionX() < 170)//僵尸进入家园，僵尸胜利
 		{
 			if (isSinglePlayerGameMode == true)
-		{
+			{
 				((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
 				//SimpleAudioEngine::getInstance()->stopAllEffects();
 				//SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -277,6 +282,8 @@ bool NormalZombieLayer::isZombieWin()
 	return false;
 }
 
+
+
 void NormalZombieLayer::diedNormalZombie()
 {
 	for (auto i = _normalZombieVector.begin(); i != _normalZombieVector.end();)
@@ -285,11 +292,20 @@ void NormalZombieLayer::diedNormalZombie()
 		if ((*i)->_hp == 20 || (*i)->_hp == 10 || (*i)->_hp == 15)//此时僵尸头掉了
 		{
 			(*i)->stopAllActions();
-			if((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+			(*i)->actionTag.clear();
+			if ((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+			{
 				(*i)->runAction((*i)->normalZombieNoHeadWalkAnimation());
-			else if((*i)->_zombieName == "FlagZombie")
+				(*i)->actionTag.push_back(2);
+			}
+				
+			else if ((*i)->_zombieName == "FlagZombie")
+			{
 				(*i)->runAction((*i)->flagZombieNoHeadWalkAnimation());
+				(*i)->actionTag.push_back(6);
+			}
 			(*i)->runAction((*i)->zombieMoveWay((*i)->zombieSpeed));
+			(*i)->actionTag.push_back(13);
 			//(*i)->runAction(Spawn::create((*i)->noHeadAnimation(),(*i)->normalZombieMoveWay(), NULL));
 			auto tmpSprite = Sprite::create();
 			this->addChild(tmpSprite);
@@ -304,6 +320,7 @@ void NormalZombieLayer::diedNormalZombie()
 				->headAnimation(), CallFunc::create([tmpSprite]() {
 						tmpSprite->removeFromParent(); 
 					})));
+			(*i)->actionTag.push_back(14);
 		}
 
 		if ((*i)->_hp <= 0)
@@ -319,6 +336,8 @@ void NormalZombieLayer::diedNormalZombie()
 				}
 			}
 			(*i)->stopAllActions();
+			(*i)->actionTag.clear();
+			(*i)->actionTag[0] = 0; (*i)->actionTag[1] = 0; (*i)->actionTag[2] = 0;
 			auto tmp = *i;
 			//原来是序列的问题，先执行动作，然后执行lambda表达式，执行到lamida时里面的i已经被删除了
 			//2020/11/15凌晨
@@ -328,6 +347,7 @@ void NormalZombieLayer::diedNormalZombie()
 					->downTheGround(), CallFunc::create([tmp]() {
 						(tmp)->removeFromParent();//将僵尸删除
 						})));
+				(*i)->actionTag.push_back(15);
 			}
 			else if ((*i)->typeOfDeath == 1)//僵尸被炸死
 			{
@@ -335,6 +355,7 @@ void NormalZombieLayer::diedNormalZombie()
 					-> explodAnimation(), CallFunc::create([tmp]() {
 						(tmp)->removeFromParent();//将僵尸删除
 						})));
+				(*i)->actionTag.push_back(16);
 			}
 			else if ((*i)->typeOfDeath == 2)//被食人花吃掉
 			{
@@ -368,23 +389,42 @@ void NormalZombieLayer::normalZombieAttackPlant()
 					{
 						(*i)->startMusic();
 						(*i)->stopAllActions();
+						(*i)->actionTag.clear();
 						if ((*i)->_hp >= 20)//注意掉头时的血量2020/11/18
 						{
-							if((*i)->_zombieName == "NormalZombie")
+							if ((*i)->_zombieName == "NormalZombie")
+							{
 								(*i)->runAction((*i)->normalZombieAttackAnimation());
-							else if((*i)->_zombieName == "FlagZombie")
+								(*i)->actionTag.push_back(3);
+							}
+							else if ((*i)->_zombieName == "FlagZombie")
+							{
 								(*i)->runAction((*i)->flagZombieAttackAnimation());
+								(*i)->actionTag.push_back(7);
+							}
 							else if ((*i)->_zombieName == "ConeheadZombie")
+							{
 								(*i)->runAction((*i)->coneheadZombieAttackAnimation());
+								(*i)->actionTag.push_back(10);
+							}
 							else if ((*i)->_zombieName == "BucketheadZombie")
+							{
 								(*i)->runAction((*i)->bucketheadZombieAttackAnimation());
+								(*i)->actionTag.push_back(12);
+							}
 						}
 						else
 						{
 							if ((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+							{
 								(*i)->runAction((*i)->normalZombieLostHeadAttackAnimation());
+								(*i)->actionTag.push_back(4);
+							}
 							else if ((*i)->_zombieName == "FlagZombie")
+							{
 								(*i)->runAction((*i)->flagZombieLostHeadAttackAnimation());
+								(*i)->actionTag.push_back(8);
+							}
 						}
 					}
 				}
@@ -402,35 +442,73 @@ void NormalZombieLayer::normalZombieAttackPlant()
 			{
 				(*i)->stopMusic();
 				(*i)->stopAllActions();
+				(*i)->actionTag.clear();
 				if ((*i)->_hp > 20)//注意僵尸掉头时的血量，2020/11/18
 				{
 					if ((*i)->_zombieName == "NormalZombie")
+					{
 						(*i)->runAction((*i)->normalZombieWalkAnimation());//11/16修改了此处，没必要用repeatforever create
+						(*i)->actionTag.push_back(1);
+					}
 					else if ((*i)->_zombieName == "FlagZombie")
+					{
 						(*i)->runAction((*i)->flagZombieWalkAnimation());
+						(*i)->actionTag.push_back(5);
+					}
 					else if ((*i)->_zombieName == "ConeheadZombie")
+					{
 						(*i)->runAction((*i)->coneheadZombieWalkAnimation());
+						(*i)->actionTag.push_back(9);
+					}
 					else if ((*i)->_zombieName == "BucketheadZombie")
+					{
 						(*i)->runAction((*i)->bucketheadZombieWalkAnimation());
+						(*i)->actionTag.push_back(11);
+					}
 				}
 				else
 				{
 					if ((*i)->_zombieName == "NormalZombie" || (*i)->_zombieName == "ConeheadZombie" || (*i)->_zombieName == "BucketheadZombie")
+					{
 						(*i)->runAction((*i)->normalZombieNoHeadWalkAnimation());
+						(*i)->actionTag.push_back(2);
+					}
 					else if ((*i)->_zombieName == "FlagZombie")
+					{
 						(*i)->runAction((*i)->flagZombieNoHeadWalkAnimation());
+						(*i)->actionTag.push_back(6);
+					}
 				}
 				(*i)->runAction((*i)->zombieMoveWay((*i)->zombieSpeed));
+				(*i)->actionTag.push_back(13);
 			}
 		}
 	}
 
 }
 
+void NormalZombieLayer::sendZombieStatus()
+{
+	for (auto x : _zombieVectorGlobalVariable)
+	{
+		string message = "2";
+		message += x->_zombieName + ":" + to_string(x->getPositionX()) + "," + to_string(x->getPositionY())
+			+ "," + to_string(x->zombieID) + ",";
+		for (auto y : x->actionTag)
+		{
+			message += (to_string(y) + ",");
+		}
+		message[message.size() - 1] = ';';
+		message += "\n";
+		TCPSocket::getInstance()->writeIntoServer(message);
+	}
+}
+
 void NormalZombieLayer::update(float dt)
 {
 	this->diedNormalZombie();
 	this->normalZombieAttackPlant();
+	this->sendZombieStatus();
 	/*if (isSinglePlayerGameMode == true)
 	{
 		this->isZombieWin();
