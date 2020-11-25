@@ -221,7 +221,8 @@ bool mainScene::init()
 	returnBtn->setPosition(Vec2(visibleSizeWidth / 4 * 3 + 40, visibleSizeHeight / 4 + 90));
 	returnBtn->addClickEventListener([&](Ref* ref) {
 		//this->addChild(menuLayer::create());
-		Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
+		Director::getInstance()->end();
+		//Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
 	});
 
 	//add menu button and create menuLayer

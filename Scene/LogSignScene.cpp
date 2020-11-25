@@ -136,6 +136,25 @@ bool LogSignScene::init()
 		});
 
 	}
+
+	spriteOnlyEnglish = Sprite::create("onlyEnglish.png");
+	if (spriteOnlyEnglish == nullptr)
+	{
+		CCLOG("onlyEnglish.png wrong!");
+	}
+	this->addChild(spriteOnlyEnglish);
+	spriteOnlyEnglish->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteOnlyEnglish->setVisible(false);
+
+	spriteOnlyEngNum = Sprite::create("onlyEngNum.png");
+	if (spriteOnlyEngNum == nullptr)
+	{
+		CCLOG("onlyEngNum.png wrong!");
+	}
+	this->addChild(spriteOnlyEngNum);
+	spriteOnlyEngNum->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteOnlyEngNum->setVisible(false);
+
 	//add UsernameInput and PasswordInput
 	auto UsernameInput = ui::TextField::create();
 	auto PasswordInput = ui::TextField::create();
@@ -151,7 +170,7 @@ bool LogSignScene::init()
 		UsernameInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - 3));
 		UsernameInput->setPlaceHolder("Username");
 		UsernameInput->setCursorEnabled(true);
-		UsernameInput->setCursorChar(true);
+		UsernameInput->setCursorChar('|');
 		UsernameInput->setFontSize(24);
 		UsernameInput->setColor(Color3B::BLACK);
 		UsernameInput->setMaxLengthEnabled(true);
@@ -161,7 +180,7 @@ bool LogSignScene::init()
 		PasswordInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8 - 3));
 		PasswordInput->setPlaceHolder("Password");
 		PasswordInput->setCursorEnabled(true);
-		PasswordInput->setCursorChar(true);
+		PasswordInput->setCursorChar('|');
 		PasswordInput->setFontSize(24);
 		PasswordInput->setColor(Color3B::BLACK);
 		PasswordInput->setMaxLengthEnabled(true);
@@ -188,7 +207,17 @@ bool LogSignScene::init()
 					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) 
 					{
 						username->setString("");
-						log("please input English words!");
+						spriteOnlyEnglish->setVisible(true);
+						auto fadein = FadeIn::create(0.3f);
+						auto fadeout = FadeOut::create(0.2f);
+						auto delay = DelayTime::create(0.3f);
+						spriteOnlyEnglish->runAction(Sequence::create(
+							fadein,
+							delay,
+							fadeout,
+							nullptr
+						));
+						//log("please input English words!");
 						break;
 					}
 				}
@@ -214,13 +243,50 @@ bool LogSignScene::init()
 					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) 
 					{
 						password->setString("");
-						log("please input English words and numbers!");
+						spriteOnlyEngNum->setVisible(true);
+						auto fadein = FadeIn::create(0.3f);
+						auto fadeout = FadeOut::create(0.2f);
+						auto delay = DelayTime::create(0.3f);
+						spriteOnlyEngNum->runAction(Sequence::create(
+							fadein,
+							delay,
+							fadeout,
+							nullptr
+						));
+						//log("please input English words and numbers!");
 						break;
 					}
 				}
 			}
 		});
 	}
+
+	spriteLogSuc = Sprite::create("loginSuc.png");
+	if (spriteLogSuc == nullptr)
+	{
+		CCLOG("loginSuc.png wrong!");
+	}
+	this->addChild(spriteLogSuc);
+	spriteLogSuc->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteLogSuc->setVisible(false);
+
+	spriteLogFai = Sprite::create("loginFai.png");
+	if (spriteLogFai == nullptr)
+	{
+		CCLOG("loginFai.png wrong!");
+	}
+	this->addChild(spriteLogFai);
+	spriteLogFai->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteLogFai->setVisible(false);
+
+	spriteExistEmpty = Sprite::create("existEmpty.png");
+	if (spriteExistEmpty == nullptr)
+	{
+		CCLOG("loginFai.png wrong!");
+	}
+	this->addChild(spriteExistEmpty);
+	spriteExistEmpty->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteExistEmpty->setVisible(false);
 
 	auto LoginBtn = ui::Button::create("res/CYHres/LogSignScene/6.png");
 	if (LoginBtn == nullptr)
@@ -236,7 +302,16 @@ bool LogSignScene::init()
 		{
 			if (username == nullptr || password == nullptr 
 				|| username->getString().empty() == true || password->getString().empty() == true) {
-				MessageBox("The username or password can not be empty!", "plants");
+				auto fadein = FadeIn::create(0.3f);
+				auto fadeout = FadeOut::create(0.2f);
+				auto delay = DelayTime::create(0.3f);
+				spriteExistEmpty->runAction(Sequence::create(
+					fadein,
+					delay,
+					fadeout,
+					nullptr
+				));
+				//MessageBox("The username or password can not be empty!", "plants");
 			}
 			else 
 			{
@@ -262,11 +337,24 @@ bool LogSignScene::init()
 				log(isloginSuc.c_str());
 				if (isloginSuc == "LOGIN;1;") 
 				{
+					spriteLogSuc->setVisible(true);
+					auto fadeout = FadeOut::create(3.0f);
+					spriteLogSuc->runAction(fadeout);
 					Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
 				}
 				else if (isloginSuc == "LOGIN;0;") 
 				{
-					MessageBox("The username or password is wrong!", "plants");
+					spriteLogFai->setVisible(true);
+					auto fadein = FadeIn::create(0.3f);
+					auto fadeout = FadeOut::create(0.2f);
+					auto delay = DelayTime::create(0.3f);
+					spriteLogFai->runAction(Sequence::create(
+						fadein,
+						delay,
+						fadeout,
+						nullptr
+					));
+					//MessageBox("The username or password is wrong!", "plants");
 				}
 			}
 			

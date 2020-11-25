@@ -24,4 +24,10 @@ private:
 	ui::TextField* username;
 	ui::TextField* password;
 	ui::TextField* password2;
+	Sprite* spriteSignSuc;
+	Sprite* spriteSignFai;
+	Sprite* spriteExistEmpty;
+	Sprite* spritePass2NotMatch;
+	Sprite* spriteOnlyEnglish;
+	Sprite* spriteOnlyEngNum;
 };
