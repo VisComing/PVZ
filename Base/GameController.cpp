@@ -90,6 +90,18 @@ void GameController::produceSunFlowerSprite(Vec2 position)
 	((GameLayer*)this->getParent())->_sunFlowerLayer->produceSunFlowerSprite(position);
 }
 
+void GameController::removePlant(Vec2 _pos)
+{
+	for (auto x : _plantVectorGlobalVariable)
+	{
+		if (x->getBoundingBox().containsPoint(_pos))
+		{
+			x->_plantHP -= 30000;
+			break;
+		}
+	}
+}
+
 
 void GameController::produceNormalZombieSprite(string zombieName, Vec2 position)
 {
@@ -209,7 +221,16 @@ void GameController::isZombieWin(float dlt)
 void GameController::receiveFromServer(float dlt)
 {
 	//收到的格式
-	//NormalZombie:1098,908;\n
+	//1NormalZombie:1098,908;\n
+	//植物方只需要收到僵尸的位置
+	//僵尸方需要收到植物种下，植物死亡，僵尸的位置及动作
+	//WIN LOSE HeartBeat
+	//植物方做计算，僵尸方不做任何计算，只是单纯的显示
+	//1表示植物或僵尸种下的位置，当植物方或僵尸方种下时，发送该信息
+	//1NormalZombie:1999,21;\n   1Plant:132,321;\n
+	//2表示植物死亡，植物方植物死亡时，将该信息发送给服务器
+	//2Plant:2312,31;\n
+
 	string message = TCPSocket::getInstance()->readFromServer();
 	if (message == "") return;
 	else
@@ -270,6 +291,10 @@ void GameController::receiveFromServer(float dlt)
 		{
 			this->produceSunFlowerSprite(pos);
 		}
+		else if (_name == "remove")
+		{
+			this->removePlant(pos);
+		}
 		else if (_name[0] == 'H' && _name[1] == 'e')
 		{
 			//这是心跳数据包，不需要处理
@@ -281,6 +306,8 @@ void GameController::receiveFromServer(float dlt)
 		}
 		else if (_name[0] == 'L' && _name[1] == 'O' && _name[2] == 'S' && _name[3] == 'E')
 		{
+			//收到失败的客户端再向服务器发送一个lose
+			TCPSocket::getInstance()->writeIntoServer("LOSE;\n");
 			//服务器说我输了
 			this->serverTellLose();
 		}

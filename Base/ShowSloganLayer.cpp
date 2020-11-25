@@ -59,7 +59,7 @@ void ShowSloganLayer::showZombieEnterYourHome()
 	Sprite* gameOver = Sprite::create("res/ZombiesWon.png");
 	this->addChild(gameOver);
 	gameOver->setPosition(700, 300);
-	returnBtn->setPosition(Vec2(1000, 200));
+	returnBtn->setPosition(Vec2(1200, 100));
 	this->addChild(returnBtn);
 	returnBtn->addClickEventListener([&](Ref* ref) {
 		Director::getInstance()->popScene();
@@ -72,7 +72,7 @@ void ShowSloganLayer::winInSingleMode()
 	Sprite* winSprite = Sprite::create("res/winInSingleMode.png");
 	this->addChild(winSprite);
 	winSprite->setPosition(700, 300);
-	returnBtn->setPosition(Vec2(1000, 200));
+	returnBtn->setPosition(Vec2(1200, 100));
 	this->addChild(returnBtn);
 	returnBtn->setVisible(false);
 	returnBtn->addClickEventListener([&](Ref* ref) {
@@ -89,7 +89,7 @@ void ShowSloganLayer::showZombieLose()
 {
 	Sprite* winSprite = Sprite::create("res/zombieLose.png");
 	auto returnBtn = ui::Button::create("res/returnToMainScene.png");
-	returnBtn->setPosition(Vec2(1000, 200));
+	returnBtn->setPosition(Vec2(1200, 100));
 	this->addChild(returnBtn);
 	this->addChild(winSprite);
 	returnBtn->setVisible(false);
@@ -97,7 +97,8 @@ void ShowSloganLayer::showZombieLose()
 	returnBtn->addClickEventListener([&](Ref* ref) {
 		Director::getInstance()->popScene();
 		});
-	winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1), ScaleBy::create(2, 1,5),
+	//È¥µôÁËscale by 2020/11/25
+	winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1),
 		CallFunc::create([returnBtn]() {
 		returnBtn->setVisible(true);
 	}), NULL)));

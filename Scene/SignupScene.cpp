@@ -99,7 +99,7 @@ bool SignupScene::init()
 		logBg2->setPosition(Vec2(visibleSizeWidth / 2 - 78, visibleSizeHeight / 2 + visibleSizeHeight / 8 + 38));
 		logBg2->addClickEventListener([&](Ref* ref) {
 			Director::getInstance()->replaceScene(LogSignScene::create());
-		});
+			});
 
 	}
 	auto logBg3 = ui::Button::create("res/CYHres/LogSignScene/4.png");
@@ -113,7 +113,7 @@ bool SignupScene::init()
 		logBg3->setPosition(Vec2(visibleSizeWidth / 2 + 72, visibleSizeHeight / 2 + visibleSizeHeight / 8 + 40));
 		logBg3->addClickEventListener([&](Ref* ref) {
 			Director::getInstance()->replaceScene(SignupScene::create());
-		});
+			});
 
 	}
 
@@ -130,29 +130,30 @@ bool SignupScene::init()
 		addChild(UsernameInput);
 		addChild(PasswordInput);
 		addChild(PasswordInput2);
-
+		UsernameInput->setCursorEnabled(true);
 		UsernameInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 + 20));
 		UsernameInput->setPlaceHolder("Username");
-		UsernameInput->setCursorEnabled(true);
+
 		UsernameInput->setFontSize(24);
 		UsernameInput->setColor(Color3B::BLACK);
 		UsernameInput->setMaxLengthEnabled(true);
 		UsernameInput->setMaxLength(6);
 		UsernameInput->ignoreContentAdaptWithSize(false);  //自动换行，使输入从左端开始
-
+		
+		PasswordInput->setCursorEnabled(true);
 		PasswordInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8 + 20));
 		PasswordInput->setPlaceHolder("Password");
-		PasswordInput->setCursorEnabled(true);
+
 		PasswordInput->setFontSize(24);
 		PasswordInput->setColor(Color3B::BLACK);
 		PasswordInput->setMaxLengthEnabled(true);
 		PasswordInput->setMaxLength(9);
 		PasswordInput->ignoreContentAdaptWithSize(false);  //自动换行，使输入从左端开始
 		PasswordInput->setPasswordEnabled(true);
-
+		PasswordInput2->setCursorEnabled(true);
 		PasswordInput2->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 4 + 25));
 		PasswordInput2->setPlaceHolder("Password");
-		PasswordInput2->setCursorEnabled(true);
+
 		PasswordInput2->setFontSize(24);
 		PasswordInput2->setColor(Color3B::BLACK);
 		PasswordInput2->setMaxLengthEnabled(true);
@@ -164,73 +165,73 @@ bool SignupScene::init()
 		{
 			dynamic_cast<ui::TextField*>(ref)->setString("");
 		});*/
-		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
-		{
-			if (type == ui::TextField::EventType::INSERT_TEXT) 
+		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type)
 			{
-				username = dynamic_cast<ui::TextField*>(ref);
-
-				log("%s", username->getString().c_str());
-
-				//username must only includes English words
-				for (char c : username->getString()) 
+				if (type == ui::TextField::EventType::INSERT_TEXT)
 				{
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) 
-					{
-						username->setString("");
-						log("please input English words!");
-						break;
-					}
-				}
+					username = dynamic_cast<ui::TextField*>(ref);
 
-			}
-		});
+					log("%s", username->getString().c_str());
+
+					//username must only includes English words
+					for (char c : username->getString())
+					{
+						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))
+						{
+							username->setString("");
+							log("please input English words!");
+							break;
+						}
+					}
+
+				}
+			});
 
 		/*PasswordInput->addClickEventListener([&](Ref* ref)
 		{
 			dynamic_cast<ui::TextField*>(ref)->setString("");
 		});*/
-		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
-		{
-			if (type == ui::TextField::EventType::INSERT_TEXT) 
+		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type)
 			{
-				password = dynamic_cast<ui::TextField*>(ref);
-
-				log("%s", password->getString().c_str());
-
-				//username must only includes English words
-				for (char c : password->getString()) 
+				if (type == ui::TextField::EventType::INSERT_TEXT)
 				{
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) 
+					password = dynamic_cast<ui::TextField*>(ref);
+
+					log("%s", password->getString().c_str());
+
+					//username must only includes English words
+					for (char c : password->getString())
 					{
-						password->setString("");
-						log("please input English words and numbers!");
-						break;
+						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')))
+						{
+							password->setString("");
+							log("please input English words and numbers!");
+							break;
+						}
 					}
 				}
-			}
-		});
+			});
 
-		PasswordInput2->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
-		{
-			if (type == ui::TextField::EventType::INSERT_TEXT) 
+		PasswordInput2->addEventListener([&](Ref* ref, ui::TextField::EventType type)
 			{
-				password2 = dynamic_cast<ui::TextField*>(ref);
-
-				log("%s", password2->getString().c_str());
-
-				//username must only includes English words
-				for (char c : password2->getString()) 
+				if (type == ui::TextField::EventType::INSERT_TEXT)
 				{
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) 
+					password2 = dynamic_cast<ui::TextField*>(ref);
+
+					log("%s", password2->getString().c_str());
+
+					//username must only includes English words
+					for (char c : password2->getString())
 					{
-						password2->setString("");
-						log("please input English words and numbers!");
-						break;
+						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')))
+						{
+							password2->setString("");
+							log("please input English words and numbers!");
+							break;
+						}
 					}
 				}
-			}
-		});
+			});
 	}
 
 	//add login and signup button
@@ -244,14 +245,14 @@ bool SignupScene::init()
 		addChild(SignupBtn);
 		SignupBtn->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 5 - 20));
 		SignupBtn->addClickEventListener([&](Ref* ref) {
-			
+
 			if (username == nullptr || password == nullptr || password2 == nullptr
-				|| username->getString().empty() == true || password->getString().empty() == true 
-				|| password2->getString().empty() == true) 
+				|| username->getString().empty() == true || password->getString().empty() == true
+				|| password2->getString().empty() == true)
 			{
 				MessageBox("The username or password can not be empty!", "plants");
 			}
-			else if (password->getString() != password2->getString()) 
+			else if (password->getString() != password2->getString())
 			{
 				MessageBox("The passwords entered two times do not match!", "plants");
 			}
@@ -287,13 +288,13 @@ bool SignupScene::init()
 					MessageBox("Sign up failed!", "plants");
 				}
 			}
-		});
+			});
 	}
 
 	//关闭套接字
 	//closesocket(clntSock);
 	//终止使用 DLL
 	//WSACleanup();
-	  
+
 	return true;
 }

@@ -17,6 +17,7 @@ public:
 	void producePotatoMineSprite(Vec2);
 	void produceWallNutSprite(Vec2);
 	void produceSunFlowerSprite(Vec2);
+	void removePlant(Vec2);
 
 	void produceNormalZombieSprite(string, Vec2);
 	void produceZombieUpdate(float dlt);

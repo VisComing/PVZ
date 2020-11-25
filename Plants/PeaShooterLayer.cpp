@@ -160,7 +160,6 @@ void PeaShooterLayer::removePlant(Vec2 touch)
 	_shovel->setPosition(touch);
 	this->addChild(_shovel);
 	auto lis = EventListenerMouse::create();
-	//鼠标移动，则精灵跟着移动
 	lis->onMouseMove = [=](EventMouse* e) {
 		_shovel->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
 		int x = e->getLocation().x;
@@ -170,7 +169,6 @@ void PeaShooterLayer::removePlant(Vec2 touch)
 	};
 	lis->onMouseDown = [=](EventMouse* e) {
 		this->removeChild(_shovel);
-		//判断种豌豆射手位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
 		Vec2 _pos(x, y);
@@ -180,6 +178,9 @@ void PeaShooterLayer::removePlant(Vec2 touch)
 			{
 				this->_peaShooterSprite->startGrowPlantMusic();
 				x->_plantHP -= 30000;
+				//NormalZombie:1098,908;\n
+				string message = "remove:" + to_string(_pos.x) + "," + to_string(_pos.y) + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(message);
 				break;
 			}
 		}
