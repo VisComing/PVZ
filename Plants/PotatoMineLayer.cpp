@@ -184,6 +184,12 @@ void PotatoMineLayer::diedPotatoMine()
 			{
 				if ((*i) == (*j))
 				{
+					if (isSinglePlayerGameMode == false)
+					{
+						auto _pos = (*i)->getPosition();
+						string message = "1Remove:" + to_string(_pos.x) + "," + to_string(_pos.y) + ";\n";
+						TCPSocket::getInstance()->writeIntoServer(message);
+					}
 					_plantVectorGlobalVariable.erase(j);
 					break;
 				}

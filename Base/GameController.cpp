@@ -364,11 +364,11 @@ void GameController::receiveFromServer(float dlt)
 								(tmpe)->removeFromParent();//将僵尸删除
 								})));
 					}
-					else if (pos2 == 3)//被食人花吃掉
+					else if (pos2 == 2)//被食人花吃掉
 					{
 						x->removeFromParent();
 					}
-					
+					((GameLayer*)this->getParent())->_normalZombieLayer->delectZombieFromNormalZombieVector(pos1);
 					_zombieVectorGlobalVariable.erase(iter);
 					break;
 				}
@@ -462,6 +462,10 @@ void GameController::receiveFromServer(float dlt)
 							x->stopActionByTag(1);
 							x->stopActionByTag(3);
 							x->stopActionByTag(4);//无头僵尸吃植物
+							x->stopActionByTag(9);
+							x->stopActionByTag(10);
+							x->stopActionByTag(11);
+							x->stopActionByTag(12);
 							x->runAction(x->normalZombieNoHeadWalkAnimation());
 							x->actionTag.insert(2);
 						}
@@ -485,6 +489,10 @@ void GameController::receiveFromServer(float dlt)
 							x->stopActionByTag(1);
 							x->stopActionByTag(2);
 							x->stopActionByTag(3);
+							x->stopActionByTag(9);
+							x->stopActionByTag(10);
+							x->stopActionByTag(11);
+							x->stopActionByTag(12);
 							x->stopActionByTag(13);
 							x->runAction(x->normalZombieLostHeadAttackAnimation());
 							x->actionTag.insert(4);

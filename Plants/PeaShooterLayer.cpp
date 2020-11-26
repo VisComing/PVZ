@@ -135,6 +135,14 @@ void PeaShooterLayer::diedPeaShooter()
 					break;
 				}
 			}
+			
+			if (isSinglePlayerGameMode == false)
+			{
+				auto _pos = (*i)->getPosition();
+				string message = "1Remove:" + to_string(_pos.x) + "," + to_string(_pos.y) + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(message);
+				
+			}
 			this->removeChildByTag((*i)->_peaShooterSpriteTag);
 			(*i)->removeFromParent();
 			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;

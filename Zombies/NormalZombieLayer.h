@@ -24,4 +24,5 @@ public:
 	bool isZombieWin();
 	int zombieID;//Ω© ¨Œ®“ª±Í÷æ
 	void sendZombieStatus(float);
+	void delectZombieFromNormalZombieVector(int ID);
 };

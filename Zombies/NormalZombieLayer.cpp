@@ -552,6 +552,18 @@ void NormalZombieLayer::sendZombieStatus(float)
 	}
 }
 
+void NormalZombieLayer::delectZombieFromNormalZombieVector(int _ID)
+{
+	for (auto iter = _normalZombieVector.begin(); iter != _normalZombieVector.end(); iter++)
+	{
+		if ((*iter)->zombieID == _ID)
+		{
+			_normalZombieVector.erase(iter);
+			break;
+		}
+	}
+}
+
 void NormalZombieLayer::update(float dt)
 {
 	//如果是僵尸方，不进行任何计算
