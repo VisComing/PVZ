@@ -4,8 +4,6 @@
 #include "../Base/socket.h"
 #include <string>
 #include "../Base/global.h"
-extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
-extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 PeaShooterLayer::PeaShooterLayer()
 {
 	this->shadowTag = 0;
@@ -73,7 +71,7 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 				//在此处发送
 				if (isSinglePlayerGameMode == false)
 				{
-					std::string message = "PeaShooter:" + to_string(x) + "," + to_string(y) + ";\n";
+					std::string message = "1PeaShooter:" + to_string(x) + "," + to_string(y) + ";\n";
 					TCPSocket::getInstance()->writeIntoServer(message);
 				}
 				shadow->setPosition(x - 5, y - 27);
@@ -179,7 +177,7 @@ void PeaShooterLayer::removePlant(Vec2 touch)
 				this->_peaShooterSprite->startGrowPlantMusic();
 				x->_plantHP -= 30000;
 				//NormalZombie:1098,908;\n
-				string message = "remove:" + to_string(_pos.x) + "," + to_string(_pos.y) + ";\n";
+				string message = "1Remove:" + to_string(_pos.x) + "," + to_string(_pos.y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 				break;
 			}

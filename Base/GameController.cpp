@@ -4,9 +4,8 @@
 #include "global.h"
 #include "socket.h"
 #include "SimpleAudioEngine.h"
+#include <algorithm>
 using namespace CocosDenshion; 
-extern Vector<ZombieBaseClass*>_zombieVectorGlobalVariable;//注意，这两个是全局变量
-extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
 /*不管联机还是单机，都要有：倒计时，判断僵尸是否进入家园，发送心跳
 *如果是联机：要从服务器接收信息，根据接收的信息创建植物/僵尸
 *当倒计时为0时，如果时单机模式，胜利，显示
@@ -34,7 +33,7 @@ bool GameController::init()
 	this->_remainTimeLabel->setTextColor(Color4B(200, 0, 0, 255));
 	this->addChild(this->_remainTimeLabel);
 	this->_remainTimeLabel->setPosition(Vec2(790, 570));
-	this->schedule(schedule_selector(GameController::isZombieWin), 0.5f);//判断僵尸是否胜利
+	this->schedule(schedule_selector(GameController::isZombieWin), 0.1f);//判断僵尸是否胜利
 	this->schedule(schedule_selector(GameController::sendHeartBeat), 1.f);//不管是否联机，都需要发送心跳
 	//this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
 	if (isSinglePlayerGameMode)
@@ -47,7 +46,7 @@ bool GameController::init()
 	else
 	{
 		//联机模式从服务器接收信息
-		this->schedule(schedule_selector(GameController::receiveFromServer), 0.15f);		
+		this->schedule(schedule_selector(GameController::receiveFromServer), 0.05f);		
 	}
 	if (isSinglePlayerGameMode == false)
 	{
@@ -102,12 +101,13 @@ void GameController::removePlant(Vec2 _pos)
 	}
 }
 
-
+//根据僵尸名和位置产生僵尸
 void GameController::produceNormalZombieSprite(string zombieName, Vec2 position)
 {
 	((GameLayer*)this->getParent())->_normalZombieLayer->autoInitZombie(zombieName, position);
 }
 
+//单机模式自动产生僵尸
 void GameController::produceZombieUpdate(float dlt)
 {
 	
@@ -117,7 +117,7 @@ void GameController::produceZombieUpdate(float dlt)
 	{
 		while (1)
 		{
-			int random = rand() % 5;
+			const int random = rand() % 5;
 			if (random == 0) y = 80;
 			else if (random == 1) y = 175;
 			else if (random == 2) y = 274;
@@ -133,15 +133,15 @@ void GameController::produceZombieUpdate(float dlt)
 	}
 	else
 	{
-		int random = rand() % 5;
+		const int random = rand() % 5;
 		if (random == 0) y = 80;
 		else if (random == 1) y = 175;
 		else if (random == 2) y = 274;
 		else if (random == 3) y = 375;
 		else y = 475;
 	}
-	Vec2 _pos = Vec2(x, y);
-	int random = rand() % 4;
+	const Vec2 _pos = Vec2(x, y);
+	const int random = rand() % 4;
 	if (random == 0) produceNormalZombieSprite("NormalZombie", _pos);
 	else if(random == 1) produceNormalZombieSprite("FlagZombie", _pos);
 	else if(random == 2) produceNormalZombieSprite("ConeheadZombie", _pos);
@@ -212,8 +212,12 @@ void GameController::isZombieWin(float dlt)
 			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 			this->unschedule(schedule_selector(GameController::isZombieWin));
 			this->unschedule(schedule_selector(GameController::produceZombieUpdate));
+
 			_zombieVectorGlobalVariable.clear();
 			_plantVectorGlobalVariable.clear();
+			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
+			this->unschedule(schedule_selector(GameController::isZombieWin));
+			this->unschedule(schedule_selector(GameController::produceZombieUpdate));
 			//Director::getInstance()->popScene();
 		}
 	}
@@ -225,53 +229,92 @@ void GameController::receiveFromServer(float dlt)
 	//1NormalZombie:1098,908;\n
 	//植物方只需要收到僵尸的位置
 	//僵尸方需要收到植物种下，植物死亡，僵尸的位置及动作
+	//僵尸方不需要扣植物或僵尸的血量
 	//WIN LOSE HeartBeat
 	//植物方做计算，僵尸方不做任何计算，只是单纯的显示
+	//僵尸方只会发送僵尸种下的信息
 	//1表示植物或僵尸种下的位置，当植物方或僵尸方种下时，发送该信息
 	//1NormalZombie:1999,21;\n   1Plant:132,321;\n
-	//2表示植物死亡，植物方植物死亡时，将该信息发送给服务器
-	//2Plant:2312,31;\n
+	//表示植物死亡，植物方植物死亡时，将该信息发送给服务器，这里只关心位置，不关心植物的名字
+	//1Remove:2312,31;\n
+	//特例
+	//1ZombieDie:ID,typeOfDeath;\n
+	//植物方发送僵尸的状态,僵尸标号
+	//2NormalZombie:1231,321,ID,walk/attack/noHeadAttack/dropHead/noHeadWalk/die/boomDie;\n
+
 
 	string message = TCPSocket::getInstance()->readFromServer();
 	if (message == "") return;
-	else
+	if (message.at(0) == 'H' && message.at(1) == 'e' && message.at(2) == 'a')
 	{
+		//这是心跳数据包
+	}
+	else if (message.at(0) == 'W' && message.at(1) == 'I' && message.at(2) == 'N')
+	{
+		//服务器说我胜利了
+		this->serverTellWin();
+	}
+	else if (message.at(0) == 'L' && message.at(1) == 'O' && message.at(2) == 'S' && message.at(3) == 'E')
+	{
+		//收到失败的客户端再向服务器发送一个lose
+		TCPSocket::getInstance()->writeIntoServer("LOSE;\n");
+		//服务器说我输了
+		this->serverTellLose();
+	}
+	else if (message.at(0) == 'S' && message.at(1) == 'T' && message.at(2) == 'A' && message.at(3) == 'R')
+	{
+		//服务器说开始！
+		this->readySprite->removeFromParent();
+		this->startSprite->setVisible(true);
+		auto tempSprite = this->startSprite;
+		tempSprite->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([tempSprite]()
+			{
+				tempSprite->removeFromParent();
+			})));
+		this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
+	}
+	else if (message.at(0) == '1')
+	{
+		string _mess = message.substr(1);//去掉第一个字符1
+		//植物或僵尸种下，或者植物死亡
 		string _name, _pos1, _pos2;
 		size_t i = 0;
-		for (i = 0; i < message.size(); i++)
+		for (i = 0; i < _mess.size(); i++)
 		{
-			if (message[i] != ':')
+			if (_mess.at(i) != ':')
 			{
-				_name += message[i];
+				_name += _mess.at(i);
 			}
 			else break;
 		}
-		for (i = i + 1; i < message.size(); i++)
+		for (i = i + 1; i < _mess.size(); i++)
 		{
-			if (message[i] != ',')
+			if (_mess.at(i) != ',')
 			{
-				_pos1 += message[i];
+				_pos1 += _mess.at(i);
 			}
 			else break;
 		}
-		for (i = i + 1; i < message.size(); i++)
+		for (i = i + 1; i < _mess.size(); i++)
 		{
-			if (message[i] != ';')
+			if (_mess.at(i) != ';')
 			{
-				_pos2 += message[i];
+				_pos2 += _mess.at(i);
 			}
 			else break;
 		}
 		int pos1 = 0, pos2 = 0;
-		if(_pos1 != "")
+		if (_pos1 != "")
 			pos1 = stoi(_pos1);
-		if(_pos2 != "")
+		if (_pos2 != "")
 			pos2 = stoi(_pos2);
-		Vec2 pos(pos1, pos2);
+		const Vec2 pos(pos1, pos2);
+		//这个是植物方收到的
 		if (_name == "NormalZombie" || _name == "ConeheadZombie" || _name == "BucketheadZombie" || _name == "FlagZombie")
 		{
 			this->produceNormalZombieSprite(_name, pos);
 		}
+		//以下都是僵尸方收到的
 		else if (_name == "Chomper")
 		{
 			this->produceChomperSprite(pos);
@@ -292,43 +335,318 @@ void GameController::receiveFromServer(float dlt)
 		{
 			this->produceSunFlowerSprite(pos);
 		}
-		else if (_name == "remove")
+		else if (_name == "Remove")
 		{
 			this->removePlant(pos);
 		}
-		else if (_name[0] == 'H' && _name[1] == 'e')
+		else if (_name == "ZombieDie")
 		{
-			//这是心跳数据包，不需要处理
-		}
-		else if (_name[0] == 'W' && _name[1] == 'I' && _name[2] == 'N')
-		{
-			//服务器说我胜利了
-			this->serverTellWin();
-		}
-		else if (_name[0] == 'L' && _name[1] == 'O' && _name[2] == 'S' && _name[3] == 'E')
-		{
-			//收到失败的客户端再向服务器发送一个lose
-			TCPSocket::getInstance()->writeIntoServer("LOSE;\n");
-			//服务器说我输了
-			this->serverTellLose();
-		}
-		else if (_name[0] == 'S' && _name[1] == 'T' && _name[2] == 'A' && _name[3] == 'R' && _name[4] == 'T')
-		{
-			this->readySprite->removeFromParent();
-			this->startSprite->setVisible(true);
-			auto tempSprite = this->startSprite;
-			tempSprite->runAction(Sequence::createWithTwoActions(DelayTime::create(1.f), CallFunc::create([tempSprite]()
+			for (auto iter = _zombieVectorGlobalVariable.begin(); iter != _zombieVectorGlobalVariable.end(); iter++)
+			{
+				auto x = *iter;
+				if (x->zombieID == pos1)
 				{
-					tempSprite->removeFromParent();
-				})));
-			this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
-			//this->startTiming = true;
-		}
-		else
-		{
-			log("error in GameController receiveFromServer");
+					x->stopMusic();
+					x->stopAllActions();
+					if (pos2 == 0)//被子弹打死
+					{
+						auto tmpe = x;
+						x->runAction(Sequence::createWithTwoActions(x
+							->downTheGround(), CallFunc::create([tmpe]() {
+								(tmpe)->removeFromParent();//将僵尸删除
+								})));
+					}
+					else if (pos2 == 1)//被炸死
+					{
+						auto tmpe = x;
+						x->runAction(Sequence::createWithTwoActions(x
+							->explodAnimation(), CallFunc::create([tmpe]() {
+								(tmpe)->removeFromParent();//将僵尸删除
+								})));
+					}
+					else if (pos2 == 3)//被食人花吃掉
+					{
+						x->removeFromParent();
+					}
+					
+					_zombieVectorGlobalVariable.erase(iter);
+					break;
+				}
+				
+			}
+				
 		}
 	}
+	//这是向僵尸方发送的
+	//2NormalZombie:1231,321,ID,walk/attack/noHeadAttack/dropHead/noHeadWalk/die/boomDie;\n
+	//2NormalZombie:8.879150,495.000000,0,1,13;
+	else if (message.at(0) == '2')
+	{
+		string _pos1, _pos2, _ID, _action;
+		size_t i;
+		for (i = 0; i < message.size(); i++)
+		{
+			if (message.at(i) == ':')
+				break;
+		}
+		//i为：的位置
+		for (i = i + 1; i < message.size(); i++)
+		{
+			if (message.at(i) != ',')
+				_pos1 += message.at(i);
+			else
+				break;
+		}
+		for (i = i + 1; i < message.size(); i++)
+		{
+			if (message.at(i) != ',')
+				_pos2 += message.at(i);
+			else
+				break;
+		}
+		for (i = i + 1; i < message.size(); i++)
+		{
+			if (message.at(i) != ',')
+				_ID += message.at(i);
+			else
+				break;
+		}
+		const Vec2 _pos(stoi(_pos1), stoi(_pos2));
+		const int _id = stoi(_ID);
+		vector<int> _taction;
+		string tmp;
+		for (i = i + 1; i < message.size(); i++)
+		{
+			if (message.at(i) != ';')
+			{
+				if (message.at(i) != ',')
+				{
+					tmp += message.at(i);
+				}
+				else
+				{
+					_taction.push_back(stoi(tmp));
+					tmp = "";
+				}
+			}
+			else
+			{
+				_taction.push_back(stoi(tmp));
+				break;
+			}
+		}
+		for (auto x : _zombieVectorGlobalVariable)
+		{
+			if (x->zombieID == _id)
+			{
+				
+				x->setPosition(_pos);
+				//x->stopAllActions();用这个是不行的
+				for (auto y : _taction)
+				{
+					if (y == 1)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 1)))
+						{
+							x->stopActionByTag(2);
+							x->stopActionByTag(3);//普通僵尸吃植物
+							x->stopActionByTag(4);
+							x->runAction(x->normalZombieWalkAnimation());
+							x->actionTag.insert(1);
+						}
+					}
+					else if (y == 2)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 2)))
+						{
+							x->stopActionByTag(1);
+							x->stopActionByTag(3);
+							x->stopActionByTag(4);//无头僵尸吃植物
+							x->runAction(x->normalZombieNoHeadWalkAnimation());
+							x->actionTag.insert(2);
+						}
+					}
+					else if (y == 3)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 3)))
+						{
+							x->stopActionByTag(1);
+							x->stopActionByTag(2);
+							x->stopActionByTag(4);
+							x->stopActionByTag(13);
+							x->runAction(x->normalZombieAttackAnimation());
+							x->actionTag.insert(3);
+						}
+					}
+					else if (y == 4)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 4)))
+						{
+							x->stopActionByTag(1);
+							x->stopActionByTag(2);
+							x->stopActionByTag(3);
+							x->stopActionByTag(13);
+							x->runAction(x->normalZombieLostHeadAttackAnimation());
+							x->actionTag.insert(4);
+						}
+					}
+					else if (y == 5)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 5)))
+						{
+							x->stopActionByTag(6);
+							x->stopActionByTag(7);
+							x->stopActionByTag(8);
+							x->runAction(x->flagZombieWalkAnimation());
+							x->actionTag.insert(5);
+						}
+					}
+					else if (y == 6)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 6)))
+						{
+							x->stopActionByTag(5);
+							x->stopActionByTag(7);
+							x->stopActionByTag(8);
+							x->runAction(x->flagZombieNoHeadWalkAnimation());
+							x->actionTag.insert(6);
+						}
+					}
+					else if (y == 7)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 7)))
+						{
+							x->stopActionByTag(5);
+							x->stopActionByTag(6);
+							x->stopActionByTag(8);
+							x->stopActionByTag(13);
+							x->runAction(x->flagZombieAttackAnimation());
+							x->actionTag.insert(7);
+						}
+					}
+					else if (y == 8)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 8)))
+						{
+							x->stopActionByTag(5);
+							x->stopActionByTag(6);
+							x->stopActionByTag(7);
+							x->stopActionByTag(13);
+							x->runAction(x->flagZombieLostHeadAttackAnimation());
+							x->actionTag.insert(8);
+						}
+					}
+					else if (y == 9)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 9)))
+						{
+							x->stopActionByTag(10);
+							x->runAction(x->coneheadZombieWalkAnimation());
+							x->actionTag.insert(9);
+						}
+					}
+					else if (y == 10)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 10)))
+						{
+							x->stopActionByTag(9);
+							x->stopActionByTag(13);
+							x->runAction(x->coneheadZombieAttackAnimation());
+							x->actionTag.insert(10);
+						}
+					}
+					else if (y == 11)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 11)))
+						{
+							x->stopActionByTag(12);
+							x->runAction(x->bucketheadZombieWalkAnimation());
+							x->actionTag.insert(11);
+						}
+					}
+					else if (y == 12)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 12)))
+						{
+							x->stopActionByTag(11);
+							x->stopActionByTag(13);
+							x->runAction(x->bucketheadZombieAttackAnimation()); 
+							x->actionTag.insert(12);
+						}
+					}
+					else if (y == 13)
+					{
+						if (!(std::count(x->actionTag.begin(), x->actionTag.end(), 13)))
+						{
+							x->stopActionByTag(3);
+							x->stopActionByTag(4);
+							x->stopActionByTag(7);
+							x->stopActionByTag(8);
+							x->stopActionByTag(10);
+							x->stopActionByTag(12);
+							x->runAction(x->zombieMoveWay(x->zombieSpeed));
+							x->actionTag.insert(13);
+						}
+					}
+					else if (y == 14)//掉头动作
+					{
+						auto tmpSprite = Sprite::create();
+						this->addChild(tmpSprite);
+						tmpSprite->setPosition(x->getPosition());
+						//让掉头的动作靠前一点，更显得真实
+						tmpSprite->setPositionX(tmpSprite->getPositionX() + 35);
+
+						//注意，为了使僵尸只掉一次头，这里把僵尸的血量减一
+						//tmpSprite->runAction((*i)->headAnimation());
+						tmpSprite->runAction(Sequence::createWithTwoActions(x
+							->headAnimation(), CallFunc::create([tmpSprite]() {
+								tmpSprite->removeFromParent();
+								})));
+						//僵尸只会掉一次头，之后把14号动作删了
+
+					}
+					else if (y == 15)
+					{
+						//倒地动作，把所有动作都停了
+						x->stopAllActions();
+						auto tmpe = x;
+						x->runAction(Sequence::createWithTwoActions(x
+							->downTheGround(), CallFunc::create([tmpe]() {
+								(tmpe)->removeFromParent();//将僵尸删除
+								})));
+					}
+					else if (y == 16)
+					{
+						x->stopAllActions();
+						auto tmpe = x;
+						x->runAction(Sequence::createWithTwoActions(x
+							->explodAnimation(), CallFunc::create([tmpe]() {
+								(tmpe)->removeFromParent();//将僵尸删除
+								})));
+					}
+				}
+				x->actionTag.clear();
+				for (auto y : _taction)
+				{
+					x->actionTag.insert(y);
+				}
+				//把14、15、16号动作删了
+				for (auto iter = _taction.begin(); iter != _taction.end();)
+				{
+					if (*iter == 14 || *iter == 15 || *iter == 16)
+					{
+						iter = _taction.erase(iter);
+					}
+					else
+					{
+						iter++;
+					}
+				}
+				break;
+			}
+		}
+	}
+
 }
 
 void GameController::sendHeartBeat(float dlt)

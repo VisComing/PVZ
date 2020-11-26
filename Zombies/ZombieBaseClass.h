@@ -1,7 +1,9 @@
 #pragma once
 #include "cocos2d.h"
 USING_NS_CC;
-
+#include <set>
+#include <string>
+using namespace std;
 class ZombieBaseClass : public Sprite
 {
 public:
@@ -33,4 +35,7 @@ public:
 	int zombieSpeed;//僵尸的移动速度，越贵的僵尸移速越快
 	int zombieMoney;//僵尸金币价格
 	int _hp;//僵尸的血量
+	string _zombieName;
+	int zombieID;
+	set<int> actionTag;
 };

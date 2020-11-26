@@ -6,6 +6,7 @@ NormalZombieSprite::NormalZombieSprite()
 {
 	this->_hp = 100;
 	attacting = false;
+	this->zombieID = 0;
 }
 NormalZombieSprite::~NormalZombieSprite()
 {
@@ -33,6 +34,7 @@ RepeatForever * NormalZombieSprite::normalZombieWalkAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 22);
 	this->_normalZombieWalkAction = RepeatForever::create(Animate::create(_animation));
+	this->_normalZombieWalkAction->setTag(1);
 	return this->_normalZombieWalkAction;
 }
 
@@ -46,7 +48,7 @@ FiniteTimeAction* NormalZombieSprite::normalZombieNoHeadWalkAnimation()
 	}
 	Animation* noHeadAnimation = Animation::createWithSpriteFrames(images, 0.2f);
 	this->_normalZombieNoHeadWalkAction = RepeatForever::create(Animate::create(noHeadAnimation));
-
+	this->_normalZombieNoHeadWalkAction->setTag(2);
 	return this->_normalZombieNoHeadWalkAction;
 }
 
@@ -59,7 +61,7 @@ RepeatForever * NormalZombieSprite::normalZombieAttackAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 0.1f);
 	this->_normalZombieAttackAction = RepeatForever::create(Animate::create(_animation));
-	_normalZombieAttackAction->setTag(2368);
+	this->_normalZombieAttackAction->setTag(3);
 	return this->_normalZombieAttackAction;
 }
 
@@ -72,6 +74,7 @@ RepeatForever * NormalZombieSprite::normalZombieLostHeadAttackAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 9);
 	this->_normalZombieLostHeadAttackAction = RepeatForever::create(Animate::create(_animation));
+	this->_normalZombieLostHeadAttackAction->setTag(4);
 	return this->_normalZombieLostHeadAttackAction;
 }
 
@@ -84,6 +87,7 @@ RepeatForever * NormalZombieSprite::flagZombieWalkAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 12);
 	this->_flagZombieWalkAction = RepeatForever::create(Animate::create(_animation));
+	this->_flagZombieWalkAction->setTag(5);
 	return this->_flagZombieWalkAction;
 }
 
@@ -96,6 +100,7 @@ FiniteTimeAction * NormalZombieSprite::flagZombieNoHeadWalkAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 12);
 	this->_flagZombieNoHeadWalkAction = RepeatForever::create(Animate::create(_animation));
+	this->_flagZombieNoHeadWalkAction->setTag(6);
 	return this->_flagZombieNoHeadWalkAction;
 }
 
@@ -108,6 +113,7 @@ RepeatForever * NormalZombieSprite::flagZombieAttackAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 11);
 	this->_flagZombieAttackAction = RepeatForever::create(Animate::create(_animation));
+	this->_flagZombieAttackAction->setTag(7);
 	return this->_flagZombieAttackAction;
 }
 
@@ -120,6 +126,7 @@ RepeatForever * NormalZombieSprite::flagZombieLostHeadAttackAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 11);
 	this->_flagZombieLostHeadAttackAction = RepeatForever::create(Animate::create(_animation));
+	this->_flagZombieLostHeadAttackAction->setTag(8);
 	return this->_flagZombieLostHeadAttackAction;
 }
 
@@ -132,6 +139,7 @@ RepeatForever * NormalZombieSprite::coneheadZombieWalkAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 21);
 	this->_coneheadZombieWalkAction = RepeatForever::create(Animate::create(_animation));
+	this->_coneheadZombieWalkAction->setTag(9);
 	return this->_coneheadZombieWalkAction;
 }
 
@@ -145,6 +153,7 @@ RepeatForever * NormalZombieSprite::coneheadZombieAttackAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 11);
 	this->_coneheadZombieAttackAction = RepeatForever::create(Animate::create(_animation));
+	this->_coneheadZombieAttackAction->setTag(10);
 	return this->_coneheadZombieAttackAction;
 }
 
@@ -157,6 +166,7 @@ RepeatForever * NormalZombieSprite::bucketheadZombieWalkAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 15);
 	this->_bucketheadZombieWalkAction = RepeatForever::create(Animate::create(_animation));
+	this->_bucketheadZombieWalkAction->setTag(11);
 	return this->_bucketheadZombieWalkAction;
 }
 
@@ -169,12 +179,13 @@ RepeatForever * NormalZombieSprite::bucketheadZombieAttackAnimation()
 	}
 	Animation* _animation = Animation::createWithSpriteFrames(images, 1.f / 11);
 	this->_bucketheadZombieAttackAction = RepeatForever::create(Animate::create(_animation));
+	this->_bucketheadZombieAttackAction->setTag(12);
 	return this->_bucketheadZombieAttackAction;
 }
 
 void NormalZombieSprite::startMusic()
 {
-	int random = rand() % 3;
+	const int random = rand() % 3;
 	if(random == 0)
 		_effectMusicID = SimpleAudioEngine::getInstance()->playEffect("res/music/zombieChomp.wma", true);
 	else if(random == 1)

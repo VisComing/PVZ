@@ -3,8 +3,6 @@
 #include "../Base/MapLayer.h"
 #include "../Base/socket.h"
 #include "../Base/global.h"
-extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
-extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 WallNutLayer::WallNutLayer()
 {
 	this->shadowTag = 0;
@@ -72,7 +70,7 @@ void WallNutLayer::initWallNutSprite(Vec2 touch)
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
 			{
-				std::string message = "WallNut:" + to_string(x) + "," + to_string(y) + ";\n";
+				std::string message = "1WallNut:" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
 			shadow->setPosition(x, y - 30);

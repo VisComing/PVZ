@@ -2,8 +2,8 @@
 #include "../Base/GameLayer.h"
 #include "../Base/TouchLayer.h"
 #include "SimpleAudioEngine.h"
+#include "../Base/global.h"
 using namespace CocosDenshion;
-extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 BulletLayer::BulletLayer()
 {
 	this->_bulletSprite = NULL;

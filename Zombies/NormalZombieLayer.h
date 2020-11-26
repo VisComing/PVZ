@@ -16,10 +16,12 @@ public:
 	//void normalZombieMoveWay();//僵尸移动路线
 	//FiniteTimeAction* noHeadNormalZombieMoveWay();
 	Vector<NormalZombieSprite*> _normalZombieVector;
-	void diedNormalZombie();
+	void diedNormalZombie(float);
 	void normalZombieAttackPlant();
 	virtual void update(float dt);
 	void autoInitZombie(string, Vec2);
 	//Sprite* tmpSprite;
 	bool isZombieWin();
+	int zombieID;//僵尸唯一标志
+	void sendZombieStatus(float);
 };

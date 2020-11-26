@@ -3,8 +3,6 @@
 #include "../Base/MapLayer.h"
 #include "../Base/socket.h"
 #include "../Base/global.h"
-extern Vector<PlantBaseClass*> _plantVectorGlobalVariable;
-extern Vector<ZombieBaseClass*> _zombieVectorGlobalVariable;
 SunFlowerLayer::SunFlowerLayer()
 {
 	this->shadowTag = 0;
@@ -76,7 +74,7 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
 			{
-				std::string message = "SunFlower:" + to_string(x) + "," + to_string(y) + ";\n";
+				std::string message = "1SunFlower:" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
 			shadow->setPosition(x, y - 30);

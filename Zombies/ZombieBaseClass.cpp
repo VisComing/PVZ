@@ -41,6 +41,7 @@ FiniteTimeAction * ZombieBaseClass::explodAnimation()
 	}
 	Animation* downAnimation = Animation::createWithSpriteFrames(images, 0.1f);
 	this->_explodAction = Animate::create(downAnimation);
+	this->_explodAction->setTag(16);
 	return this->_explodAction;
 }
 
@@ -53,7 +54,7 @@ FiniteTimeAction * ZombieBaseClass::headAnimation()
 	}
 	Animation* headAnimation = Animation::createWithSpriteFrames(images, 0.07f);
 	this->_headAction = Animate::create(headAnimation);
-
+	this->_headAction->setTag(14);
 	return this->_headAction;
 }
 
@@ -66,12 +67,13 @@ FiniteTimeAction * ZombieBaseClass::downTheGround()
 	}
 	Animation* downAnimation = Animation::createWithSpriteFrames(images, 0.1f);
 	this->_downAction = Animate::create(downAnimation);
-
+	this->_downAction->setTag(15);
 	return this->_downAction;
 }
 
 Action * ZombieBaseClass::zombieMoveWay(int zombieSpeed)
 {
 	_moveWayAction = MoveTo::create(this->getPositionX() / zombieSpeed, Vec2(0, this->getPositionY()));
+	this->_moveWayAction->setTag(13);
 	return _moveWayAction;
 }
