@@ -117,6 +117,24 @@ bool SignupScene::init()
 
 	}
 
+	spriteOnlyEnglish = Sprite::create("res/CYHres/onlyEnglish.png");
+	if (spriteOnlyEnglish == nullptr)
+	{
+		CCLOG("onlyEnglish.png wrong!");
+	}
+	this->addChild(spriteOnlyEnglish);
+	spriteOnlyEnglish->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteOnlyEnglish->setVisible(false);
+
+	spriteOnlyEngNum = Sprite::create("res/CYHres/onlyEngNum.png");
+	if (spriteOnlyEngNum == nullptr)
+	{
+		CCLOG("onlyEngNum.png wrong!");
+	}
+	this->addChild(spriteOnlyEngNum);
+	spriteOnlyEngNum->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteOnlyEngNum->setVisible(false);
+
 	//add UsernameInput and PasswordInput
 	auto UsernameInput = ui::TextField::create();
 	auto PasswordInput = ui::TextField::create();
@@ -179,7 +197,17 @@ bool SignupScene::init()
 						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))
 						{
 							username->setString("");
-							log("please input English words!");
+							spriteOnlyEnglish->setVisible(true);
+							auto fadein = FadeIn::create(0.3f);
+							auto fadeout = FadeOut::create(0.2f);
+							auto delay = DelayTime::create(0.3f);
+							spriteOnlyEnglish->runAction(Sequence::create(
+								fadein,
+								delay,
+								fadeout,
+								nullptr
+							));
+							//log("please input English words!");
 							break;
 						}
 					}
@@ -205,7 +233,17 @@ bool SignupScene::init()
 						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')))
 						{
 							password->setString("");
-							log("please input English words and numbers!");
+							spriteOnlyEngNum->setVisible(true);
+							auto fadein = FadeIn::create(0.3f);
+							auto fadeout = FadeOut::create(0.2f);
+							auto delay = DelayTime::create(0.3f);
+							spriteOnlyEngNum->runAction(Sequence::create(
+								fadein,
+								delay,
+								fadeout,
+								nullptr
+							));
+							//log("please input English words and numbers!");
 							break;
 						}
 					}
@@ -226,13 +264,59 @@ bool SignupScene::init()
 						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')))
 						{
 							password2->setString("");
-							log("please input English words and numbers!");
+							spriteOnlyEngNum->setVisible(true);
+							auto fadein = FadeIn::create(0.3f);
+							auto fadeout = FadeOut::create(0.2f);
+							auto delay = DelayTime::create(0.3f);
+							spriteOnlyEngNum->runAction(Sequence::create(
+								fadein,
+								delay,
+								fadeout,
+								nullptr
+							));
+							//log("please input English words and numbers!");
 							break;
 						}
 					}
 				}
 			});
 	}
+
+	spriteSignSuc = Sprite::create("res/CYHres/signSuc.png");
+	if (spriteSignSuc == nullptr)
+	{
+		CCLOG("loginSuc.png wrong!");
+	}
+	this->addChild(spriteSignSuc);
+	spriteSignSuc->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteSignSuc->setVisible(false);
+
+	spriteSignFai = Sprite::create("res/CYHres/signFai.png");
+	if (spriteSignFai == nullptr)
+	{
+		CCLOG("loginFai.png wrong!");
+	}
+	this->addChild(spriteSignFai);
+	spriteSignFai->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteSignFai->setVisible(false);
+
+	spriteExistEmpty = Sprite::create("res/CYHres/existEmpty.png");
+	if (spriteExistEmpty == nullptr)
+	{
+		CCLOG("loginFai.png wrong!");
+	}
+	this->addChild(spriteExistEmpty);
+	spriteExistEmpty->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteExistEmpty->setVisible(false);
+
+	spritePass2NotMatch = Sprite::create("res/CYHres/pass2NotMatch.png");
+	if (spritePass2NotMatch == nullptr)
+	{
+		CCLOG("loginFai.png wrong!");
+	}
+	this->addChild(spritePass2NotMatch);
+	spritePass2NotMatch->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spritePass2NotMatch->setVisible(false);
 
 	//add login and signup button
 	auto SignupBtn = ui::Button::create("res/CYHres/LogSignScene/7.png");
@@ -250,11 +334,31 @@ bool SignupScene::init()
 				|| username->getString().empty() == true || password->getString().empty() == true
 				|| password2->getString().empty() == true)
 			{
-				MessageBox("The username or password can not be empty!", "plants");
+				spriteExistEmpty->setVisible(true);
+				auto fadein = FadeIn::create(0.3f);
+				auto fadeout = FadeOut::create(0.2f);
+				auto delay = DelayTime::create(0.3f);
+				spriteExistEmpty->runAction(Sequence::create(
+					fadein,
+					delay,
+					fadeout,
+					nullptr
+				));
+				//MessageBox("The username or password can not be empty!", "plants");
 			}
 			else if (password->getString() != password2->getString())
 			{
-				MessageBox("The passwords entered two times do not match!", "plants");
+				spritePass2NotMatch->setVisible(true);
+				auto fadein = FadeIn::create(0.3f);
+				auto fadeout = FadeOut::create(0.2f);
+				auto delay = DelayTime::create(0.3f);
+				spritePass2NotMatch->runAction(Sequence::create(
+					fadein,
+					delay,
+					fadeout,
+					nullptr
+				));
+				//MessageBox("The passwords entered two times do not match!", "plants");
 			}
 			else
 			{
@@ -280,12 +384,30 @@ bool SignupScene::init()
 				log(isSignupSuc.c_str());
 				if (isSignupSuc == "REGISTER;1;")
 				{
-					MessageBox("Sign up succeed!", "plants");
-					Director::getInstance()->replaceScene(LogSignScene::create());
+					spriteSignSuc->setVisible(true);
+					auto fadeout = FadeOut::create(1.0f);
+					auto delay = DelayTime::create(1.0f);
+					spriteSignSuc->runAction(Sequence::create(
+						fadeout,
+						delay,
+						nullptr
+					));
+					Director::getInstance()->pushScene(TransitionFade::create(0.5f, LogSignScene::create()));
+					//MessageBox("Sign up succeed!", "plants");
 				}
 				else if (isSignupSuc == "REGISTER;0;")
 				{
-					MessageBox("Sign up failed!", "plants");
+					spriteSignFai->setVisible(true);
+					auto fadein = FadeIn::create(0.3f);
+					auto fadeout = FadeOut::create(0.2f);
+					auto delay = DelayTime::create(0.3f);
+					spriteSignFai->runAction(Sequence::create(
+						fadein,
+						delay,
+						fadeout,
+						nullptr
+					));
+					//MessageBox("Sign up failed!", "plants");
 				}
 			}
 			});

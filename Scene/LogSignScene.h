@@ -27,7 +27,11 @@ private:
 	sockaddr_in clntAddr;
 	ui::TextField* username;
 	ui::TextField* password;
-
+	Sprite* spriteLogSuc;
+	Sprite* spriteLogFai;
+	Sprite* spriteExistEmpty;
+	Sprite* spriteOnlyEnglish;
+	Sprite* spriteOnlyEngNum;
 	//ui::Button* login;
 	//ui::Button* signup;
 };
