@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include"../Base/socket.h"
 #include"SignupScene.h"
-#include"AppDelegate.h"
+#include"../AppDelegate.h"
 #include"matchScene.h"
 
 USING_NS_CC;
