@@ -1,7 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
-#include"AppDelegate.h"
+#include"../AppDelegate.h"
 #include"LogSignScene.h"
 #include "ui/CocosGUI.h"
 #include "cocos-ext.h"
