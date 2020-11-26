@@ -102,10 +102,11 @@ void ShowSloganLayer::showZombieLose()
 		Director::getInstance()->popScene();
 		});
 	//È¥µôÁËscale by 2020/11/25
-	winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1),
+	returnBtn->setVisible(true);
+	/*winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1),
 		CallFunc::create([returnBtn]() {
 		returnBtn->setVisible(true);
-	}), NULL)));
+	}), NULL)));*/
 }
 
 void ShowSloganLayer::showRemainingTime()

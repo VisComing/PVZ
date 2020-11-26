@@ -17,7 +17,7 @@ using namespace CocosDenshion;
 GameController::GameController()
 {
 	this->firstFiveZombie = 0;
-	this->_remainingTime = 120;
+	this->_remainingTime = 20;
 	startTiming = false;
 }
 GameController::~GameController()
@@ -215,9 +215,6 @@ void GameController::isZombieWin(float dlt)
 
 			_zombieVectorGlobalVariable.clear();
 			_plantVectorGlobalVariable.clear();
-			this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
-			this->unschedule(schedule_selector(GameController::isZombieWin));
-			this->unschedule(schedule_selector(GameController::produceZombieUpdate));
 			//Director::getInstance()->popScene();
 		}
 	}
@@ -684,6 +681,7 @@ void GameController::serverTellLose()
 {
 	this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 	this->unschedule(schedule_selector(GameController::isZombieWin));
+	this->unschedule(schedule_selector(GameController::receiveFromServer));
 	SimpleAudioEngine::getInstance()->stopAllEffects();
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	if (_iAmPlantSideGolbalVariable == true)
