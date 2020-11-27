@@ -33,7 +33,6 @@ private:
 	Sprite* spriteExistEmpty;
 	Sprite* spriteOnlyEnglish;
 	Sprite* spriteOnlyEngNum;
-	int isConnectSuc;
 	//ui::Button* login;
 	//ui::Button* signup;
 };

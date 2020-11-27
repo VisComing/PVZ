@@ -20,4 +20,7 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(initScene);
+
+private:
+    int isConnectSuc;
 };

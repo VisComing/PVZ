@@ -11,7 +11,14 @@ Scene* initScene::createScene()
 
 void initScene::menuCloseCallback(cocos2d::Ref* pSender)
 {
-    Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
+    if (isConnectSuc == 0) 
+    {
+        Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
+    }
+    else{
+        MessageBox("CONNECTION FAILURE", "WARNING");
+    }
+
 }
 
 // on "init" you need to initialize your instance
@@ -24,7 +31,7 @@ bool initScene::init()
     }
 
     //connect to server
-    //TCPSocket::getInstance()->connectToServer();
+    isConnectSuc = TCPSocket::getInstance()->connectToServer();
 
     this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
 

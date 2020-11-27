@@ -31,7 +31,7 @@ bool LogSignScene::init()
 	//connect(clntSock, (SOCKADDR*)&clntAddr, sizeof(SOCKADDR));
 
 	//tcp连接
-	isConnectSuc = TCPSocket::getInstance()->connectToServer();
+	//isConnectSuc = TCPSocket::getInstance()->connectToServer();
 
 	auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
@@ -132,13 +132,7 @@ bool LogSignScene::init()
 		logBg3->setPosition(Vec2(visibleSizeWidth / 2 + 72, visibleSizeHeight / 2 + visibleSizeHeight / 8 + 40));
 		logBg3->addClickEventListener([&](Ref* ref) 
 		{
-			if (isConnectSuc == -1) {
-				//连接失败
-				MessageBox("CONNECTION FAILURE", "WARNING");
-			}
-			else {
-				Director::getInstance()->replaceScene(SignupScene::create());
-			}
+			Director::getInstance()->replaceScene(SignupScene::create());
 		});
 
 	}
@@ -330,66 +324,60 @@ bool LogSignScene::init()
 			}
 			else 
 			{
-				if (isConnectSuc == -1) {
-					//连接失败
-					MessageBox("CONNECTION FAILURE", "WARNING");
+				string loginMsg = "LOGIN;";
+				loginMsg = loginMsg + username->getString() + ";";
+				loginMsg = loginMsg + password->getString() + ";\n";
+				TCPSocket::getInstance()->writeIntoServer(loginMsg);
+				string isloginSuc;
+				while (1)
+				{
+					isloginSuc = TCPSocket::getInstance()->readFromServer();
+					if (isloginSuc.size() == 0 || isloginSuc == "HeartBeat;")
+					{
+						log(isloginSuc.c_str());
+						continue;
+					}
+					else
+					{
+						log(isloginSuc.c_str());
+						break;
+					}
 				}
-				else {
-					string loginMsg = "LOGIN;";
-					loginMsg = loginMsg + username->getString() + ";";
-					loginMsg = loginMsg + password->getString() + ";\n";
-					TCPSocket::getInstance()->writeIntoServer(loginMsg);
-					string isloginSuc;
-					while (1)
-					{
-						isloginSuc = TCPSocket::getInstance()->readFromServer();
-						if (isloginSuc.size() == 0 || isloginSuc == "HeartBeat;")
-						{
-							log(isloginSuc.c_str());
-							continue;
-						}
-						else
-						{
-							log(isloginSuc.c_str());
-							break;
-						}
-					}
-					log(isloginSuc.c_str());
-					if (isloginSuc == "LOGIN;1;")
-					{
-						spriteLogSuc->setVisible(true);
-						auto fadeout = FadeOut::create(3.0f);
-						spriteLogSuc->runAction(fadeout);
-						Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
-					}
-					else if (isloginSuc == "LOGIN;0;")
-					{
-						spriteLogFai->setVisible(true);
-						auto fadein = FadeIn::create(0.3f);
-						auto fadeout = FadeOut::create(0.2f);
-						auto delay = DelayTime::create(0.3f);
-						spriteLogFai->runAction(Sequence::create(
-							fadein,
-							delay,
-							fadeout,
-							nullptr
-						));
-						//MessageBox("The username or password is wrong!", "plants");
-					}
-					else if (isloginSuc == "LOGIN;2;")
-					{
-						spriteLogAlr->setVisible(true);
-						auto fadein = FadeIn::create(0.3f);
-						auto fadeout = FadeOut::create(0.2f);
-						auto delay = DelayTime::create(0.3f);
-						spriteLogAlr->runAction(Sequence::create(
-							fadein,
-							delay,
-							fadeout,
-							nullptr
-						));
-						//MessageBox("Already login!", "plants");
-					}
+				log(isloginSuc.c_str());
+				if (isloginSuc == "LOGIN;1;")
+				{
+					spriteLogSuc->setVisible(true);
+					auto fadeout = FadeOut::create(3.0f);
+					spriteLogSuc->runAction(fadeout);
+					Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
+				}
+				else if (isloginSuc == "LOGIN;0;")
+				{
+					spriteLogFai->setVisible(true);
+					auto fadein = FadeIn::create(0.3f);
+					auto fadeout = FadeOut::create(0.2f);
+					auto delay = DelayTime::create(0.3f);
+					spriteLogFai->runAction(Sequence::create(
+						fadein,
+						delay,
+						fadeout,
+						nullptr
+					));
+					//MessageBox("The username or password is wrong!", "plants");
+				}
+				else if (isloginSuc == "LOGIN;2;")
+				{
+					spriteLogAlr->setVisible(true);
+					auto fadein = FadeIn::create(0.3f);
+					auto fadeout = FadeOut::create(0.2f);
+					auto delay = DelayTime::create(0.3f);
+					spriteLogAlr->runAction(Sequence::create(
+						fadein,
+						delay,
+						fadeout,
+						nullptr
+					));
+					//MessageBox("Already login!", "plants");
 				}
 			}
 			
