@@ -17,8 +17,9 @@ using namespace CocosDenshion;
 GameController::GameController()
 {
 	this->firstFiveZombie = 0;
-	this->_remainingTime = 20;
-	startTiming = false;
+	this->_remainingTime = 120;
+	this->startTiming = false;
+	this->timeMinueToNineFlag = false;
 }
 GameController::~GameController()
 {
@@ -154,10 +155,21 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 	//当收到start信息后才开始倒计时
 	//if (isSinglePlayerGameMode == true || startTiming == true)
 	//{
-		string _remainTimeStr = StringUtils::format("%d", --(this->_remainingTime));
+	string _remainTimeStr;
+	if (_iAmPlantSideGolbalVariable == true)
+	{
+		_remainTimeStr = StringUtils::format("%d", --(this->_remainingTime));
+	}
+	else
+	{
+		_remainTimeStr = StringUtils::format("%d", (this->_remainingTime));
+	}
+	string _message = "RemainTime:" + to_string(this->_remainingTime) + ";\n";
+	TCPSocket::getInstance()->writeIntoServer(_message);
 		this->_remainTimeLabel->setString(_remainTimeStr);
-		if (this->_remainingTime == 9)
+		if (this->_remainingTime == 9 && this->timeMinueToNineFlag == false)
 		{
+			this->timeMinueToNineFlag = true;
 			SimpleAudioEngine::getInstance()->playEffect("res/music/remainingTime.wma");
 			((GameLayer*)this->getParent())->_showSloganLayer->showRemainingTime();
 		}
@@ -242,6 +254,25 @@ void GameController::receiveFromServer(float dlt)
 
 	string message = TCPSocket::getInstance()->readFromServer();
 	if (message == "") return;
+	if (message.at(0) == 'R' && message.at(1) == 'e' && message.at(2) == 'm')
+	{
+		//这是僵尸方接收到的，用来与植物端的时间同步
+		size_t i;
+		string _time;
+		for (i = 0; i < message.size(); i++)
+		{
+			if (message.at(i) == ':')
+				break;
+		}
+		for (i = i + 1; i < message.size(); i++)
+		{
+			if (message.at(i) != ';')
+				_time += message.at(i);
+			else
+				break;
+		}
+		this->_remainingTime = stoi(_time);
+	}
 	if (message.at(0) == 'H' && message.at(1) == 'e' && message.at(2) == 'a')
 	{
 		//这是心跳数据包
@@ -268,7 +299,14 @@ void GameController::receiveFromServer(float dlt)
 			{
 				tempSprite->removeFromParent();
 			})));
-		this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
+		if (_iAmPlantSideGolbalVariable == true)
+		{
+			this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
+		}
+		else
+		{
+			this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 0.3f);
+		}
 	}
 	else if (message.at(0) == '1')
 	{
@@ -661,17 +699,19 @@ void GameController::sendHeartBeat(float dlt)
 
 void GameController::serverTellWin()
 {
+
+	this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
+	this->unschedule(schedule_selector(GameController::isZombieWin));
 	SimpleAudioEngine::getInstance()->stopAllEffects();
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
-	//单机或者联机植物方都是赢了
+	//联机植物方都是赢了
+	//植物方赢和僵尸方赢显示的是相同的
 	((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
 	//Director::getInstance()->pause();
 	//胜利了，显示胜利图片，退出场景
 	//((GameLayer*)this->getParent())->onExit();
 	//((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
-	this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
-	this->unschedule(schedule_selector(GameController::isZombieWin));
 	_zombieVectorGlobalVariable.clear();
 	_plantVectorGlobalVariable.clear();
 	log("Win!!!");
@@ -681,7 +721,6 @@ void GameController::serverTellLose()
 {
 	this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 	this->unschedule(schedule_selector(GameController::isZombieWin));
-	this->unschedule(schedule_selector(GameController::receiveFromServer));
 	SimpleAudioEngine::getInstance()->stopAllEffects();
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 	if (_iAmPlantSideGolbalVariable == true)

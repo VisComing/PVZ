@@ -103,6 +103,7 @@ void ShowSloganLayer::showZombieLose()
 		});
 	//去掉了scale by 2020/11/25
 	returnBtn->setVisible(true);
+	//这为啥有bug2020/11/27
 	/*winSprite->runAction(Spawn::create(Sequence::create(FadeIn::create(1),
 		CallFunc::create([returnBtn]() {
 		returnBtn->setVisible(true);

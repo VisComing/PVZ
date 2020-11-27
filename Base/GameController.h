@@ -40,4 +40,5 @@ public:
 	Sprite* readySprite;
 	Sprite* startSprite;
 	bool startTiming;
+	bool timeMinueToNineFlag;
 };

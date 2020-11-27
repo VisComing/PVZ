@@ -104,7 +104,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 						else
 						{
 							//½©Ê¬¿¨Ñô¹â´¦
-							_dollardiff = 40;
+							_dollardiff = 30;
 							sunCellMove2 = MoveTo::create(0.5f, Vec2(1359, 525));
 						}
 						//node->runAction(CCSequence::create(sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell)), NULL));
@@ -130,7 +130,7 @@ void SunCellLayer::produceSunCell(Vec2 _pos)
 	Vec2 _pos1, _pos2;
 	_pos1.y = _pos.y + 30;
 	_pos2.y = _pos.y - 20;
-	int random = rand() % 2;
+	const int random = rand() % 2;
 	if (random == 0) _pos1.x = _pos.x - 25, _pos2.x = _pos.x - 30;
 	else _pos1.x = _pos.x + 25, _pos2.x = _pos.x + 30;
 	_sunCellSprite1->setPosition(_pos);
