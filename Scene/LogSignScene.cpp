@@ -31,7 +31,7 @@ bool LogSignScene::init()
 	//connect(clntSock, (SOCKADDR*)&clntAddr, sizeof(SOCKADDR));
 
 	//tcpÁ¬½Ó
-	TCPSocket::getInstance()->connectToServer();
+	isConnectSuc = TCPSocket::getInstance()->connectToServer();
 
 	auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
