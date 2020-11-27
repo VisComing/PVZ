@@ -14,7 +14,7 @@ public:
 	CREATE_FUNC(ZombieBaseClass);
 	ZombieBaseClass();
 	~ZombieBaseClass();
-	virtual bool init();
+	bool init() override;
 	virtual Rect zombieBounding();//虚函数，子类要实现
 	Rect _zombieRect;
 	SpriteFrameCache* _normalZombieCache;

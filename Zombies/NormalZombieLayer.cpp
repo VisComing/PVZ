@@ -124,7 +124,7 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 			this->_normalZombieVector.pushBack(this->_normalZombieSprite);//将僵尸添加到数组中
 			_zombieVectorGlobalVariable.pushBack(this->_normalZombieSprite);
 
-			int _random = rand() % 6;
+			const int _random = rand() % 6;
 			if(_random == 0)
 				SimpleAudioEngine::getInstance()->playEffect("res/music/zombieGroan.wma");
 			else if(_random == 1)
@@ -145,8 +145,8 @@ void NormalZombieLayer::initNormalZombieSprite(Vec2 touch, string zombieName)
 				std::string message ="1" + zombieName + ":" + to_string(x) + "," + to_string(y) + ";\n";
 				TCPSocket::getInstance()->writeIntoServer(message);
 			}
-			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - _zombieDollar;//每产生一个僵尸消耗金币
+			(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+				= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - _zombieDollar;//每产生一个僵尸消耗金币
 			//此处需要用runaction，否则没有僵尸图像
 
 			//在此处修改僵尸移速，僵尸血量，僵尸价格
@@ -288,12 +288,12 @@ bool NormalZombieLayer::isZombieWin()
 		{
 			if (isSinglePlayerGameMode == true)
 			{
-				((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
+				(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->showZombieEnterYourHome();
 				//SimpleAudioEngine::getInstance()->stopAllEffects();
 				//SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 				//SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
 				//此时切换场景，切换回主场景
-				//((GameLayer*)this->getParent())->onExit();
+				//(dynamic_cast<GameLayer*>(this->getParent()))->onExit();
 			}
 			else if (_iAmPlantSideGolbalVariable == false && isSinglePlayerGameMode == false)//联机模式僵尸发送胜利
 			{
@@ -304,7 +304,7 @@ bool NormalZombieLayer::isZombieWin()
 			//	SimpleAudioEngine::getInstance()->stopAllEffects();
 			//	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			//	SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
-			//	((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
+			//	(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->winInSingleMode();
 			//	
 			//}
 			return true;

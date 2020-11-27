@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(DollarDisplayLayer);
 	DollarDisplayLayer();
 	~DollarDisplayLayer();
-	virtual bool init();
+	bool init() override;
 	void displayDollarLable();
 	int _dollar;
 	string _dollarStr;

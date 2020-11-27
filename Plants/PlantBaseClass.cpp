@@ -96,7 +96,7 @@ void PlantBaseClass::startGrowPlantMusic()
 //			else if (y < 510)
 //				y = 475;
 //			//该位置已经有精灵了
-//			if (((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] == true)
+//			if ((dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] == true)
 //			{
 //				//this->removeChild(_peaShooterSprite);
 //			}
@@ -111,19 +111,19 @@ void PlantBaseClass::startGrowPlantMusic()
 //				this->_peaShooterVector.pushBack(this->_peaShooterSprite);//将精灵添加到数组中
 //				this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 //
-//				((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
-//				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+//				(dynamic_cast<GameLayer*>(this->getParent()))->_touchLayer->_isCreatePeaShooter = true;
+//				(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 //				this->_peaShooterSprite->setPosition(x, y);
 //				this->_peaShooterSprite->_position[0] = (x - 200) / 90;
 //				this->_peaShooterSprite->_position[1] = y / 100;
-//				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-//					= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
-//				((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
+//				(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+//					= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
+//				(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 //			}
 //		}
 //		else//位置错误
 //		{
-//			//((GameLayer*)this->getParent())->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
+//			//(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
 //			//this->removeChild(_peaShooterSprite);
 //		}
 //		_eventDispatcher->removeEventListener(lis);

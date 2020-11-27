@@ -50,6 +50,19 @@ GameLayer::GameLayer()
 	this->_cardLayer = NULL;
 	this->_touchLayer = NULL;
 	this->_peaShooterLayer = NULL;
+	this->_bulletLayer = NULL;
+	this->_bgSprite = NULL;
+	this->_cache = NULL;
+	this->_chomperLayer = NULL;
+	this->_dollarDisplayLayer = NULL;
+	this->_gameController = NULL;
+	this->_mapLayer = NULL;
+	this->_musicLayer = NULL;
+	this->_potatoMineLayer = NULL;
+	this->_showSloganLayer = NULL;
+	this->_sunFlowerLayer = NULL;
+	this->_wallNutLayer = NULL;
+	this->_zombieCardLayer = NULL;
 	//this->_boundingLayer = NULL;
 }
 
@@ -118,7 +131,7 @@ void GameLayer::initPeaShooterLayer()
 
 int GameLayer::getDistanceFromPlantToZombie(int row)//row为植物在第几行
 {
-	int yPos = this->_normalZombieLayer->_normalZombieSprite->getPosition().y;
+	const int yPos = this->_normalZombieLayer->_normalZombieSprite->getPosition().y;
 	if (yPos / 100 == row)//植物前面有僵尸
 	{
 		//this->_zombieLayer->_normalZombieSprite->getBoundingBox().getMaxX;

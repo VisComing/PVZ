@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(ChomperLayer);
 	ChomperLayer();
 	~ChomperLayer();
-	virtual bool init();
+	bool init() override;
 	ChomperSprite* _chomperSprite;
 	void initChomperSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void produceChomperSprite(Vec2);//根据从服务器收到的信息直接在该点种植精灵

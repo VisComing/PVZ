@@ -7,10 +7,12 @@ ShowSloganLayer::ShowSloganLayer()
 {
 	_num = SpriteFrameCache::getInstance();
 	_num->addSpriteFramesWithFile("res/num.plist");
+	this->_remainingTime = NULL;
 }
 
 ShowSloganLayer::~ShowSloganLayer()
 {
+	this->_remainingTime = NULL;
 }
 
 bool ShowSloganLayer::init()
@@ -55,7 +57,7 @@ void ShowSloganLayer::showZombieEnterYourHome()
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//注意，这里面一定要加上true，否则就会出现
 	//进程无法关闭的情况
 	SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
-	auto returnBtn = ui::Button::create("res/returnToMainScene.png");
+	auto returnBtn= ui::Button::create("res/returnToMainScene.png");
 	Sprite* gameOver = Sprite::create("res/ZombiesWon.png");
 	this->addChild(gameOver);
 	gameOver->setPosition(700, 300);

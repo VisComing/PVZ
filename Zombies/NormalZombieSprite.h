@@ -10,7 +10,7 @@ public:
 	CREATE_FUNC(NormalZombieSprite);
 	NormalZombieSprite();
 	~NormalZombieSprite();
-	virtual bool init();
+	bool init() override;
 	bool attacting;
 	RepeatForever* _normalZombieWalkAction;
 	RepeatForever* normalZombieWalkAnimation();//½©Ê¬ÐÐ×ß¶¯»­         1

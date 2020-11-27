@@ -8,6 +8,6 @@ public:
 	CREATE_FUNC(SunCellSprite);
 	SunCellSprite(void);
 	~SunCellSprite(void);
-	virtual bool init();
+	bool init() override;
 	static Rect getRect(Node*);
 };

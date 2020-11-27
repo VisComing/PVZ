@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(WallNutLayer);
 	WallNutLayer();
 	~WallNutLayer();
-	virtual bool init();
+	bool init() override;
 	WallNutSprite* _wallNutSprite;
 	void initWallNutSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void produceWallNutSprite(Vec2);//根据服务器传过来的信息直接种下植物

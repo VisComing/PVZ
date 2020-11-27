@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(SunFlowerLayer);
 	SunFlowerLayer();
 	~SunFlowerLayer();
-	virtual bool init();
+	bool init() override;
 	SunFlowerSprite* _sunFlowerSprite;
 	void initSunFlowerSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void produceSunFlowerSprite(Vec2);//根据服务器传来的消息，直接种下该植物

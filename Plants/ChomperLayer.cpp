@@ -40,7 +40,7 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 		_chomperStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y);
 		
 		_chomperStaticShadow->setPosition(x, y);
 		return true;
@@ -55,7 +55,7 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 		//判断种坚果墙位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		if (((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y))
+		if ((dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y))
 		{
 
 			//精灵被种下，创建动图精灵
@@ -67,8 +67,8 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 			this->_chomperSprite->startGrowPlantMusic();
 			//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
-			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
-			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+			//(dynamic_cast<GameLayer*>(this->getParent()))->_touchLayer->_isCreatePeaShooter = true;
+			(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_chomperSprite->setPosition(x + 10, y + 20);
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
@@ -79,12 +79,12 @@ void ChomperLayer::initChomperSprite(Vec2 touch)
 			shadow->setPosition(x - 20, y - 33);
 			this->_chomperSprite->_position[0] = (x - 200) / 90;
 			this->_chomperSprite->_position[1] = y / 100;
-			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-				= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
+			(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+				= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
 		}
 		else//位置错误
 		{
-			//((GameLayer*)this->getParent())->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
+			//(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
 			//this->removeChild(_peaShooterSprite);
 		}
 		_eventDispatcher->removeEventListener(lis);
@@ -107,13 +107,13 @@ void ChomperLayer::produceChomperSprite(Vec2 position)
 	this->_chomperVector.pushBack(this->_chomperSprite);//将精灵添加到数组中
 	_plantVectorGlobalVariable.pushBack(this->_chomperSprite);
 	this->_chomperSprite->startGrowPlantMusic();
-	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 	this->_chomperSprite->setPosition(x + 10, y + 20);
 	shadow->setPosition(x - 20, y - 33);
 	this->_chomperSprite->_position[0] = (x - 200) / 90;
 	this->_chomperSprite->_position[1] = y / 100;
-	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-	//	= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+	//	= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 150;//每产生一个食人花消耗150金币
 
 }
 
@@ -195,7 +195,7 @@ void ChomperLayer::diedChomper()
 				}
 			}
 
-			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 			this->removeChildByTag((*i)->_chomperSpriteTag);
 			(*i)->removeFromParent();
 			i = _chomperVector.erase(i);

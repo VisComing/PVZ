@@ -20,9 +20,15 @@ GameController::GameController()
 	this->_remainingTime = 120;
 	this->startTiming = false;
 	this->timeMinueToNineFlag = false;
+	this->_remainTimeLabel = NULL;
+	this->readySprite = NULL;
+	this->startSprite = NULL;
 }
 GameController::~GameController()
 {
+	this->_remainTimeLabel = NULL;
+	this->readySprite = NULL;
+	this->startSprite = NULL;
 }
 bool GameController::init()
 {
@@ -61,33 +67,29 @@ bool GameController::init()
 	}
 	return true;
 }
-void GameController::update(float dt)
-{
-	
-}
 void GameController::produceChomperSprite(Vec2 position)
 {
-	((GameLayer*)this->getParent())->_chomperLayer->produceChomperSprite(position);
+	(dynamic_cast<GameLayer*>(this->getParent()))->_chomperLayer->produceChomperSprite(position);
 }
 
 void GameController::producePeaShooterSprite(Vec2 position)
 {
-	((GameLayer*)this->getParent())->_peaShooterLayer->producePeaShooterSprite(position);
+	(dynamic_cast<GameLayer*>(this->getParent()))->_peaShooterLayer->producePeaShooterSprite(position);
 }
 
 void GameController::producePotatoMineSprite(Vec2 position)
 {
-	((GameLayer*)this->getParent())->_potatoMineLayer->producePotatoMineSprite(position);
+	(dynamic_cast<GameLayer*>(this->getParent()))->_potatoMineLayer->producePotatoMineSprite(position);
 }
 
 void GameController::produceWallNutSprite(Vec2 position)
 {
-	((GameLayer*)this->getParent())->_wallNutLayer->produceWallNutSprite(position);
+	(dynamic_cast<GameLayer*>(this->getParent()))->_wallNutLayer->produceWallNutSprite(position);
 }
 
 void GameController::produceSunFlowerSprite(Vec2 position)
 {
-	((GameLayer*)this->getParent())->_sunFlowerLayer->produceSunFlowerSprite(position);
+	(dynamic_cast<GameLayer*>(this->getParent()))->_sunFlowerLayer->produceSunFlowerSprite(position);
 }
 
 void GameController::removePlant(Vec2 _pos)
@@ -105,15 +107,15 @@ void GameController::removePlant(Vec2 _pos)
 //根据僵尸名和位置产生僵尸
 void GameController::produceNormalZombieSprite(string zombieName, Vec2 position)
 {
-	((GameLayer*)this->getParent())->_normalZombieLayer->autoInitZombie(zombieName, position);
+	(dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->autoInitZombie(zombieName, position);
 }
 
 //单机模式自动产生僵尸
 void GameController::produceZombieUpdate(float dlt)
 {
 	
-	float x = 1045;
-	float y;
+	constexpr float x = 1045;
+	float y = 0.0;
 	if (firstFiveZombie < 5)
 	{
 		while (1)
@@ -156,7 +158,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 	//if (isSinglePlayerGameMode == true || startTiming == true)
 	//{
 	string _remainTimeStr;
-	if (_iAmPlantSideGolbalVariable == true)
+	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
 	{
 		_remainTimeStr = StringUtils::format("%d", --(this->_remainingTime));
 	}
@@ -171,7 +173,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 		{
 			this->timeMinueToNineFlag = true;
 			SimpleAudioEngine::getInstance()->playEffect("res/music/remainingTime.wma");
-			((GameLayer*)this->getParent())->_showSloganLayer->showRemainingTime();
+			(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->showRemainingTime();
 		}
 		if (this->_remainingTime == 0)
 		{
@@ -184,11 +186,11 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 				SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
 				SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
 				//单机或者联机植物方都是赢了
-				((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
+				(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->winInSingleMode();
 				//Director::getInstance()->pause();
 				//胜利了，显示胜利图片，退出场景
-				//((GameLayer*)this->getParent())->onExit();
-				//((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
+				//(dynamic_cast<GameLayer*>(this->getParent()))->onExit();
+				//(dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->onExit();
 				this->unschedule(schedule_selector(GameController::remainTimeMinueOneSecond));
 				this->unschedule(schedule_selector(GameController::isZombieWin));
 				_zombieVectorGlobalVariable.clear();
@@ -206,7 +208,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 			//	SimpleAudioEngine::getInstance()->stopAllEffects();
 			//	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 			//	SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
-			//	((GameLayer*)this->getParent())->_showSloganLayer->showZombieLose();
+			//	(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->showZombieLose();
 			//}
 		}
 	//}
@@ -217,7 +219,7 @@ void GameController::remainTimeMinueOneSecond(float dlt)
 */
 void GameController::isZombieWin(float dlt)
 {
-	if (((GameLayer*)this->getParent())->_normalZombieLayer->isZombieWin())//
+	if ((dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->isZombieWin())//
 	{
 		if (isSinglePlayerGameMode == true)
 		{
@@ -403,7 +405,7 @@ void GameController::receiveFromServer(float dlt)
 					{
 						x->removeFromParent();
 					}
-					((GameLayer*)this->getParent())->_normalZombieLayer->delectZombieFromNormalZombieVector(pos1);
+					(dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->delectZombieFromNormalZombieVector(pos1);
 					_zombieVectorGlobalVariable.erase(iter);
 					break;
 				}
@@ -707,11 +709,11 @@ void GameController::serverTellWin()
 	SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
 	//联机植物方都是赢了
 	//植物方赢和僵尸方赢显示的是相同的
-	((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
+	(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->winInSingleMode();
 	//Director::getInstance()->pause();
 	//胜利了，显示胜利图片，退出场景
-	//((GameLayer*)this->getParent())->onExit();
-	//((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
+	//(dynamic_cast<GameLayer*>(this->getParent()))->onExit();
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->onExit();
 	_zombieVectorGlobalVariable.clear();
 	_plantVectorGlobalVariable.clear();
 	log("Win!!!");
@@ -726,7 +728,7 @@ void GameController::serverTellLose()
 	if (_iAmPlantSideGolbalVariable == true)
 	{
 		//我是植物方
-		((GameLayer*)this->getParent())->_showSloganLayer->showZombieEnterYourHome();
+		(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->showZombieEnterYourHome();
 		SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");	
 	
 	}
@@ -734,10 +736,10 @@ void GameController::serverTellLose()
 	{
 		//我是僵尸方
 		SimpleAudioEngine::getInstance()->playEffect("res/music/losemusic.wma");
-		((GameLayer*)this->getParent())->_showSloganLayer->showZombieLose();
+		(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->showZombieLose();
 	}
 	_zombieVectorGlobalVariable.clear();
 	_plantVectorGlobalVariable.clear();
 	//此时切换场景，切换回主场景
-		//((GameLayer*)this->getParent())->onExit();
+		//(dynamic_cast<GameLayer*>(this->getParent()))->onExit();
 }

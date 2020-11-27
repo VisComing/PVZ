@@ -9,7 +9,7 @@ public:
 	static cocos2d::Scene* createScene();
 	PhysicsWorld* m_world;
 	void setPhyWorld(PhysicsWorld* world) { m_world = world; };
-	virtual bool init();
+	bool init() override;
 	void initGameLayer();
 	//这是服务器返回的结果，表示我是植物方还是僵尸方
 	//收到服务器返回的信息时，场景要从匹配场景转换到对战场景

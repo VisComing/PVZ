@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(ShowSloganLayer);
 	ShowSloganLayer();
 	~ShowSloganLayer();
-	virtual bool init();
+	bool init() override;
 	void showPrepareInfo();
 	void showZombieEnterYourHome();
 	void winInSingleMode();

@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(BulletLayer);
 	BulletLayer();
 	~BulletLayer();
-	virtual bool init();
+	bool init() override;
 	BulletSprite* _bulletSprite;
 	Sprite* _bulletSpriteShadow;
 	void initBulletSprite(float dlt);

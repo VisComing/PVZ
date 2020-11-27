@@ -63,10 +63,10 @@ void DollarDisplayLayer::update(float dt)
 //		SimpleAudioEngine::getInstance()->stopAllEffects();
 //		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 //		SimpleAudioEngine::getInstance()->playEffect("res/music/winmusic.wma");
-//		((GameLayer*)this->getParent())->_showSloganLayer->winInSingleMode();
+//		(dynamic_cast<GameLayer*>(this->getParent()))->_showSloganLayer->winInSingleMode();
 //		//胜利了，显示胜利图片，退出场景
-//		//((GameLayer*)this->getParent())->onExit();
-//		//((GameLayer*)this->getParent())->_normalZombieLayer->onExit();
+//		//(dynamic_cast<GameLayer*>(this->getParent()))->onExit();
+//		//(dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->onExit();
 //		this->unschedule(schedule_selector(DollarDisplayLayer::remainTimeMinueOneSecond));
 //		log("Win!!!");
 //	}

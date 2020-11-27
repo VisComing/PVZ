@@ -8,7 +8,7 @@ public:
 	CREATE_FUNC(TouchLayer);
 	TouchLayer();
 	~TouchLayer();
-	virtual bool init();
+	bool init() override;
 
 	bool onTouchBegan(Touch*, Event*);
 	void onTouchEnded(Touch*, Event*);

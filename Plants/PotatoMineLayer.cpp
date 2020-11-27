@@ -40,7 +40,7 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 		_potatoMineStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y);
 		_potatoMineStaticShadow->setPosition(x, y);
 		return true;
 	};
@@ -55,7 +55,7 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 		//判断种下位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		if (((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y))
+		if ((dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y))
 		{
 				//精灵被种下，创建一个土豆地雷
 				this->_potatoMineSprite = PotatoMineSprite::create();
@@ -64,7 +64,7 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 				this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
 				_plantVectorGlobalVariable.pushBack(this->_potatoMineSprite);
 				this->_potatoMineSprite->startGrowPlantMusic();
-				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+				(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_potatoMineSprite->setPosition(x, y);//设置位置
 				//在此处发送
 				if (isSinglePlayerGameMode == false)
@@ -75,9 +75,9 @@ void PotatoMineLayer::initPotatoMineSprite(Vec2 touch)
 				shadow->setPosition(x, y - 20);
 				this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
 				this->_potatoMineSprite->_position[1] = y / 100;
-				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-					= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
-				//((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
+				(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+					= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
+				//(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 				this->schedule(schedule_selector(PotatoMineLayer::grow),1.0f);
 				//this->_potatoMineSprite->runAction(Sequence::create(DelayTime::create(this->_potatoMineSprite->_potatoMineGrowTime),
 					//RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(this->_potatoMineSprite->images, 1.f / 8))), nullptr));
@@ -102,13 +102,13 @@ void PotatoMineLayer::producePotatoMineSprite(Vec2 position)
 	this->_potatoMineVector.pushBack(this->_potatoMineSprite);//将精灵添加到数组中
 	_plantVectorGlobalVariable.pushBack(this->_potatoMineSprite);
 	this->_potatoMineSprite->startGrowPlantMusic();
-	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 	this->_potatoMineSprite->setPosition(x, y);//设置位置
 	shadow->setPosition(x, y - 20);
 	this->_potatoMineSprite->_position[0] = (x - 200) / 90;//保存该植物的位置
 	this->_potatoMineSprite->_position[1] = y / 100;
-	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-	//	= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+	//	= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 25;//每产生一个土豆地雷消耗25金币
 	this->schedule(schedule_selector(PotatoMineLayer::grow), 1.0f);
 }
 
@@ -146,7 +146,7 @@ void PotatoMineLayer::potatoMineAttackZombie()
 						_iFlag = true;
 						(*i)->_plantHP -= 500;
 						//(*i)->removeFromParent();//将土豆地雷删除
-						((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+						(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 						
 						//在总植物的vector中也要删除
 						/*for (auto x = _plantVectorGlobalVariable.begin(); x != _plantVectorGlobalVariable.end(); x++)
@@ -195,7 +195,7 @@ void PotatoMineLayer::diedPotatoMine()
 				}
 			}
 			
-			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 			this->removeChildByTag((*i)->_potatoMineSpriteTag);
 			(*i)->removeFromParent();
 			i = _potatoMineVector.erase(i);

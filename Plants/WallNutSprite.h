@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(WallNutSprite);
 	WallNutSprite();
 	~WallNutSprite();
-	virtual bool init();
+	bool init() override;
 	RepeatForever * wallNutCracked1();
 	RepeatForever * wallNutCracked1Action;
 	RepeatForever * wallNutCracked2();

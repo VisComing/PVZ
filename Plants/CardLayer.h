@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(CardLayer);
 	CardLayer();
 	~CardLayer();
-	virtual bool init();
+	bool init() override;
 	//CardSprite* _cardSprte;
 	void initCardSprite();//³õÊ¼»¯Ö²Îï¿¨
 };

@@ -11,7 +11,7 @@ public:
 	CREATE_FUNC(PeaShooterLayer);
 	PeaShooterLayer();
 	~PeaShooterLayer();
-	virtual bool init();
+	bool init() override;
 	PeaShooterSprite* _peaShooterSprite;
 	void initPeaShooterSprite(Vec2);//初始化豌豆射手，传一个触摸点给它
 	void producePeaShooterSprite(Vec2);//根据服务器传来的信息直接种下植物

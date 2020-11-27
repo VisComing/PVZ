@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(ChomperSprite);
 	ChomperSprite();
 	~ChomperSprite();
-	virtual bool init();
+	bool init() override;
 	FiniteTimeAction * chomperAttack();
 	FiniteTimeAction * chomperAttackAction;
 	RepeatForever * chomperDigest();

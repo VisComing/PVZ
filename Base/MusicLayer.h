@@ -9,7 +9,7 @@ public:
 	CREATE_FUNC(MusicLayer);
 	MusicLayer();
 	~MusicLayer();
-	virtual bool init();
+	bool init() override;
 	SimpleAudioEngine* _effectiveMusic;
 	void preLoadMusic();
 };

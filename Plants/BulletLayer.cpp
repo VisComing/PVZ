@@ -25,16 +25,16 @@ bool BulletLayer::init()
 void BulletLayer::initBulletSprite(float dlt)
 {
 	int i = 0;
-	for (auto peaShooter : ((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterVector)
+	for (auto peaShooter : (dynamic_cast<GameLayer*>(this->getParent()))->_peaShooterLayer->_peaShooterVector)
 	{	
 		//遍历僵尸数组，判断是否在该植物前方
-		for (auto normalZombie : ((GameLayer*)this->getParent())->_normalZombieLayer->_normalZombieVector)
+		for (auto normalZombie : (dynamic_cast<GameLayer*>(this->getParent()))->_normalZombieLayer->_normalZombieVector)
 		{
 			if (abs(peaShooter->getPositionY() - normalZombie->getPositionY()) < 40 && peaShooter->getPositionX() < normalZombie->getPositionX())
 			{
 
-				((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterTime[i] += 1;
-				if (((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterTime[i] == 25)
+				(dynamic_cast<GameLayer*>(this->getParent()))->_peaShooterLayer->_peaShooterTime[i] += 1;
+				if ((dynamic_cast<GameLayer*>(this->getParent()))->_peaShooterLayer->_peaShooterTime[i] == 25)
 				{
 					this->_bulletSprite = BulletSprite::create();
 					this->addChild(this->_bulletSprite);
@@ -42,7 +42,7 @@ void BulletLayer::initBulletSprite(float dlt)
 					this->_bulletSprite->setPosition(peaShooter->getPositionX() + 20, peaShooter->getPositionY() + 13);
 					this->bulletMoveWay();
 
-					((GameLayer*)this->getParent())->_peaShooterLayer->_peaShooterTime[i] = 0;
+					(dynamic_cast<GameLayer*>(this->getParent()))->_peaShooterLayer->_peaShooterTime[i] = 0;
 
 				}
 				i++;

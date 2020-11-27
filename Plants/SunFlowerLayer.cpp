@@ -43,7 +43,7 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 		_sunFlowerStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y);
 		_sunFlowerStaticShadow->setPosition(x, y);
 		return true;
 	};
@@ -57,7 +57,7 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 		//判断种坚果墙位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		if (((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y))
+		if ((dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y))
 		{
 			//精灵被种下，创建动图精灵
 			this->_sunFlowerSprite = SunFlowerSprite::create();
@@ -68,8 +68,8 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 			this->_sunFlowerSprite->startGrowPlantMusic();
 			//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
-			//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
-			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+			//(dynamic_cast<GameLayer*>(this->getParent()))->_touchLayer->_isCreatePeaShooter = true;
+			(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 			this->_sunFlowerSprite->setPosition(x, y);
 			//在此处发送
 			if (isSinglePlayerGameMode == false)
@@ -80,11 +80,11 @@ void SunFlowerLayer::initSunFlowerSprite(Vec2 touch)
 			shadow->setPosition(x, y - 30);
 			this->_sunFlowerSprite->_position[0] = (x - 200) / 90;
 			this->_sunFlowerSprite->_position[1] = y / 100;
-			((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -= 50;//每产生一个太阳花消耗50金币
+			(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar -= 50;//每产生一个太阳花消耗50金币
 		}
 		else//位置错误
 		{
-			//((GameLayer*)this->getParent())->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
+			//(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
 			//this->removeChild(_peaShooterSprite);
 		}
 		_eventDispatcher->removeEventListener(lis);
@@ -108,13 +108,13 @@ void SunFlowerLayer::produceSunFlowerSprite(Vec2 position)
 	this->_sunFlowerSprite->startGrowPlantMusic();
 	//this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
-	//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
-	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_touchLayer->_isCreatePeaShooter = true;
+	(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 	this->_sunFlowerSprite->setPosition(x, y);
 	shadow->setPosition(x, y - 30);
 	this->_sunFlowerSprite->_position[0] = (x - 200) / 90;
 	this->_sunFlowerSprite->_position[1] = y / 100;
-	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar -=  50;//每产生一个太阳花消耗50金币
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar -=  50;//每产生一个太阳花消耗50金币
 
 }
 
@@ -140,7 +140,7 @@ void SunFlowerLayer::diedSunFlower()
 				}
 			}
 
-			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 			this->removeChildByTag((*i)->_sunFlowerSpriteTag);
 			(*i)->removeFromParent();
 			i = _sunFlowerVector.erase(i);
@@ -164,7 +164,7 @@ void SunFlowerLayer::produceSunCellSprite(float dlt)
 		x->_sunCellTime++;
 		if (x->_sunCellTime == 20)
 		{
-			((GameLayer*)this->getParent())->_sunCellLayer->produceSunCell(x->getPosition());
+			(dynamic_cast<GameLayer*>(this->getParent()))->_sunCellLayer->produceSunCell(x->getPosition());
 			x->_sunCellTime = 0;
 		}
 	}

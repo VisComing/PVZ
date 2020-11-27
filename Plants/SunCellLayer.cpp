@@ -30,7 +30,7 @@ bool SunCellLayer::init()
 void SunCellLayer::initSunCell(float dlt)
 {
 	this->_sunCellSprite = SunCellSprite::create();//创建一个太阳精灵
-	auto visibelSize = Director::getInstance()->getVisibleSize();//获得窗口大小
+	const auto visibelSize = Director::getInstance()->getVisibleSize();//获得窗口大小
 
 	if (_iAmPlantSideGolbalVariable == true || isSinglePlayerGameMode == true)
 	{
@@ -47,9 +47,9 @@ void SunCellLayer::initSunCell(float dlt)
 }
 void SunCellLayer::sunCellMoveWay()
 {
-	auto visibelSize = Director::getInstance()->getVisibleSize();
+	const auto visibelSize = Director::getInstance()->getVisibleSize();
 	FiniteTimeAction* sunCellMove1 = MoveTo::create(4.0f, Vec2((this->_sunCellSprite->getPositionX()), (30 + rand() % 250)));
-	FiniteTimeAction* sunCellMove2 = MoveBy::create(5.0f, Vec2(0,0));
+	const FiniteTimeAction* sunCellMove2 = MoveBy::create(5.0f, Vec2(0,0));
 	//FiniteTimeAction* fade = FadeOut::create(0.01f);
 	//this->_sunCellSprite->runAction(CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL));
 	//Sequence* seq = CCSequence::create(sunCellMove1, sunCellMove2, CCCallFuncN::create(this, callfuncN_selector(SunCellLayer::removeSunCell2)), NULL);
@@ -68,7 +68,7 @@ void SunCellLayer::sunCellMoveWay()
 //
 //	Sprite* sprite = (Sprite*)pSend;
 //	this->removeChild(sprite, true);
-//	((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar = ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar + 25;
+//	(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar = (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar + 25;
 //}
 //
 //void SunCellLayer::removeSunCell2(Node* pSend)
@@ -83,8 +83,8 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 {
 	if (this->_sunCellSprite != NULL)
 			{
-				Vec2 point = touch->getLocation();
-				auto visibelSize = Director::getInstance()->getWinSize();
+				const Vec2 point = touch->getLocation();
+				const auto visibelSize = Director::getInstance()->getWinSize();
 				for (auto node : this->getChildren())
 				{
 					
@@ -114,7 +114,7 @@ bool SunCellLayer::onTouchBegan(Touch* touch, Event* event)
 						node->runAction(Sequence::createWithTwoActions(sunCellMove2, 
 							CallFunc::create([=]() {
 								tmpSprite->removeFromParent();
-								((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar += _dollardiff;
+								(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar += _dollardiff;
 							})));
 						break;
 					}

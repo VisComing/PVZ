@@ -40,7 +40,7 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 		_peaShooterStatic->setPosition(e->getLocation().x, 1200 - e->getLocation().y);
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x, y);
+		(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x, y);
 		_peaShooterStaticShadow->setPosition(x, y);
 		return true;
 	};
@@ -54,7 +54,7 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 		//判断种豌豆射手位置是否合法
 		int x = e->getLocation().x;
 		int y = 1200 - e->getLocation().y;
-		if (((GameLayer*)this->getParent())->_mapLayer->isRightPositionForPlants(x,y))
+		if ((dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->isRightPositionForPlants(x,y))
 		{
 				//精灵被种下，创建动图精灵
 				this->_peaShooterSprite = PeaShooterSprite::create();
@@ -65,8 +65,8 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 				this->_peaShooterSprite->startGrowPlantMusic();
 				this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
-				//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
-				((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+				//(dynamic_cast<GameLayer*>(this->getParent()))->_touchLayer->_isCreatePeaShooter = true;
+				(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 				this->_peaShooterSprite->setPosition(x, y);
 				//在此处发送
 				if (isSinglePlayerGameMode == false)
@@ -77,13 +77,13 @@ void PeaShooterLayer::initPeaShooterSprite(Vec2 touch)
 				shadow->setPosition(x - 5, y - 27);
 				this->_peaShooterSprite->_position[0] = (x - 200) / 90;
 				this->_peaShooterSprite->_position[1] = y / 100;
-				((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-					= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
-				((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
+				(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+					= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
+				(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 		}
 		else//位置错误
 		{
-			//((GameLayer*)this->getParent())->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
+			//(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->unschedule(schedule_selector(BulletLayer::initBulletSprite));
 			//this->removeChild(_peaShooterSprite);
 		}
 		_eventDispatcher->removeEventListener(lis);
@@ -109,15 +109,15 @@ void PeaShooterLayer::producePeaShooterSprite(Vec2 position)
 	this->_peaShooterSprite->startGrowPlantMusic();
 	this->_peaShooterTime.push_back(0);//刚被种下，时间置为0
 
-	//((GameLayer*)this->getParent())->_touchLayer->_isCreatePeaShooter = true;
-	((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_touchLayer->_isCreatePeaShooter = true;
+	(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(x - 200) / 90][y / 100] = true;
 	this->_peaShooterSprite->setPosition(x, y);
 	shadow->setPosition(x - 5, y - 27);
 	this->_peaShooterSprite->_position[0] = (x - 200) / 90;
 	this->_peaShooterSprite->_position[1] = y / 100;
-	//((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar
-	//	= ((GameLayer*)this->getParent())->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
-	((GameLayer*)this->getParent())->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
+	//(dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar
+	//	= (dynamic_cast<GameLayer*>(this->getParent()))->_dollarDisplayLayer->_dollar - 100;//每产生一个植物枪消耗100金币
+	(dynamic_cast<GameLayer*>(this->getParent()))->_bulletLayer->schedule(schedule_selector(BulletLayer::initBulletSprite), 0.1f);
 
 }
 
@@ -145,7 +145,7 @@ void PeaShooterLayer::diedPeaShooter()
 			}
 			this->removeChildByTag((*i)->_peaShooterSpriteTag);
 			(*i)->removeFromParent();
-			((GameLayer*)this->getParent())->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
+			(dynamic_cast<GameLayer*>(this->getParent()))->_mapLayer->_isPlanted[(*i)->_position[0]][(*i)->_position[1]] = false;
 			i = _peaShooterVector.erase(i);
 		}
 		else

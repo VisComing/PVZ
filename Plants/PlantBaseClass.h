@@ -8,7 +8,7 @@ public:
 	CREATE_FUNC(PlantBaseClass);
 	PlantBaseClass();
 	~PlantBaseClass();
-	virtual bool init();
+	bool init() override;
 	SpriteFrameCache* _peaShooterCache;
 	SpriteFrameCache* _potatoMineCache;
 	SpriteFrameCache* _wallNutCache;

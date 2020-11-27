@@ -8,7 +8,7 @@ public:
 	CREATE_FUNC(BulletSprite);
 	BulletSprite();
 	~BulletSprite();
-	virtual bool init();
+	bool init() override;
 	FiniteTimeAction* _bulletBroken;
 
 };

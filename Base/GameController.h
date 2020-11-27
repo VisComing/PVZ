@@ -10,8 +10,7 @@ public:
 	CREATE_FUNC(GameController);
 	GameController();
 	~GameController();	
-	virtual bool init();
-	virtual void update(float dt);
+	bool init() override;
 	void produceChomperSprite(Vec2);
 	void producePeaShooterSprite(Vec2);
 	void producePotatoMineSprite(Vec2);

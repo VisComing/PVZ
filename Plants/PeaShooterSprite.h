@@ -9,6 +9,6 @@ public:
 	CREATE_FUNC(PeaShooterSprite);
 	PeaShooterSprite();
 	~PeaShooterSprite();
-	virtual bool init();
+	bool init() override;
 	int _peaShooterSpriteTag;
 };

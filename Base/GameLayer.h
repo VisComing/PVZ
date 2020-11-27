@@ -23,7 +23,7 @@ class GameLayer : public Layer
 public:
 	CREATE_FUNC(GameLayer);
 
-	virtual bool init();
+	bool init() override;
 	void initMapLayer();//≥ı ºªØµÿÕº
 	GameLayer();
 	~GameLayer();
