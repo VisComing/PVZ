@@ -31,18 +31,18 @@ bool LogSignScene::init()
 	//connect(clntSock, (SOCKADDR*)&clntAddr, sizeof(SOCKADDR));
 
 	//tcp连接
-	TCPSocket::getInstance()->connectToServer();
+	//isConnectSuc = TCPSocket::getInstance()->connectToServer();
 
 	auto visibleSizeWidth = Director::getInstance()->getVisibleSize().width;
 	auto visibleSizeHeight = Director::getInstance()->getVisibleSize().height;
 
 	//add background
 	auto bg = Sprite::create("res/CYHres/test2.jpg");
-	if (bg == nullptr) 
+	if (bg == nullptr)
 	{
 		CCLOG("titlescreen.jpg wrong!");
 	}
-	else 
+	else
 	{
 		this->addChild(bg);
 		bg->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
@@ -69,7 +69,7 @@ bool LogSignScene::init()
 	{
 		images.pushBack(cache->getSpriteFrameByName(StringUtils::format("timg_%d.png", i)));
 	}
-	
+
 
 	Animation* animation1 = Animation::createWithSpriteFrames(images, 4.f / images.size());
 	Animate* animate1 = Animate::create(animation1);
@@ -115,10 +115,10 @@ bool LogSignScene::init()
 	{
 		this->addChild(logBg2);
 		logBg2->setPosition(Vec2(visibleSizeWidth / 2 - 78, visibleSizeHeight / 2 + visibleSizeHeight / 8 + 38));
-		logBg2->addClickEventListener([&](Ref* ref) 
-		{
-			Director::getInstance()->replaceScene(LogSignScene::create());
-		});
+		logBg2->addClickEventListener([&](Ref* ref)
+			{
+				Director::getInstance()->replaceScene(LogSignScene::create());
+			});
 
 	}
 	auto logBg3 = ui::Button::create("res/CYHres/LogSignScene/5.png");
@@ -130,10 +130,10 @@ bool LogSignScene::init()
 	{
 		this->addChild(logBg3);
 		logBg3->setPosition(Vec2(visibleSizeWidth / 2 + 72, visibleSizeHeight / 2 + visibleSizeHeight / 8 + 40));
-		logBg3->addClickEventListener([&](Ref* ref) 
-		{
-			Director::getInstance()->replaceScene(SignupScene::create());
-		});
+		logBg3->addClickEventListener([&](Ref* ref)
+			{
+				Director::getInstance()->replaceScene(SignupScene::create());
+			});
 
 	}
 
@@ -176,7 +176,7 @@ bool LogSignScene::init()
 		UsernameInput->setMaxLengthEnabled(true);
 		UsernameInput->setMaxLength(6);
 		UsernameInput->ignoreContentAdaptWithSize(false);  //自动换行，使输入从左端开始
-		
+
 		PasswordInput->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2 - visibleSizeHeight / 8 - 3));
 		PasswordInput->setPlaceHolder("Password");
 		PasswordInput->setCursorEnabled(true);
@@ -187,78 +187,78 @@ bool LogSignScene::init()
 		PasswordInput->setMaxLength(9);
 		PasswordInput->ignoreContentAdaptWithSize(false);  //自动换行，使输入从左端开始
 		PasswordInput->setPasswordEnabled(true);
-		
+
 		//UsernameInput->addClickEventListener([&](Ref* ref)
 		//{
 		//		//UsernameInput->setPlaceHolder("");
 		//	dynamic_cast<ui::TextField*>(ref)->setString("");
 		//});
-		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
-		{
-			if (type == ui::TextField::EventType::INSERT_TEXT) 
+		UsernameInput->addEventListener([&](Ref* ref, ui::TextField::EventType type)
 			{
-				username = dynamic_cast<ui::TextField*>(ref);
-
-				log("%s", username->getString().c_str());
-
-				//username must only includes English words
-				for (char c : username->getString()) 
+				if (type == ui::TextField::EventType::INSERT_TEXT)
 				{
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) 
-					{
-						username->setString("");
-						spriteOnlyEnglish->setVisible(true);
-						auto fadein = FadeIn::create(0.3f);
-						auto fadeout = FadeOut::create(0.2f);
-						auto delay = DelayTime::create(0.3f);
-						spriteOnlyEnglish->runAction(Sequence::create(
-							fadein,
-							delay,
-							fadeout,
-							nullptr
-						));
-						//log("please input English words!");
-						break;
-					}
-				}
+					username = dynamic_cast<ui::TextField*>(ref);
 
-			}
-		});
+					log("%s", username->getString().c_str());
+
+					//username must only includes English words
+					for (char c : username->getString())
+					{
+						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))
+						{
+							username->setString("");
+							spriteOnlyEnglish->setVisible(true);
+							auto fadein = FadeIn::create(0.3f);
+							auto fadeout = FadeOut::create(0.2f);
+							auto delay = DelayTime::create(0.3f);
+							spriteOnlyEnglish->runAction(Sequence::create(
+								fadein,
+								delay,
+								fadeout,
+								nullptr
+							));
+							//log("please input English words!");
+							break;
+						}
+					}
+
+				}
+			});
 
 		/*PasswordInput->addClickEventListener([&](Ref* ref)
 		{
 			dynamic_cast<ui::TextField*>(ref)->setString("");
 		});*/
-		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type) 
-		{
-			if (type == ui::TextField::EventType::INSERT_TEXT) 
+		PasswordInput->addEventListener([&](Ref* ref, ui::TextField::EventType type)
 			{
-				password = dynamic_cast<ui::TextField*>(ref);
-
-				log("%s", password->getString().c_str());
-
-				//username must only includes English words
-				for (char c : password->getString()) 
+				if (type == ui::TextField::EventType::INSERT_TEXT)
 				{
-					if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))) 
+					password = dynamic_cast<ui::TextField*>(ref);
+
+					log("%s", password->getString().c_str());
+
+					//username must only includes English words
+					for (char c : password->getString())
 					{
-						password->setString("");
-						spriteOnlyEngNum->setVisible(true);
-						auto fadein = FadeIn::create(0.3f);
-						auto fadeout = FadeOut::create(0.2f);
-						auto delay = DelayTime::create(0.3f);
-						spriteOnlyEngNum->runAction(Sequence::create(
-							fadein,
-							delay,
-							fadeout,
-							nullptr
-						));
-						//log("please input English words and numbers!");
-						break;
+						if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')))
+						{
+							password->setString("");
+							spriteOnlyEngNum->setVisible(true);
+							auto fadein = FadeIn::create(0.3f);
+							auto fadeout = FadeOut::create(0.2f);
+							auto delay = DelayTime::create(0.3f);
+							spriteOnlyEngNum->runAction(Sequence::create(
+								fadein,
+								delay,
+								fadeout,
+								nullptr
+							));
+							//log("please input English words and numbers!");
+							break;
+						}
 					}
 				}
-			}
-		});
+			});
 	}
 
 	spriteLogSuc = Sprite::create("res/CYHres/loginSuc.png");
@@ -278,6 +278,15 @@ bool LogSignScene::init()
 	this->addChild(spriteLogFai);
 	spriteLogFai->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
 	spriteLogFai->setVisible(false);
+
+	spriteLogAlr = Sprite::create("res/CYHres/loginAlready.png");
+	if (spriteLogAlr == nullptr)
+	{
+		CCLOG("loginAlready.png wrong!");
+	}
+	this->addChild(spriteLogAlr);
+	spriteLogAlr->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 2));
+	spriteLogAlr->setVisible(false);
 
 	spriteExistEmpty = Sprite::create("res/CYHres/existEmpty.png");
 	if (spriteExistEmpty == nullptr)
@@ -299,91 +308,105 @@ bool LogSignScene::init()
 
 		LoginBtn->setPosition(Vec2(visibleSizeWidth / 2, visibleSizeHeight / 5 - 20));
 		LoginBtn->addClickEventListener([&](Ref* ref)
-		{
-			if (username == nullptr || password == nullptr 
-				|| username->getString().empty() == true || password->getString().empty() == true) {
-				auto fadein = FadeIn::create(0.3f);
-				auto fadeout = FadeOut::create(0.2f);
-				auto delay = DelayTime::create(0.3f);
-				spriteExistEmpty->runAction(Sequence::create(
-					fadein,
-					delay,
-					fadeout,
-					nullptr
-				));
-				//MessageBox("The username or password can not be empty!", "plants");
-			}
-			else 
 			{
-				string loginMsg = "LOGIN;";
-				loginMsg = loginMsg + username->getString() + ";";
-				loginMsg = loginMsg + password->getString() + ";\n";
-				TCPSocket::getInstance()->writeIntoServer(loginMsg);
-				string isloginSuc;
-				while (1) 
-				{
-					isloginSuc = TCPSocket::getInstance()->readFromServer();
-					if (isloginSuc.size() == 0 || isloginSuc == "HeartBeat;")
-					{
-						log(isloginSuc.c_str());
-						continue;
-					}
-					else 
-					{
-						log(isloginSuc.c_str());
-						break;
-					}
-				}
-				log(isloginSuc.c_str());
-				if (isloginSuc == "LOGIN;1;") 
-				{
-					spriteLogSuc->setVisible(true);
-					auto fadeout = FadeOut::create(3.0f);
-					spriteLogSuc->runAction(fadeout);
-					Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
-				}
-				else if (isloginSuc == "LOGIN;0;") 
-				{
-					spriteLogFai->setVisible(true);
+				if (username == nullptr || password == nullptr
+					|| username->getString().empty() == true || password->getString().empty() == true) {
 					auto fadein = FadeIn::create(0.3f);
 					auto fadeout = FadeOut::create(0.2f);
 					auto delay = DelayTime::create(0.3f);
-					spriteLogFai->runAction(Sequence::create(
+					spriteExistEmpty->runAction(Sequence::create(
 						fadein,
 						delay,
 						fadeout,
 						nullptr
 					));
-					//MessageBox("The username or password is wrong!", "plants");
+					//MessageBox("The username or password can not be empty!", "plants");
 				}
-			}
-			
-			
-			//char sendMsg[20] = { "" };
-			//strcat(sendMsg, username->getString().c_str());
-			//strcat(sendMsg, "?");
-			//strcat(sendMsg, password->getString().c_str());
-			//log("sendMsg %s", sendMsg);
-			//send(clntSock, sendMsg, strlen(sendMsg) + sizeof(char), NULL);
+				else
+				{
+					string loginMsg = "LOGIN;";
+					loginMsg = loginMsg + username->getString() + ";";
+					loginMsg = loginMsg + password->getString() + ";\n";
+					TCPSocket::getInstance()->writeIntoServer(loginMsg);
+					string isloginSuc;
+					while (1)
+					{
+						isloginSuc = TCPSocket::getInstance()->readFromServer();
+						if (isloginSuc.size() == 0 || isloginSuc == "HeartBeat;")
+						{
+							log(isloginSuc.c_str());
+							continue;
+						}
+						else
+						{
+							log(isloginSuc.c_str());
+							break;
+						}
+					}
+					log(isloginSuc.c_str());
+					if (isloginSuc == "LOGIN;1;")
+					{
+						spriteLogSuc->setVisible(true);
+						auto fadeout = FadeOut::create(3.0f);
+						spriteLogSuc->runAction(fadeout);
+						Director::getInstance()->pushScene(TransitionFade::create(2.f, mainScene::create()));
+					}
+					else if (isloginSuc == "LOGIN;0;")
+					{
+						spriteLogFai->setVisible(true);
+						auto fadein = FadeIn::create(0.3f);
+						auto fadeout = FadeOut::create(0.2f);
+						auto delay = DelayTime::create(0.3f);
+						spriteLogFai->runAction(Sequence::create(
+							fadein,
+							delay,
+							fadeout,
+							nullptr
+						));
+						//MessageBox("The username or password is wrong!", "plants");
+					}
+					else if (isloginSuc == "LOGIN;2;")
+					{
+						spriteLogAlr->setVisible(true);
+						auto fadein = FadeIn::create(0.3f);
+						auto fadeout = FadeOut::create(0.2f);
+						auto delay = DelayTime::create(0.3f);
+						spriteLogAlr->runAction(Sequence::create(
+							fadein,
+							delay,
+							fadeout,
+							nullptr
+						));
+						//MessageBox("Already login!", "plants");
+					}
+				}
 
-			////接收服务器传回的数据
-			//char szBuffer[MAXBYTE] = { 0 };
-			//recv(clntSock, szBuffer, MAXBYTE, NULL);
 
-			////输出接收到的数据
-			//log("Message form server: %s", szBuffer);
-			//if (strcmp(szBuffer, "LoginFai") == 0) 
-			//{
-			//	MessageBox("Log in failed", "plants");
-			//}
-			//if (strcmp(szBuffer, "LoginSuc") == 0) 
-			//{
-			//	MessageBox("Log in succeed", "plants");
-			//}
-		});
+				//char sendMsg[20] = { "" };
+				//strcat(sendMsg, username->getString().c_str());
+				//strcat(sendMsg, "?");
+				//strcat(sendMsg, password->getString().c_str());
+				//log("sendMsg %s", sendMsg);
+				//send(clntSock, sendMsg, strlen(sendMsg) + sizeof(char), NULL);
+
+				////接收服务器传回的数据
+				//char szBuffer[MAXBYTE] = { 0 };
+				//recv(clntSock, szBuffer, MAXBYTE, NULL);
+
+				////输出接收到的数据
+				//log("Message form server: %s", szBuffer);
+				//if (strcmp(szBuffer, "LoginFai") == 0) 
+				//{
+				//	MessageBox("Log in failed", "plants");
+				//}
+				//if (strcmp(szBuffer, "LoginSuc") == 0) 
+				//{
+				//	MessageBox("Log in succeed", "plants");
+				//}
+			});
 	}
 
-	
+
 	//关闭套接字
 	//closesocket(clntSock);
 	//终止使用 DLL
@@ -391,4 +414,3 @@ bool LogSignScene::init()
 
 	return true;
 }
-

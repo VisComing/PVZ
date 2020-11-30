@@ -29,6 +29,7 @@ private:
 	ui::TextField* password;
 	Sprite* spriteLogSuc;
 	Sprite* spriteLogFai;
+	Sprite* spriteLogAlr;
 	Sprite* spriteExistEmpty;
 	Sprite* spriteOnlyEnglish;
 	Sprite* spriteOnlyEngNum;

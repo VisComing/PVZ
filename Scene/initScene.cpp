@@ -11,7 +11,14 @@ Scene* initScene::createScene()
 
 void initScene::menuCloseCallback(cocos2d::Ref* pSender)
 {
-    Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
+    if (isConnectSuc == 0)
+    {
+        Director::getInstance()->pushScene(TransitionFade::create(1.f, LogSignScene::create()));
+    }
+    else {
+        MessageBox("CONNECTION FAILURE", "WARNING");
+    }
+
 }
 
 // on "init" you need to initialize your instance
@@ -24,7 +31,7 @@ bool initScene::init()
     }
 
     //connect to server
-    //TCPSocket::getInstance()->connectToServer();
+    isConnectSuc = TCPSocket::getInstance()->connectToServer();
 
     this->schedule(schedule_selector(LogSignScene::callServer), 1.f);
 
@@ -62,16 +69,16 @@ bool initScene::init()
         changeBtn->setPosition(Vec2(visibleSizeWidth / 64 * 51 + 50, visibleSizeHeight / 10 * 3 - 50));
     }
     auto gogogo = Menu::create(changeBtn, NULL);
-    if (gogogo == nullptr) 
+    if (gogogo == nullptr)
     {
         log("gogogo wrong");
     }
-    else 
+    else
     {
         gogogo->setPosition(Vec2::ZERO);
         this->addChild(gogogo);
     }
-    
+
 
     //add information of author and version
     auto info = Sprite::create("res/CYHres/info.png");
@@ -86,4 +93,3 @@ bool initScene::init()
     }
     return true;
 }
-
