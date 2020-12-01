@@ -311,6 +311,7 @@ bool LogSignScene::init()
 			{
 				if (username == nullptr || password == nullptr
 					|| username->getString().empty() == true || password->getString().empty() == true) {
+					spriteExistEmpty->setVisible(true);
 					auto fadein = FadeIn::create(0.3f);
 					auto fadeout = FadeOut::create(0.2f);
 					auto delay = DelayTime::create(0.3f);

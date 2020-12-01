@@ -1,4 +1,4 @@
-/ 2020.11.24
+/* 2020.11.24
 Server - Linux版本
 */
 
@@ -19,28 +19,30 @@ using namespace std;
 
 
 
-/*ȫ�ֱ���*/
-Client* head;
-unsigned int clientTot = 0;
-Match match;
+/*全局变量*/
+Client* head;					/*客户端链表头*/
+unsigned int clientTot = 0;		/*客户端总数*/
+Match match;					/*匹配队列*/
+
+/*信号量*/
 //HANDLE mutexMatch;
 //HANDLE mutexDb;
 //HANDLE mutexLinklist;
-sem_t semMatch;
-sem_t semDb;
-sem_t semLinklist;
+sem_t semMatch;			/*匹配队列*/
+sem_t semDb;			/*数据库*/
+sem_t semLinklist;		/*客户端链表*/
 
-/*socketͨ�����ȫ�ֱ���*/
+/*socket通信相关全局变量*/
 //WSADATA wsaData;
 SOCKET serverSocket;
 SOCKADDR_IN socketAddr;
 SOCKADDR_IN clientAddr;
 socklen_t clientAddrLen;
 
-/*���ݿ����ȫ�ֱ���*/
+/*sqlite3数据库相关全局变量*/
 sqlite3* db = NULL;
 	
-/*����*/
+/*函数*/
 int handleRequest(char*, Client*);
 Request analysisRequest(char*);
 int waitMatch(Client*);
@@ -95,7 +97,7 @@ int main()
 
 	int n = ::bind(serverSocket, (struct sockaddr*)&socketAddr, sizeof(socketAddr));
 	
-	std::cout << "�˿ڰ󶨳ɹ���" << PORT << endl;
+	std::cout << "端口绑定成功：" << PORT << endl;
 
 	int l = listen(serverSocket, 100);
 
@@ -137,7 +139,7 @@ unsigned  threadAccept(void* param)
 		cout << "------------------------------------------------" << endl;
 		cout << "Socket:" << clientP->cSocket << " | IP:" << clientP->IP << " | Port:" << clientP->port << endl;
 		cout << "[ACCEPT]" << endl;
-		cout << "�ͻ�����������������" << endl;
+		cout << "客户端已连接至服务器" << endl;
 	}
 
 	return 0;
@@ -181,7 +183,7 @@ unsigned  threadServer(void* param)
 	cout << "------------------------------------------------" << endl;
 	cout << "Socket:" << thisClient->cSocket << " | IP:" << thisClient->IP << " | Port:" << thisClient->port << endl;
 	cout << "[CLOSE]" << endl;
-	cout << "�ͻ����ѶϿ�����" << endl;
+	cout << "客户端已断开连接" << endl;
 
 	memset(thisClient->username, 0, STRSIZE);
 	//WaitForSingleObject(mutexMatch, INFINITE);
@@ -226,20 +228,20 @@ int handleRequest(char* rbuf, Client* thisClient)
 	cout << "[HANDLE REQUEST]" << endl;
 	if (0 == strcmp("REGISTER", request.type)) 
 	{	
-		cout << "request: ע�� | ";
-		cout << "�û�����" << request.param[0] << " | ���룺" << request.param[1] << endl;
+		cout << "request: 注册 | ";
+		cout << "用户名" << request.param[0] << " | 密码" << request.param[1] << endl;
 		int result = dbRegister(request.param[0], request.param[1]);
 		if (1 == result) 
 		{
 			memset(sbuf, 0, BUFSIZE);
 			memcpy(sbuf, "REGISTER;1;\n", strlen("REGISTER;1;\n"));
-			cout << "reply: ע��ɹ���" << endl;
+			cout << "reply: 注册成功！" << endl;
 		}
 		else 
 		{
 			memset(sbuf, 0, BUFSIZE);
 			memcpy(sbuf, "REGISTER;0;\n", strlen("REGISTER;0;\n"));
-			cout << "ע��ʧ��" << endl;
+			cout << "reply: 注册失败" << endl;
 		}
 		int sbyte = send(thisClient->cSocket, sbuf, strlen(sbuf), 0);
 		cout << "------------------------------------------------" << endl;
@@ -250,7 +252,7 @@ int handleRequest(char* rbuf, Client* thisClient)
 	}
 	else if (0 == strcmp("LOGIN", request.type)) 
 	{
-		cout << "�û�����" << request.param[0] << " | ���룺" << request.param[1] << endl;
+		cout << "用户名" << request.param[0] << " | 密码" << request.param[1] << endl;
 		int result = dbLogin(request.param[0], request.param[1]);
 		int online = isOnline(request.param[0]);
 		if (0 == strcmp("", thisClient->username) && 0 == online && 1 == result)
@@ -258,19 +260,19 @@ int handleRequest(char* rbuf, Client* thisClient)
 			memcpy(thisClient->username, request.param[0], STRSIZE);
 			memset(sbuf, 0, BUFSIZE);
 			memcpy(sbuf, "LOGIN;1;\n", strlen("LOGIN;1;\n"));
-			cout << "��¼�ɹ���" << endl;
+			cout << "reply: 登录成功！" << endl;
 		}
 		else if(1 != result)
 		{
 			memset(sbuf, 0, BUFSIZE);
 			memcpy(sbuf, "LOGIN;0;\n", strlen("LOGIN;0;\n"));
-			cout << "��¼ʧ��" << endl;
+			cout << "reply: 登录失败" << endl;
 		}
 		else
 		{
 			memset(sbuf, 0, BUFSIZE);
 			memcpy(sbuf, "LOGIN;2;\n", strlen("LOGIN;2;\n"));
-			cout << "��¼ʧ��" << endl;
+			cout << "reply: 登录失败，用户已登录" << endl;
 		}
 		int sbyte = send(thisClient->cSocket, sbuf, strlen(sbuf), 0);
 		cout << "------------------------------------------------" << endl;
@@ -282,7 +284,7 @@ int handleRequest(char* rbuf, Client* thisClient)
 	else if (0 == strcmp("MATCH", request.type)) 
 	{
 		cout << "[MATCH]" << endl;
-		cout << "����ƥ��..." << endl;
+		cout << "正在匹配..." << endl;
 		int ret = waitMatch(thisClient);
 		if(-1 == ret){
 			return -1;
@@ -751,7 +753,6 @@ int recvSingleLine(Client* client, SOCKET s, char* rbuf, int len, int flags)
 	return i;
 
 }
-
 
 int endLine(char* buf, int len)
 {

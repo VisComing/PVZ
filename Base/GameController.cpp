@@ -46,7 +46,7 @@ bool GameController::init()
 	if (isSinglePlayerGameMode)
 	{		
 		//单机模式自动产生僵尸
-		this->schedule(schedule_selector(GameController::produceZombieUpdate), 6.f);
+		this->schedule(schedule_selector(GameController::produceZombieUpdate), 9.f);
 		this->schedule(schedule_selector(GameController::remainTimeMinueOneSecond), 1.f);//倒计时减一
 	}
 	

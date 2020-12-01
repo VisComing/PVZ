@@ -1,25 +1,3 @@
-/*****************************************
-
-�̳߳ز���
-
-�ṹ��Job������ָ�룬����
-�������job_head��������job_create();job_get();
-
-�̳߳أ�20���߳�
-ÿ���̰߳������̺߳���thread_do�����������ٽ���thread_buf���ź���mutex;һ��FLAG����־���߳��Ƿ��ڹ����У�
-
-�̺߳���thread_do:
-1.wait()
-2.�����Ѻ󣬴ӻ�������ȡ������Ϣ��ִ�У�
-3.ִ�н�������ջ�����
-
-������亯��job_alloc:
-1.���ϼ��������У���������ȡ����
-2.���޿����߳����߳���δ�����ޣ������̣߳�
-3.����������̳߳صĻ�����thread_buf������signal()�����߳�
-
-*************************************************/
-
 #include <iostream>
 #include <pthread.h>
 #include <cstdlib>
@@ -36,7 +14,7 @@ using namespace std;
 const int THREADSIZE = 20;
 
 typedef struct _job 
-{										/*Job:���񣬰��������������*/
+{										/*Job:任务，包含一个函数指针及此函数的变量*/
 	int ( *function)(void*);
 	void* arg;
 
@@ -44,16 +22,16 @@ typedef struct _job
 }Job;
 
 typedef struct _thread 
-{										/*Thread:�̣߳�����һ��buf�����洢����һ��flag��flagΪ1��ʾ���ڱ�ʹ��*/
+{										/*Thread:线程，包含一个存储任务的缓冲区和一个标志是否在执行任务的flag*/
 	Job buf;
 	int flag;
 }Thread;
 
 typedef struct _thpool 
 {
-	Job* jobHead = NULL;				/*�������*/
+	Job* jobHead = NULL;				/*任务队列（链表）头*/
 
-	Thread thread[THREADSIZE];			/*�̳߳��е��߳�*/
+	Thread thread[THREADSIZE];			/*n个线程*/
 	int threadTot = 0;
 	int threadUsing = 0;
 
@@ -164,7 +142,7 @@ void* jobAlloc(void* param)
 			}
 
 			int i = 0;
-			for (; i < THREADSIZE && ::thpool.thread[i].flag != 0; i++);//�ҵ������߳�
+			for (; i < THREADSIZE && ::thpool.thread[i].flag != 0; i++);
 			if (i < THREADSIZE) 
 			{
 				jobGet(&::thpool.thread[i].buf);
@@ -218,6 +196,3 @@ int thpoolMain()
 		
 	return 0;
 }
-
-
-
